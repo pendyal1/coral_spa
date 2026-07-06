@@ -1,0 +1,61 @@
+{
+  "license_note": "Unsplash images are used under the Unsplash License; local Coral Spa interiors and existing project images are modified locally for site use.",
+  "unsplash_license": "https://unsplash.com/license",
+  "generated_by": "local crop and color grade script, no AI-generation output used for this replacement pass",
+  "category_sources": {
+    "Massages": {
+      "type": "unsplash",
+      "source": "Unsplash image URL from project service data: photo-1515377905703-c4788e51af15",
+      "download_url": "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=1800&q=90",
+      "local_original": "assets/images/stock/unsplash-massages.jpg"
+    },
+    "Facials": {
+      "type": "unsplash",
+      "source": "Unsplash image URL from project service data: photo-1570172619644-dfd03ed5d881",
+      "download_url": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=1800&q=90",
+      "local_original": "assets/images/stock/unsplash-facials.jpg"
+    },
+    "Body Polish": {
+      "type": "unsplash",
+      "source": "Unsplash image URL from project service data: photo-1540555700478-4be289fbecef",
+      "download_url": "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1800&q=90",
+      "local_original": "assets/images/stock/unsplash-body-polish.jpg"
+    },
+    "Body Wraps": {
+      "type": "unsplash",
+      "source": "Unsplash image URL from project service data: photo-1600334129128-685c5582fd35",
+      "download_url": "https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=1800&q=90",
+      "local_original": "assets/images/stock/unsplash-body-wraps.jpg"
+    },
+    "Foot Reflexology": {
+      "type": "project-local",
+      "local_original": "assets/images/gallery/coral-spa-foot-therapy.jpeg"
+    },
+    "Head Massage": {
+      "type": "unsplash",
+      "source": "Unsplash image URL from project service data: photo-1596178065887-1198b6148b2b",
+      "download_url": "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=1800&q=90",
+      "local_original": "assets/images/stock/unsplash-head-massage.jpg"
+    },
+    "De-tanning": {
+      "type": "unsplash",
+      "source": "Unsplash image URL from project service data: photo-1556228578-8c89e6adf883",
+      "download_url": "https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=1800&q=90",
+      "local_original": "assets/images/stock/unsplash-de-tanning.jpg"
+    },
+    "Manicure": {
+      "type": "project-local",
+      "local_original": "assets/images/manicure.jpg"
+    },
+    "Pedicure": {
+      "type": "project-local",
+      "local_original": "assets/images/gallery/coral-spa-pedicure-lounge.jpeg"
+    },
+    "Hair Spa": {
+      "type": "unsplash",
+      "source": "Unsplash image URL from project service data: photo-1522338242992-e1a54906a8da",
+      "download_url": "https://images.unsplash.com/photo-1522338242992-e1a54906a8da?auto=format&fit=crop&w=1800&q=90",
+      "local_original": "assets/images/stock/unsplash-hair-spa.jpg"
+    }
+  }
+}
