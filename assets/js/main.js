@@ -45,7 +45,6 @@
       <section class="service-category" id="${slug(category.category)}">
         <div class="category-heading">
           <div>
-            <p class="eyebrow">Service Type</p>
             <h2>${category.category}</h2>
             <p>${category.intro}</p>
           </div>
@@ -63,7 +62,6 @@
       <article class="service-card">
         <img src="${image}" alt="${service.name}" loading="lazy">
         <div class="service-card-body">
-          <p class="service-category-label">${category}</p>
           <h3>${service.name}</h3>
           <p>${service.description}</p>
           <div class="service-meta">
