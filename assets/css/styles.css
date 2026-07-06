@@ -115,9 +115,10 @@ a {
 }
 
 .brand-wordmark {
-  width: 132px;
-  height: auto;
-  object-fit: contain;
+  width: 146px;
+  height: 62px;
+  object-fit: cover;
+  object-position: center 68%;
   filter: drop-shadow(0 7px 16px rgba(0, 0, 0, 0.4));
 }
 
