@@ -58,8 +58,9 @@
   }
 
   function serviceCard(service, category, image) {
+    const cardImage = image.replace(/^assets\/images\//, "../images/");
     return `
-      <article class="service-card">
+      <article class="service-card" style="--card-image: url('${cardImage}')">
         <img src="${image}" alt="${service.name}" loading="lazy">
         <div class="service-card-body">
           <h3>${service.name}</h3>

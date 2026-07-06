@@ -126,19 +126,19 @@ a {
   display: flex;
   align-items: center;
   gap: 0;
-  border: 1px solid rgba(214, 162, 61, 0.18);
-  background: rgba(255, 255, 255, 0.035);
+  border: 0;
+  background: transparent;
 }
 
 .site-nav a {
   border-radius: 0;
   color: var(--muted);
-  padding: 15px 18px;
+  padding: 8px 24px;
   text-decoration: none;
   font-weight: 500;
   font-size: 1.06rem;
-  border-left: 1px solid rgba(214, 162, 61, 0.14);
-  transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+  border-left: 1px solid rgba(240, 198, 106, 0.24);
+  transition: color 180ms ease;
 }
 
 .site-nav a:first-child {
@@ -147,9 +147,8 @@ a {
 
 .site-nav a:hover,
 .site-nav a.active {
-  background: linear-gradient(180deg, rgba(214, 162, 61, 0.18), rgba(94, 58, 25, 0.34));
   color: #fff4d2;
-  box-shadow: inset 0 -2px 0 rgba(240, 198, 106, 0.72);
+  box-shadow: inset 0 -1px 0 rgba(240, 198, 106, 0.9);
 }
 
 .nav-toggle {
@@ -264,7 +263,7 @@ a {
 }
 
 .hero-content h1 {
-  max-width: 760px;
+  max-width: 720px;
 }
 
 h1,
@@ -278,12 +277,12 @@ h3 {
 }
 
 h1 {
-  font-size: clamp(2.6rem, 7vw, 6.5rem);
-  max-width: 850px;
+  font-size: clamp(2.35rem, 5.4vw, 4.95rem);
+  max-width: 760px;
 }
 
 h2 {
-  font-size: clamp(2rem, 4vw, 3.6rem);
+  font-size: clamp(1.9rem, 3.4vw, 3.25rem);
 }
 
 h3 {
@@ -376,7 +375,7 @@ p {
 
 .image-tile {
   position: relative;
-  min-height: 480px;
+  min-height: 540px;
   border: 1px solid rgba(214, 162, 61, 0.28);
   border-radius: 3px;
   overflow: hidden;
@@ -434,11 +433,37 @@ p {
   backdrop-filter: blur(22px) saturate(136%);
 }
 
+.service-card {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(11, 8, 6, 0.18), rgba(11, 8, 6, 0.76)),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.025)),
+    var(--card-image) center / cover,
+    var(--glass);
+}
+
+.service-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(240, 198, 106, 0.16), transparent 32%),
+    linear-gradient(0deg, rgba(11, 8, 6, 0.66), transparent 48%);
+  pointer-events: none;
+}
+
+.service-card > * {
+  position: relative;
+  z-index: 1;
+}
+
 .service-card img {
   width: 100%;
-  height: 210px;
+  height: 280px;
   object-fit: cover;
-  filter: saturate(0.9) contrast(1.04) brightness(0.78);
+  filter: saturate(0.9) contrast(1.05) brightness(0.68);
+  mix-blend-mode: screen;
+  opacity: 0.68;
 }
 
 .service-card-body,
@@ -541,7 +566,9 @@ p {
 }
 
 .page-hero {
-  padding: 90px 0 70px;
+  position: relative;
+  overflow: hidden;
+  padding: 82px 0 78px;
   background:
     radial-gradient(circle at 84% 22%, rgba(214, 162, 61, 0.18), transparent 28%),
     linear-gradient(135deg, rgba(58, 33, 21, 0.82), rgba(31, 30, 27, 0.84)),
@@ -549,27 +576,51 @@ p {
   border-bottom: 1px solid rgba(214, 162, 61, 0.18);
 }
 
+.page-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--page-hero-image) center / cover;
+  filter: saturate(0.86) contrast(1.04) brightness(0.34);
+  opacity: 0.48;
+}
+
+.page-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 74% 24%, rgba(240, 198, 106, 0.18), transparent 26%),
+    linear-gradient(90deg, rgba(18, 12, 8, 0.92), rgba(23, 17, 13, 0.74) 46%, rgba(14, 10, 8, 0.86));
+}
+
 .page-hero .container {
+  position: relative;
+  z-index: 1;
   display: grid;
-  grid-template-columns: 1fr 0.78fr;
-  gap: 36px;
+  grid-template-columns: 0.82fr 1.18fr;
+  gap: 54px;
   align-items: center;
+}
+
+.page-hero h1 {
+  font-size: clamp(2.35rem, 5vw, 4.8rem);
 }
 
 .page-hero p {
   color: var(--muted);
-  max-width: 720px;
+  max-width: 650px;
   margin-top: 18px;
 }
 
 .page-hero img {
-  height: 360px;
+  height: 520px;
   width: 100%;
   border: 1px solid rgba(214, 162, 61, 0.28);
   border-radius: 3px;
   object-fit: cover;
   box-shadow: var(--shadow);
-  filter: saturate(0.9) contrast(1.04) brightness(0.82);
+  filter: saturate(0.9) contrast(1.04) brightness(0.76);
 }
 
 .about-hero {
@@ -583,7 +634,7 @@ p {
 .about-gallery {
   display: grid;
   grid-template-columns: 1.25fr 0.75fr 0.75fr;
-  grid-auto-rows: 250px;
+  grid-auto-rows: 300px;
   gap: 16px;
 }
 
@@ -639,7 +690,7 @@ p {
   display: grid;
   grid-template-columns: 0.82fr 1.18fr;
   gap: 16px;
-  min-height: 430px;
+  min-height: 520px;
 }
 
 .about-story-images img {
@@ -661,7 +712,7 @@ p {
 }
 
 .image-card {
-  min-height: 330px;
+  min-height: 420px;
   padding: 0;
 }
 
@@ -678,26 +729,30 @@ p {
   display: flex;
   gap: 0;
   overflow-x: auto;
-  padding-top: 14px;
-  padding-bottom: 14px;
+  padding-top: 18px;
+  padding-bottom: 18px;
 }
 
 .category-nav a {
   white-space: nowrap;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 2px;
-  padding: 11px 15px;
+  border: 0;
+  border-left: 1px solid rgba(240, 198, 106, 0.22);
+  background: transparent;
+  border-radius: 0;
+  padding: 8px 20px;
   color: var(--muted);
   text-decoration: none;
   font-weight: 500;
   font-size: 0.96rem;
 }
 
+.category-nav a:first-child {
+  border-left: 0;
+}
+
 .category-nav a:hover {
-  background: rgba(214, 162, 61, 0.15);
   color: #fff4d2;
-  border-color: rgba(240, 198, 106, 0.54);
+  box-shadow: inset 0 -1px 0 rgba(240, 198, 106, 0.82);
 }
 
 .service-category {
@@ -707,8 +762,8 @@ p {
 
 .category-heading {
   display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 28px;
+  grid-template-columns: 1fr 430px;
+  gap: 38px;
   align-items: end;
   margin-bottom: 28px;
 }
@@ -721,9 +776,9 @@ p {
 
 .category-heading img {
   width: 100%;
-  height: 190px;
+  height: 300px;
   border: 1px solid rgba(214, 162, 61, 0.25);
-  border-radius: 8px;
+  border-radius: 3px;
   object-fit: cover;
   filter: saturate(0.9) contrast(1.04) brightness(0.82);
 }
@@ -765,7 +820,7 @@ p {
 }
 
 .home-contact-panel h2 {
-  font-size: clamp(2.1rem, 4.4vw, 4.6rem);
+  font-size: clamp(2rem, 3.8vw, 3.8rem);
 }
 
 .home-contact-panel > p,
@@ -927,7 +982,7 @@ p {
 
   .page-hero img,
   .category-heading img {
-    height: 260px;
+    height: 340px;
   }
 
   .about-gallery {
@@ -959,11 +1014,20 @@ p {
   }
 
   .hero {
-    min-height: 720px;
+    min-height: 700px;
   }
 
   .hero-content {
     padding: 78px 0 58px;
+  }
+
+  h1,
+  .page-hero h1 {
+    font-size: clamp(2.2rem, 11vw, 3.25rem);
+  }
+
+  .page-hero {
+    padding: 62px 0;
   }
 
   .section {
@@ -975,6 +1039,16 @@ p {
   }
 
   .image-tile {
-    min-height: 390px;
+    min-height: 450px;
+  }
+
+  .service-card img {
+    height: 240px;
+  }
+
+  .category-nav a,
+  .site-nav a {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
