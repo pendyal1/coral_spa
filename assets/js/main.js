@@ -41,6 +41,7 @@
   }
 
   function categorySection(category) {
+    const image = serviceImage(category.services[0], category.image);
     return `
       <section class="service-category" id="${slug(category.category)}">
         <div class="category-heading">
@@ -48,7 +49,7 @@
             <h2>${category.category}</h2>
             <p>${category.intro}</p>
           </div>
-          <img src="${category.image}" alt="${category.category} at Coral Spa" loading="lazy">
+          <img src="${image}" alt="${category.category} at Coral Spa" loading="lazy">
         </div>
         <div class="service-grid">
           ${category.services.map((service) => serviceCard(service, category.category, category.image)).join("")}
@@ -57,11 +58,18 @@
     `;
   }
 
+  function serviceImage(service, fallbackImage) {
+    if (service.image) return service.image;
+    if (service.name) return `assets/images/services/${slug(service.name)}.jpg`;
+    return fallbackImage;
+  }
+
   function serviceCard(service, category, image) {
-    const cardImage = image.replace(/^assets\/images\//, "../images/");
+    const tileImage = serviceImage(service, image);
+    const cardImage = tileImage.replace(/^assets\/images\//, "../images/");
     return `
       <article class="service-card" style="--card-image: url('${cardImage}')">
-        <img src="${image}" alt="${service.name}" loading="lazy">
+        <img src="${tileImage}" alt="${service.name}" loading="lazy">
         <div class="service-card-body">
           <h3>${service.name}</h3>
           <p>${service.description}</p>
