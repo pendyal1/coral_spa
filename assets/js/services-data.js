@@ -1,305 +1,313 @@
 window.CORAL_SERVICES = [
   {
-    category: "Massages",
-    intro: "Eastern, European and Oriental bodywork designed to improve circulation, ease muscle fatigue and support deep relaxation.",
-    image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=1200&q=80",
+    category: "Signature Rituals",
+    intro: "The treatments Coral Spa should be known for first: clear names, real techniques and a short consult before pressure, oil and pace are set.",
     services: [
       {
-        name: "Swedish Massage",
-        duration: "60 Min",
-        price: "Rs. 2,500",
-        description: "A classic full-body therapy for first-time spa guests and regular wellness seekers. Gentle to moderate pressure helps relieve soreness, improve circulation and leave the body calm and restored."
-      },
-      {
-        name: "Thai Oil Therapy",
+        name: "The Jet Lag Reset",
+        technique: "Jet Lag Recovery Massage",
         duration: "60 / 90 Min",
-        price: "Rs. 2,700 / Rs. 3,500",
-        description: "A blend of Thai-style pressure work, yoga-inspired stretches and flowing Swedish strokes using a seasonal essential-oil blend."
+        price: "Call for pricing",
+        tag: "New",
+        image: "assets/images/services/deep-tissue-massage.jpg",
+        description: "Firm, circulation-focused strokes through the legs, back and shoulders, built for however many time zones you just crossed.",
+        goodFor: "Travel fatigue, heavy legs, dull circulation and a body clock that needs help slowing down."
       },
       {
-        name: "Thai Dry Massage",
-        duration: "60 Min",
-        price: "Rs. 2,900",
-        description: "Traditional Thai yoga massage using assisted stretching and steady pressure along energy lines. No oil is used; loose cotton clothing is provided."
-      },
-      {
-        name: "Balinese Massage",
-        duration: "60 Min",
-        price: "Rs. 2,700",
-        description: "A hands-on treatment combining kneading, pressure-point work and stretching to release soft tissue, improve mobility and reduce stress."
-      },
-      {
-        name: "Deep Tissue Massage",
+        name: "The De-Puff",
+        technique: "Lymphatic Drainage Massage",
         duration: "60 / 90 Min",
-        price: "Rs. 2,900 / Rs. 3,700",
-        description: "Focused deeper pressure targets chronic muscle tension in the deeper layers of tissue, tendons and fascia while encouraging detoxification and relaxation."
+        price: "Call for pricing",
+        tag: "New",
+        image: "assets/images/services/whole-body.jpg",
+        description: "Light, rhythmic pressure that follows lymphatic pathways to ease puffiness and water retention without force.",
+        goodFor: "Water retention, facial puffiness, post-travel heaviness and guests who prefer a lighter touch."
       },
       {
-        name: "Hot Stone Massage",
+        name: "The Heat Ritual",
+        technique: "Hot Stone Massage",
         duration: "90 Min",
         price: "Rs. 4,600",
-        description: "Warm basalt stones are placed and moved over key energy points to melt tension, improve circulation and create a deeply grounding spa experience."
+        tag: "Most Booked",
+        image: "assets/images/services/hot-stone-massage.jpg",
+        description: "Warm basalt stones are placed and moved over key energy points to melt tension and create a grounded, slow release.",
+        goodFor: "Deep warmth, tight muscles, winter fatigue and guests who want a signature full-body ritual."
       },
       {
-        name: "Potli Massage",
+        name: "The Nervous System Reset",
+        technique: "Thai Aromatherapy Massage",
+        duration: "60 / 90 Min",
+        price: "Rs. 2,700 / Rs. 3,500",
+        image: "assets/images/services/thai-oil-therapy.jpg",
+        description: "Thai-style pressure work, yoga-inspired stretches and flowing oil strokes, paced to settle the body rather than rush it.",
+        goodFor: "Stress, restless sleep, body fatigue and guests who want pressure with a softer aromatic finish."
+      },
+      {
+        name: "Moroccanoil Hair Reset",
+        technique: "Argan Oil Hair Spa",
+        duration: "As advised",
+        price: "From Rs. 2,600",
+        image: "assets/images/services/repair-and-restore-hair-spa.jpg",
+        description: "A nourishing hair ritual finished with the Moroccanoil range for hydration, smoothness and a cleaner salon finish.",
+        goodFor: "Dryness, frizz, breakage, dullness and hair that needs a visible reset."
+      }
+    ]
+  },
+  {
+    category: "Bodywork",
+    intro: "Traditional bodywork for pressure, mobility and deep rest, with the technical treatment always shown under the branded name.",
+    services: [
+      {
+        name: "The Slow Down",
+        technique: "Swedish Massage",
+        duration: "60 Min",
+        price: "Rs. 2,500",
+        image: "assets/images/services/swedish-massage.jpg",
+        description: "A classic full-body therapy with gentle to moderate pressure to ease soreness and bring the nervous system down.",
+        goodFor: "First-time spa guests, regular maintenance, mild soreness and a calmer end to the day."
+      },
+      {
+        name: "The Thai Oil Reset",
+        technique: "Thai Oil Therapy",
+        duration: "60 / 90 Min",
+        price: "Rs. 2,700 / Rs. 3,500",
+        image: "assets/images/services/thai-oil-therapy.jpg",
+        description: "Thai pressure work and flowing oil strokes using a seasonal essential-oil blend.",
+        goodFor: "Body stiffness, long workdays and guests who want movement without a dry massage."
+      },
+      {
+        name: "The Thai Stretch",
+        technique: "Thai Dry Massage",
+        duration: "60 Min",
+        price: "Rs. 2,900",
+        image: "assets/images/services/thai-dry-massage.jpg",
+        description: "Traditional Thai yoga massage with assisted stretching and steady pressure along energy lines. No oil is used.",
+        goodFor: "Mobility, stiffness, heavy legs and guests who prefer a clothed, oil-free ritual."
+      },
+      {
+        name: "The Balinese Release",
+        technique: "Balinese Massage",
+        duration: "60 Min",
+        price: "Rs. 2,700",
+        image: "assets/images/services/balinese-massage.jpg",
+        description: "Kneading, pressure-point work and stretching to release soft tissue and reduce held stress.",
+        goodFor: "General tension, low energy, shoulder fatigue and guests who like a more active massage."
+      },
+      {
+        name: "The Knot Fixer",
+        technique: "Deep Tissue Massage",
+        duration: "60 / 90 Min",
+        price: "Rs. 2,900 / Rs. 3,700",
+        tag: "Most Booked",
+        image: "assets/images/services/deep-tissue-massage.jpg",
+        description: "Focused deeper pressure targets chronic muscle tension in tissue, tendons and fascia.",
+        goodFor: "Knots, desk posture, gym soreness and guests who ask for firm, specific work."
+      },
+      {
+        name: "The Herbal Compress",
+        technique: "Potli Massage",
         duration: "60 Min",
         price: "Rs. 5,100",
-        description: "Heated herbal pouches are used to ease pain, relax tight muscles, improve circulation, support detoxification and reduce stress."
+        image: "assets/images/services/potli-massage.jpg",
+        description: "Heated herbal pouches are pressed and rolled to relax tight muscles and support circulation.",
+        goodFor: "Stiffness, body ache, sluggish circulation and guests who like warmth with herbal aroma."
+      },
+      {
+        name: "The Quick Fix",
+        technique: "Foot & Head Massage",
+        duration: "30 / 45 Min",
+        price: "From Rs. 850",
+        image: "assets/images/services/thai-foot-spa.jpg",
+        description: "Compact pressure work for the feet, head, neck and shoulders when there is no time for a full ritual.",
+        goodFor: "Lunch-break fatigue, travel legs, screen posture and quick stress relief."
       }
     ]
   },
   {
-    category: "Facials",
-    intro: "Skin therapies that combine cleansing, exfoliation, steam, massage, masks and active products for brighter, hydrated and refreshed skin.",
-    image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=1200&q=80",
+    category: "Skin Rituals",
+    intro: "Facials are named by the result a guest wants, with the technical focus shown clearly underneath.",
     services: [
       {
-        name: "Anti Acne Facial",
-        duration: "60 Min",
-        price: "Rs. 3,100",
-        description: "A clarifying facial for acne-prone skin, blackheads and post-blemish marks. Helps calm inflammation and support a healthier glow."
-      },
-      {
-        name: "Anti-Ageing Facial",
-        duration: "60 Min",
-        price: "Rs. 3,100",
-        description: "A nourishing facial with collagen, vitamin C and hyaluronic acid to soften fine lines, replenish tired skin and improve resilience."
-      },
-      {
-        name: "Brightening Party Glow Facial",
+        name: "The Glass Skin Facial",
+        technique: "Brightening & Hydration Facial",
         duration: "60 Min",
         price: "Rs. 3,300",
-        description: "Recommended for dull or tanned skin. Herbal actives such as carrot, dandelion and liquorice help brighten and revive the complexion."
+        image: "assets/images/services/brightening-party-glow-facial.jpg",
+        description: "A glow-focused facial for dull or tanned skin, using brightening actives to revive the complexion.",
+        goodFor: "Dullness, event prep, uneven tone and guests who want visible radiance."
       },
       {
-        name: "Gold Facial",
-        duration: "60 Min",
-        price: "Rs. 3,600",
-        description: "Gold-infused products promote radiance, firmness and a polished glow before special occasions."
+        name: "The Clean Slate Facial",
+        technique: "Deep Cleanse Facial",
+        duration: "30 / 60 Min",
+        price: "Rs. 2,300 / Rs. 3,100",
+        image: "assets/images/services/clean-up.jpg",
+        description: "A clarifying cleanse for congestion, blackheads and post-blemish marks.",
+        goodFor: "Acne-prone skin, city pollution, clogged pores and a clean reset."
       },
       {
-        name: "Signature Facial",
+        name: "The Calm Facial",
+        technique: "Soothing Facial, Sensitive Skin",
         duration: "60 Min",
         price: "Rs. 4,100",
-        description: "A customized facial tailored to your skin's needs, combining appropriate techniques and products for a balanced result."
+        image: "assets/images/services/signature-facial.jpg",
+        description: "A customized facial paced around skin comfort, product choice and a balanced finish.",
+        goodFor: "Sensitivity, redness, tired skin and guests who want guidance before product selection."
       },
       {
-        name: "Clean-up",
-        duration: "30 Min",
-        price: "Rs. 2,300",
-        description: "A quick refresh to remove impurities, lighten congestion and leave the face feeling clear and clean."
+        name: "The Firming Facial",
+        technique: "Anti-Ageing Facial",
+        duration: "60 Min",
+        price: "Rs. 3,100",
+        image: "assets/images/services/anti-ageing-facial.jpg",
+        description: "A nourishing facial with collagen, vitamin C and hyaluronic acid to soften fine lines and replenish tired skin.",
+        goodFor: "Fine lines, dryness, mature skin and guests who want a firmer, rested look."
+      },
+      {
+        name: "The Gold Finish",
+        technique: "Gold Facial",
+        duration: "60 Min",
+        price: "Rs. 3,600",
+        image: "assets/images/services/gold-facial.jpg",
+        description: "Gold-infused products promote radiance, firmness and a polished glow before special occasions.",
+        goodFor: "Occasion prep, dullness and guests who want a more luminous finish."
+      },
+      {
+        name: "The De-Tan Reset",
+        technique: "Face, Arms or Full Body De-Tanning",
+        duration: "As advised",
+        price: "From Rs. 600",
+        image: "assets/images/services/face-neck-and-arms.jpg",
+        description: "Targeted brightening treatments for skin affected by sun exposure and city pollution.",
+        goodFor: "Face, neck, arms or full-body tan correction before a cleaner skin routine."
       }
     ]
   },
   {
-    category: "Body Polish",
-    intro: "Full-body exfoliation that removes dull surface cells, softens texture and prepares skin to absorb massage oils and moisturizers.",
-    image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80",
+    category: "Polish & Wraps",
+    intro: "Full-body exfoliation and wraps for softer texture, better oil absorption and a warmer, slower body ritual.",
     services: [
       {
-        name: "Apple and Honey Scrub",
+        name: "The Glow Wrap",
+        technique: "Full Body Polish & Wrap",
+        duration: "90 Min",
+        price: "From Rs. 3,000",
+        tag: "Most Booked",
+        image: "assets/images/services/chocolate-wrap.jpg",
+        description: "A body polish followed by a nourishing wrap to soften, warm and leave the skin with a clean glow.",
+        goodFor: "Texture, dryness, dullness and guests who want a full body refresh."
+      },
+      {
+        name: "The Honey Polish",
+        technique: "Apple and Honey Scrub",
         duration: "45 Min",
         price: "Rs. 2,500",
-        description: "Apple fruit acids and honey hydrate, brighten and smooth the skin while antioxidants support a fresh, even appearance."
+        image: "assets/images/services/apple-and-honey-scrub.jpg",
+        description: "Apple fruit acids and honey hydrate, brighten and smooth the skin.",
+        goodFor: "Dryness, rough texture and a soft brightened finish."
       },
       {
-        name: "Sandalwood",
+        name: "The Sandalwood Polish",
+        technique: "Sandalwood Body Polish",
         duration: "45 Min",
         price: "Rs. 2,300",
-        description: "Recommended for oily and acne-prone skin, sandalwood helps purify, de-tan and calm the skin with a grounding aromatic finish."
+        image: "assets/images/services/sandalwood.jpg",
+        description: "A grounding aromatic polish that helps purify, de-tan and calm the skin.",
+        goodFor: "Oily skin, heat, city tan and guests who prefer a quieter aromatic finish."
       },
       {
-        name: "Aloe Vera Polish",
-        duration: "Ask team",
-        price: "Ask team",
-        description: "A soothing body polish option listed by Coral Spa, suited to guests looking for a gentle, cooling skin refresh."
-      },
-      {
-        name: "Fruit Punch Scrub",
-        duration: "Ask team",
-        price: "Ask team",
-        description: "A fruit-forward scrub option for a fresh, brightened body polish experience."
-      },
-      {
-        name: "Rose Scrub",
-        duration: "Ask team",
-        price: "Ask team",
-        description: "A fragrant body scrub option for soft, polished skin and a delicate floral finish."
-      },
-      {
-        name: "Chocolate Scrub",
-        duration: "45 Min",
-        price: "Rs. 2,500",
-        description: "A mood-lifting scrub rich in antioxidants, designed for exfoliation, skin rejuvenation and a soft chocolate aroma."
-      },
-      {
-        name: "Lavender Scrub",
-        duration: "45 Min",
-        price: "Rs. 2,300",
-        description: "A gentle scrub with lavender's calming aroma and soothing properties for refreshed, comfortable skin."
-      }
-    ]
-  },
-  {
-    category: "Body Wraps",
-    intro: "A body polish followed by a mineral or nourishing mask, wrapped for warmth to support absorption, detoxification and softness.",
-    image: "https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=1200&q=80",
-    services: [
-      {
-        name: "Chocolate Wrap",
+        name: "The Cocoa Wrap",
+        technique: "Chocolate Wrap",
         duration: "90 Min",
         price: "Rs. 3,500",
-        description: "A hot chocolate mask rich in antioxidants to soften, moisturize and leave skin with a silky glow."
+        image: "assets/images/services/chocolate-wrap.jpg",
+        description: "A warm chocolate mask rich in antioxidants to soften, moisturize and leave skin silky.",
+        goodFor: "Dryness, dull skin and guests who want a warmer, indulgent body ritual."
       },
       {
-        name: "Clay Wrap",
+        name: "The Mineral Wrap",
+        technique: "Clay Wrap",
         duration: "90 Min",
         price: "Rs. 3,000",
-        description: "A mineral-rich clay and marine mud wrap that warms the body, supports circulation and improves skin tone and texture."
+        image: "assets/images/services/clay-wrap.jpg",
+        description: "A mineral-rich clay and marine mud wrap that supports circulation and improves skin tone and texture.",
+        goodFor: "Texture, heaviness, uneven tone and guests who prefer a grounded mineral ritual."
       }
     ]
   },
   {
-    category: "Foot Reflexology",
-    intro: "Focused foot and calf therapies using Thai techniques to relieve stiffness and help you leave feeling lighter.",
-    image: "assets/images/pedicure.jpg",
+    category: "Hands & Feet",
+    intro: "Focused hand, foot and nail care with shaping, cuticle work, massage and a clean finish.",
     services: [
       {
-        name: "Thai Foot",
-        duration: "30 Min",
-        price: "Rs. 1,100",
-        description: "Traditional Thai foot massage using manual and stick techniques to ease tension in the foot and calf."
-      },
-      {
-        name: "Thai Foot Spa",
-        duration: "45 Min",
-        price: "Rs. 1,600",
-        description: "An extended Thai foot therapy in a reclining chair for deeper relaxation and lighter-feeling feet."
-      }
-    ]
-  },
-  {
-    category: "Head Massage",
-    intro: "Compact stress-relief therapies for the head, neck, shoulders and back, ideal during busy workdays.",
-    image: "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=1200&q=80",
-    services: [
-      {
-        name: "Head Massage",
-        duration: "30 Min",
-        price: "Rs. 850",
-        description: "A traditional champi-style massage with fast strokes and trigger-point pressure to quickly ease stress."
-      },
-      {
-        name: "De-stress Massage",
-        duration: "30 Min",
-        price: "Rs. 1,600",
-        description: "Focused therapy for the shoulder, neck and back, especially useful after long hours of driving or computer work."
-      }
-    ]
-  },
-  {
-    category: "De-tanning",
-    intro: "Targeted skin-brightening treatments for areas affected by sun exposure and city pollution.",
-    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=1200&q=80",
-    services: [
-      {
-        name: "Face",
+        name: "The Refresh",
+        technique: "Manicure & Pedicure",
         duration: "As advised",
-        price: "Rs. 600",
-        description: "A quick face de-tan to help reduce visible effects of sun exposure and pollution."
+        price: "From Rs. 1,300",
+        image: "assets/images/services/spa-manicure.jpg",
+        description: "A clean grooming ritual for hands and feet, with shaping, soak, cuticle care and massage.",
+        goodFor: "Maintenance, comfort, clean nails and guests who want a polished finish without fuss."
       },
       {
-        name: "Face, Neck and Arms",
-        duration: "As advised",
-        price: "Rs. 1,200",
-        description: "A focused package for the most exposed areas of the body."
+        name: "The Thai Foot Ritual",
+        technique: "Thai Foot Reflexology",
+        duration: "30 / 45 Min",
+        price: "Rs. 1,100 / Rs. 1,600",
+        image: "assets/images/services/thai-foot.jpg",
+        description: "Traditional Thai foot work using manual and stick techniques to ease tension in the foot and calf.",
+        goodFor: "Heavy legs, travel, standing work and a lighter walk out."
       },
       {
-        name: "Whole Body",
-        duration: "As advised",
-        price: "Rs. 2,100",
-        description: "A full-body de-tan service for an even, refreshed look."
-      }
-    ]
-  },
-  {
-    category: "Manicure",
-    intro: "Hand and nail care with shaping, cuticle work, massage and polish options.",
-    image: "assets/images/manicure.jpg",
-    services: [
-      {
-        name: "Regular Manicure",
-        duration: "As advised",
-        price: "Rs. 1,300",
-        description: "Nail trimming, shaping, cuticle care, hand soak, hand massage and optional polish."
-      },
-      {
-        name: "French Manicure",
+        name: "The French Finish",
+        technique: "French Manicure or Pedicure",
         duration: "Ask team",
         price: "Ask team",
-        description: "A refined manicure finish with classic French styling, listed in Coral Spa's service menu."
-      },
-      {
-        name: "Spa Manicure",
-        duration: "As advised",
-        price: "Rs. 1,900",
-        description: "A more indulgent manicure with exfoliation, hydrating mask or wrap, extended massage and aromatherapy."
-      }
-    ]
-  },
-  {
-    category: "Pedicure",
-    intro: "Foot and nail care focused on comfort, grooming and relaxation.",
-    image: "assets/images/pedicure.jpg",
-    services: [
-      {
-        name: "Regular Pedicure",
-        duration: "As advised",
-        price: "Rs. 1,300",
-        description: "Warm soak, nail trimming, shaping, cuticle care, exfoliation, callus care, foot massage and optional polish."
-      },
-      {
-        name: "French Pedicure",
-        duration: "Ask team",
-        price: "Ask team",
-        description: "A polished pedicure with classic French styling, listed in Coral Spa's service menu."
-      },
-      {
-        name: "Spa Pedicure",
-        duration: "As advised",
-        price: "Rs. 1,900",
-        description: "A relaxing pedicure with aromatherapy, hot towels and an extended massage."
+        image: "assets/images/services/french-manicure.jpg",
+        description: "A refined nail finish with classic French styling for hands or feet.",
+        goodFor: "Occasions, understated grooming and guests who prefer a clean, minimal nail look."
       }
     ]
   },
   {
     category: "Hair Spa",
-    intro: "Nourishing scalp and hair rituals for hydration, repair, smoothness and volume.",
-    image: "https://images.unsplash.com/photo-1522338242992-e1a54906a8da?auto=format&fit=crop&w=1200&q=80",
+    intro: "Nourishing scalp and hair rituals for hydration, repair, smoothness and volume, finished with Moroccanoil where advised.",
     services: [
       {
-        name: "Intense Hydrating Spa",
-        duration: "As advised",
-        price: "Rs. 2,600",
-        description: "Deep hydration and moisturization for dry, damaged or frizzy hair."
-      },
-      {
-        name: "Repair and Restore Hair Spa",
+        name: "Moroccanoil Hair Reset",
+        technique: "Repair and Restore Hair Spa",
         duration: "As advised",
         price: "Rs. 3,100",
-        description: "Protein-rich care to rebuild strength, reduce breakage and improve elasticity."
+        tag: "Most Booked",
+        image: "assets/images/services/repair-and-restore-hair-spa.jpg",
+        description: "Protein-rich care to rebuild strength, reduce breakage and improve elasticity, finished with the Moroccanoil range.",
+        goodFor: "Breakage, frizz, dry ends and hair that needs a clean reset."
       },
       {
-        name: "Smoothing Hair Spa",
-        duration: "As advised",
-        price: "Rs. 2,900",
-        description: "Conditioning proteins deeply nourish the hair for smoother texture and movement."
-      },
-      {
-        name: "Volumizing Hair Spa",
+        name: "The Hydration Reset",
+        technique: "Intense Hydrating Spa",
         duration: "As advised",
         price: "Rs. 2,600",
-        description: "A treatment designed to add visible volume, body and fullness."
+        image: "assets/images/services/intense-hydrating-spa.jpg",
+        description: "Deep hydration and moisturization for dry, damaged or frizzy hair.",
+        goodFor: "Dryness, roughness, dullness and hair that needs softness."
+      },
+      {
+        name: "The Smooth Finish",
+        technique: "Smoothing Hair Spa",
+        duration: "As advised",
+        price: "Rs. 2,900",
+        image: "assets/images/services/smoothing-hair-spa.jpg",
+        description: "Conditioning proteins deeply nourish the hair for smoother texture and movement.",
+        goodFor: "Frizz, coarse texture and guests who want a softer, controlled finish."
+      },
+      {
+        name: "The Volume Lift",
+        technique: "Volumizing Hair Spa",
+        duration: "As advised",
+        price: "Rs. 2,600",
+        image: "assets/images/services/volumizing-hair-spa.jpg",
+        description: "A treatment designed to add visible volume, body and fullness.",
+        goodFor: "Flat hair, low body and guests who want a lighter, fuller look."
       }
     ]
   }
