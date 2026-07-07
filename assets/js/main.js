@@ -56,10 +56,10 @@
     const featured = [
       ["Signature Rituals", "The Heat Ritual"],
       ["Signature Rituals", "The Jet Lag Reset"],
-      ["Signature Rituals", "The De-Puff"],
+      ["Signature Rituals", "Deep Massage / Lymphatic Drainage"],
       ["Bodywork", "The Knot Fixer"],
       ["Skin Rituals", "The Glass Skin Facial"],
-      ["Hair Spa", "Moroccanoil Hair Reset"]
+      ["Hair Spa", "Moroccan Oil Hair Reset"]
     ];
 
     preview.innerHTML = featured
@@ -97,7 +97,6 @@
   }
 
   function serviceItem(service, open) {
-    const prices = splitPair(service.price);
     const durations = splitDurations(service.duration);
     const tags = [
       service.goodFor,
@@ -113,13 +112,13 @@
           <div class="svc-title-block">
             <h3>
               ${escapeHtml(service.name)}
-              ${service.tag ? `<span class="${service.tag.toLowerCase() === "new" ? "new-tag" : "signature-tag"}">${escapeHtml(service.tag)}</span>` : ""}
+              ${service.tag ? `<span class="${tagClass(service.tag)}">${escapeHtml(service.tag)}</span>` : ""}
             </h3>
             <span>${escapeHtml(service.technique)}</span>
           </div>
           <div class="svc-price">
-            ${priceBlock(prices[0], durations[0])}
-            ${prices[1] || durations[1] ? priceBlock(prices[1] || "-", durations[1] || "-") : ""}
+            ${durationBlock(durations[0])}
+            ${durations[1] ? durationBlock(durations[1]) : ""}
             <svg class="svc-chevron" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           </div>
         </summary>
@@ -140,17 +139,17 @@
         <span class="ritual-cat">${escapeHtml(service.technique)}</span>
         <h3>${escapeHtml(service.name)}</h3>
         <p>${escapeHtml(service.description)}</p>
-        <span class="${service.tag && service.tag.toLowerCase() === "new" ? "new-tag" : "signature-tag"}">${escapeHtml(service.price)}</span>
+        <span class="${tagClass(service.tag || "Signature")}">${escapeHtml(service.price)}</span>
         <span class="scene-tag" style="display:none">${escapeHtml(image)}</span>
       </article>
     `;
   }
 
-  function priceBlock(price, duration) {
+  function durationBlock(duration) {
     return `
       <div class="p">
-        <strong>${escapeHtml(price || "-")}</strong>
-        <span>${escapeHtml(duration || "-")}</span>
+        <strong>${escapeHtml(duration || "-")}</strong>
+        <span>Duration</span>
       </div>
     `;
   }
@@ -179,6 +178,13 @@
 
   function slug(value) {
     return String(value).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  }
+
+  function tagClass(value) {
+    const normalized = String(value).toLowerCase();
+    if (normalized.includes("new")) return "new-tag";
+    if (normalized.includes("trending")) return "service-tag";
+    return "signature-tag";
   }
 
   function escapeHtml(value) {
