@@ -68,7 +68,7 @@
 
   function serviceCard(service, category, image) {
     const tileImage = serviceImage(service, image);
-    const cardImage = tileImage;
+    const cardImage = tileImage.replace(/^assets\/images\//, "../images/");
     return `
       <details class="service-card" style="--card-image: url('${cardImage}')">
         <summary>
