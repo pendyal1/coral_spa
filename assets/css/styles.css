@@ -169,8 +169,8 @@ img {
 .brand {
   display: flex;
   align-items: center;
-  gap: 14px;
-  min-width: 252px;
+  gap: 16px;
+  min-width: 322px;
 }
 
 .brand-mark {
@@ -180,8 +180,8 @@ img {
 }
 
 .brand-wordmark {
-  width: 150px;
-  height: 56px;
+  width: 220px;
+  height: 82px;
   object-fit: contain;
 }
 
