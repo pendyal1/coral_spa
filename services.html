@@ -4,18 +4,21 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Services | Coral Spa</title>
-    <meta name="description" content="View Coral Spa's massage, facial, body polish, body wrap, foot, head massage, de-tanning, manicure, pedicure and hair spa menu with durations and prices.">
+    <meta name="description" content="View Coral Spa's branded spa menu with treatment names, technique subtitles, durations and prices.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,50,0..1&amp;family=Jost:wght@400;500;600&amp;family=Work+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&amp;family=Jost:wght@400;500;600&amp;family=Work+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
     <link rel="apple-touch-icon" href="assets/images/coral_spa_artwork.png">
     <link rel="stylesheet" href="assets/css/styles.css">
   </head>
   <body>
-    <header class="site-header">
-      <div class="container header-inner">
-        <a class="brand" href="index.html"><img class="brand-mark" src="assets/images/coral_spa_artwork.png" alt=""><img class="brand-wordmark" src="assets/images/coral_spa_name.png" alt="Coral Spa"></a>
+    <header class="site-header" id="siteHeader">
+      <div class="wrap header-inner">
+        <a class="brand" href="index.html">
+          <img class="brand-mark" src="assets/images/coral_spa_artwork.png" alt="">
+          <img class="brand-wordmark" src="assets/images/coral_spa_name.png" alt="Coral Spa">
+        </a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Open navigation">Menu</button>
         <nav class="site-nav" aria-label="Main navigation">
           <a href="index.html">Home</a>
@@ -23,44 +26,71 @@
           <a class="active" href="services.html">Services</a>
           <a href="contact.html">Contact Us</a>
         </nav>
-        <a class="btn header-cta call-btn" href="tel:+919792710010">Call to Book - 97927 10010</a>
+        <a class="call-pill header-cta" href="tel:+919792710010">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .5 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.5-1 1-1h3.5c.5 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8z"/></svg>
+          97927 10010
+        </a>
       </div>
     </header>
 
     <main>
-      <section class="page-hero image-backed" style="--page-hero-image: url('../images/gallery/coral-spa-foot-therapy.jpeg')">
-        <div class="container">
-          <div>
-            <h1>Signature <em>rituals</em>, real techniques.</h1>
-            <p>Every treatment pairs a clear Coral Spa name with the technique underneath, so first-time guests and returning regulars know exactly what to ask for.</p>
-          </div>
-          <img src="assets/images/gallery/coral-spa-foot-therapy.jpeg" alt="Coral Spa foot therapy lounge">
+      <section class="page-header">
+        <div class="wrap">
+          <span class="eyebrow">The Full Menu</span>
+          <h1>Treatments, <em>renamed</em> - never watered down.</h1>
+          <p>Every Coral Spa name is paired with the real technique underneath. Open any treatment for what it is good for and how long to book.</p>
         </div>
       </section>
 
-      <nav class="category-nav" aria-label="Service categories">
-        <div class="container">
-          <a href="#signature-rituals">Signature Rituals</a>
-          <a href="#bodywork">Bodywork</a>
-          <a href="#skin-rituals">Skin Rituals</a>
-          <a href="#polish-wraps">Polish &amp; Wraps</a>
-          <a href="#hands-feet">Hands &amp; Feet</a>
-          <a href="#hair-spa">Hair Spa</a>
+      <section class="services-list">
+        <div class="wrap">
+          <div class="note-tag" style="margin-bottom:40px;">Prices are shown in Indian Rupees</div>
+          <div data-service-categories></div>
+          <div class="section-actions" style="justify-content:center;">
+            <a class="btn btn-primary" href="tel:+919792710010">Call to Book - 97927 10010</a>
+          </div>
         </div>
-      </nav>
-
-      <div class="container" data-service-categories></div>
+      </section>
     </main>
 
+    <section class="contact-strip">
+      <div class="wrap">
+        <div class="cs-item"><span>Address</span><p>Vishnu Puri, Kanpur</p></div>
+        <div class="cs-item"><span>Hours</span><p>Daily, 11:30 AM - 9:30 PM</p></div>
+        <div class="cs-item"><span>Call</span><a href="tel:+919792710010">97927 10010</a></div>
+      </div>
+    </section>
+
     <footer class="site-footer">
-      <div class="container footer-inner">
-        <p>Copyright <span data-year></span> Coral Spa. All rights reserved.</p>
-        <div class="footer-contact">
-          <span>Basement, B.K-2 Tower 3/13A, Vishnu Puri, Company Bagh Chauraha, Kanpur-208002</span>
-          <a href="tel:+919792710010">09792710010</a>
+      <div class="wrap">
+        <div class="foot-top">
+          <div>
+            <a class="brand" href="index.html">
+              <img class="brand-mark" src="assets/images/coral_spa_artwork.png" alt="">
+              <img class="brand-wordmark" src="assets/images/coral_spa_name.png" alt="Coral Spa">
+            </a>
+            <p class="foot-note">Full treatment menu for Coral Spa, Kanpur.</p>
+          </div>
+          <div class="foot-links">
+            <div class="foot-col">
+              <span>Explore</span>
+              <a href="index.html">Home</a>
+              <a href="about.html">About Us</a>
+              <a href="contact.html">Contact Us</a>
+            </div>
+          </div>
+        </div>
+        <div class="foot-bottom">
+          <span>Copyright <span data-year></span> Coral Spa. All rights reserved.</span>
+          <span>Basement, B.K-2 Tower 3/13A, Vishnu Puri, Kanpur-208002</span>
         </div>
       </div>
     </footer>
+
+    <a class="float-call" href="tel:+919792710010" aria-label="Call Coral Spa to book">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .5 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.5-1 1-1h3.5c.5 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8z"/></svg>
+      <span>Call to Book</span>
+    </a>
 
     <script src="assets/js/services-data.js"></script>
     <script src="assets/js/main.js"></script>

@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Coral Spa | Wellness Spa in Kanpur</title>
-    <meta name="description" content="Coral Spa in Kanpur offers massages, facials, body polish, wraps, foot reflexology, manicures, pedicures and hair spa therapies.">
+    <meta name="description" content="Coral Spa in Kanpur offers considered massage, facial, body, hair, hand and foot rituals. Call to book.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,50,0..1&amp;family=Jost:wght@400;500;600&amp;family=Work+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&amp;family=Jost:wght@400;500;600&amp;family=Work+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
     <link rel="apple-touch-icon" href="assets/images/coral_spa_artwork.png">
     <link rel="stylesheet" href="assets/css/styles.css">
   </head>
   <body>
-    <header class="site-header">
-      <div class="container header-inner">
+    <header class="site-header" id="siteHeader">
+      <div class="wrap header-inner">
         <a class="brand" href="index.html">
           <img class="brand-mark" src="assets/images/coral_spa_artwork.png" alt="">
           <img class="brand-wordmark" src="assets/images/coral_spa_name.png" alt="Coral Spa">
@@ -26,134 +26,244 @@
           <a href="services.html">Services</a>
           <a href="contact.html">Contact Us</a>
         </nav>
-        <a class="btn header-cta call-btn" href="tel:+919792710010">Call to Book - 97927 10010</a>
+        <a class="call-pill header-cta" href="tel:+919792710010">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .5 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.5-1 1-1h3.5c.5 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8z"/></svg>
+          97927 10010
+        </a>
       </div>
     </header>
 
     <main>
       <section class="hero">
-        <div class="container hero-content">
-          <h1>Where tranquility meets <em>energy</em>.</h1>
-          <p>Coral Spa is Kanpur's considered wellness address: traditional bodywork, professional-grade products and rituals paced around the body in front of us.</p>
-          <div class="hero-actions">
-            <a class="btn call-btn" href="tel:+919792710010">Call to Book - 97927 10010</a>
-            <a class="btn ghost" href="services.html">View Full Menu</a>
+        <div class="hero-photo scene">
+          <div class="scene-fill" style="background-image:url('assets/images/gallery/coral-spa-main-suite.jpeg')"></div>
+          <div class="scene-glow"></div>
+          <div class="hero-scrim"></div>
+          <span class="scene-tag">Coral Spa, Kanpur</span>
+        </div>
+        <div class="wrap">
+          <span class="eyebrow">Kanpur wellness address</span>
+          <h1>Where tranquility <em>meets</em> energy.</h1>
+          <p class="lede">Traditional bodywork, Moroccanoil hair rituals, skin care and grooming treatments paced around how your body actually feels that day.</p>
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="tel:+919792710010">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .5 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.5-1 1-1h3.5c.5 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8z"/></svg>
+              Call to Book
+            </a>
+            <a class="btn btn-ghost" href="services.html">View Full Menu</a>
           </div>
         </div>
+        <div class="scroll-cue"><span class="line"></span> Scroll</div>
       </section>
 
-      <section class="stats-strip" aria-label="Spa highlights">
-        <div class="stat"><strong>10+</strong><span>years of practice</span></div>
-        <div class="stat"><strong>6</strong><span>therapy suites</span></div>
-        <div class="stat"><strong>40+</strong><span>spa rituals</span></div>
-        <div class="stat"><strong>11:30-9:30</strong><span>daily appointments</span></div>
-      </section>
-
-      <section class="section">
-        <div class="container">
+      <section class="rituals" id="treatments">
+        <div class="wrap">
           <div class="section-head">
             <div>
-              <span class="eyebrow">• TREATMENTS</span>
-              <h2>A menu built around results, not noise.</h2>
+              <span class="eyebrow">Treatments Overview</span>
+              <h2 class="reveal">Three ways <em>in.</em></h2>
             </div>
-            <p>Branded names make the menu easier to scan. Technical subtitles keep the therapist's work clear.</p>
+            <p>Massage, skin and hair menus open with a quick consult so pressure, product and pace match what you need.</p>
           </div>
-          <div class="tile-scroll" aria-label="Scrolling spa image tiles">
-            <article class="image-tile">
-              <img src="assets/images/gallery/coral-spa-main-suite.jpeg" alt="Coral Spa therapy suite">
-              <div><h3>Bodywork</h3><p>The Slow Down, The Knot Fixer, The Heat Ritual and Thai-inspired reset work.</p></div>
+          <div class="ritual-grid">
+            <article class="ritual-card reveal">
+              <span class="ritual-cat">Massage</span>
+              <h3>Reset and Recover</h3>
+              <p>From The Jet Lag Reset to The Heat Ritual, bodywork for tension, travel and everything in between.</p>
             </article>
-            <article class="image-tile">
-              <img src="assets/images/gallery/coral-spa-treatment-room.jpeg" alt="Coral Spa treatment room">
-              <div><h3>Skin rituals</h3><p>Glass skin, clean-slate and calm facials named by what the guest wants to feel.</p></div>
+            <article class="ritual-card reveal">
+              <span class="ritual-cat">Skin and Glow</span>
+              <h3>Facials, Reworked</h3>
+              <p>The Glass Skin Facial, The Clean Slate and The Glow Wrap, named by the result guests ask for.</p>
             </article>
-            <article class="image-tile">
-              <img src="assets/images/gallery/coral-spa-pedicure-lounge.jpeg" alt="Coral Spa pedicure lounge">
-              <div><h3>Hands and feet</h3><p>The Refresh, Thai foot work and quiet grooming without the hard sell.</p></div>
+            <article class="ritual-card reveal">
+              <span class="ritual-cat">Hair</span>
+              <h3>Moroccanoil Rituals</h3>
+              <p>Argan-oil hair spa and scalp treatments for hair that is dry, coloured, frizzy or tired.</p>
             </article>
-            <article class="image-tile">
-              <img src="assets/images/gallery/coral-spa-reception.jpeg" alt="Coral Spa reception ambience">
-              <div><h3>Moroccanoil finish</h3><p>Hair reset rituals finished with the Moroccanoil range where advised.</p></div>
-            </article>
+          </div>
+          <div class="section-actions" style="justify-content:center;">
+            <a class="btn btn-ghost" href="services.html">See Full Menu and Pricing</a>
           </div>
         </div>
       </section>
 
-      <section class="section alt">
-        <div class="container">
+      <section class="credentials">
+        <div class="wrap">
           <div class="section-head">
             <div>
-              <span class="eyebrow">• SIGNATURE RITUALS</span>
-              <h2>New in, most booked and called back for.</h2>
+              <span class="eyebrow">Why Coral Spa</span>
+              <h2 class="reveal">Trained hands, <em>not guesswork.</em></h2>
             </div>
-            <a class="btn secondary" href="services.html">View Full Menu</a>
           </div>
-          <div class="service-grid" data-service-preview></div>
+          <div class="cred-grid">
+            <article class="cred-card reveal">
+              <div class="cred-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.4 7.2 16.9l.9-5.4-3.9-3.8 5.4-.8L12 2z"/></svg></div>
+              <h4>Certified Therapists</h4>
+              <p>Therapists work across Thai, Balinese, Swedish, deep pressure, hot stone and lymphatic techniques.</p>
+            </article>
+            <article class="cred-card reveal">
+              <div class="cred-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></div>
+              <h4>Call-First Care</h4>
+              <p>Every booking is confirmed by phone so the team can guide you to the right ritual.</p>
+            </article>
+            <article class="cred-card reveal">
+              <div class="cred-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21C7 17 3 13.5 3 9.5A4.5 4.5 0 0112 7a4.5 4.5 0 019 2.5c0 4-4 7.5-9 11.5z"/></svg></div>
+              <h4>Considered Pace</h4>
+              <p>Pressure, oil and timing are adjusted for the guest instead of following a fixed script.</p>
+            </article>
+            <article class="cred-card reveal">
+              <div class="cred-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6M12 22c4-2 7-5 7-10V6l-7-3-7 3v6c0 5 3 8 7 10z"/></svg></div>
+              <h4>Professional Products</h4>
+              <p>Hair spa rituals are finished with the Moroccanoil range where the treatment calls for it.</p>
+            </article>
+          </div>
         </div>
       </section>
 
-      <section class="section">
-        <div class="container split">
-          <div class="rich-text">
-            <span class="eyebrow">• CREDENTIALS</span>
-            <h2>Precise, warm and unhurried.</h2>
-            <p>Every ritual opens with a short consult, so pressure, oil and pace are set for your body, not a fixed script.</p>
-            <p>Therapists work across Thai and Balinese bodywork, deep pressure, hot stone, foot therapies, facials, grooming and Moroccanoil hair rituals.</p>
-            <div class="section-actions">
-              <a class="btn" href="about.html">Meet Coral Spa</a>
-              <a class="btn secondary call-btn" href="tel:+919792710010">Call to Book</a>
+      <section class="spotlight" id="signature">
+        <div class="wrap">
+          <div class="spotlight-visual scene reveal">
+            <div class="scene-fill" style="background-image:url('assets/images/services/repair-and-restore-hair-spa.jpg')"></div>
+            <div class="scene-glow"></div>
+            <span class="scene-tag">Moroccanoil hair ritual</span>
+          </div>
+          <div class="spotlight-copy reveal">
+            <span class="eyebrow">Signature and Trending</span>
+            <h2>New in: <em>The Jet Lag Reset</em> and <em>The De-Puff.</em></h2>
+            <p>Two additions built for travel fatigue, puffiness and heavy legs, alongside the rituals guests already call back for.</p>
+            <div class="oil-list">
+              <div><span></span> The Jet Lag Reset <em style="color:var(--sunset);font-style:normal;">New</em></div>
+              <div><span></span> The De-Puff <em style="color:var(--sunset);font-style:normal;">New</em></div>
+              <div><span></span> The Heat Ritual <em style="color:var(--blush);font-style:normal;">Most Booked</em></div>
+              <div><span></span> Moroccanoil Hair Reset</div>
+            </div>
+            <div class="hero-ctas">
+              <a class="btn btn-primary" href="services.html">See Full Menu</a>
             </div>
           </div>
-          <img src="assets/images/gallery/coral-spa-waiting-lounge.jpeg" alt="Coral Spa waiting lounge and treatment ambience">
         </div>
       </section>
 
-      <section class="section alt">
-        <div class="container">
+      <section class="gallery" id="gallery">
+        <div class="wrap">
           <div class="section-head">
             <div>
-              <span class="eyebrow">• GOOGLE REVIEWS</span>
-              <h2>Guests call back for the same reason.</h2>
+              <span class="eyebrow">Inside Coral Spa</span>
+              <h2 class="reveal">The space, <em>in brief.</em></h2>
             </div>
-            <a class="btn secondary" href="https://www.google.com/search?q=Coral+Spa+Kanpur+reviews" target="_blank" rel="noreferrer">Posted on Google</a>
+            <p>Warm rooms, quiet stone and wood details, and treatment spaces designed to slow the visit down.</p>
           </div>
-          <div class="reviews">
-            <article class="review-card"><div class="stars">5 / 5</div><p>"A calm, professional spa experience with attentive therapists and a peaceful ambience."</p><span>Posted on Google</span></article>
-            <article class="review-card"><div class="stars">5 / 5</div><p>"The team helps you choose the right pressure and therapy instead of rushing the visit."</p><span>Posted on Google</span></article>
-            <article class="review-card"><div class="stars">5 / 5</div><p>"A reliable Kanpur wellness stop for bodywork, facials and grooming rituals."</p><span>Posted on Google</span></article>
+          <div class="gallery-grid">
+            <figure class="reveal"><div class="gscene scene"><div class="scene-fill" style="background-image:url('assets/images/gallery/coral-spa-reception.jpeg')"></div></div><figcaption>Reception and Lounge</figcaption></figure>
+            <figure class="reveal"><div class="gscene scene"><div class="scene-fill" style="background-image:url('assets/images/gallery/coral-spa-treatment-room.jpeg')"></div></div><figcaption>Treatment Suite</figcaption></figure>
+            <figure class="reveal"><div class="gscene scene"><div class="scene-fill" style="background-image:url('assets/images/gallery/coral-spa-pedicure-lounge.jpeg')"></div></div><figcaption>Foot Care Room</figcaption></figure>
+            <figure class="reveal"><div class="gscene scene"><div class="scene-fill" style="background-image:url('assets/images/gallery/coral-spa-waiting-lounge.jpeg')"></div></div><figcaption>Waiting Lounge</figcaption></figure>
+            <figure class="reveal"><div class="gscene scene"><div class="scene-fill" style="background-image:url('assets/images/gallery/coral-spa-art-corner.jpeg')"></div></div><figcaption>Art and Detail</figcaption></figure>
           </div>
         </div>
       </section>
 
-      <section class="section home-contact-section">
-        <div class="container">
-          <article class="home-contact-panel contact-card find-us-panel">
+      <section class="location-strip" id="location">
+        <div class="wrap">
+          <div class="reveal">
+            <span class="eyebrow">Find Us</span>
+            <h2>Vishnu Puri, <em>Kanpur.</em></h2>
+            <div class="info-row">
+              <div class="lbl">Address</div>
+              <div class="val">Basement, B.K-2 Tower 3/13A, Vishnu Puri, Company Bagh Chauraha, Kanpur-208002</div>
+            </div>
+            <div class="info-row">
+              <div class="lbl">Hours</div>
+              <div class="val">Open daily, 11:30 AM - 9:30 PM</div>
+            </div>
+            <div class="info-row">
+              <div class="lbl">Call</div>
+              <div class="val"><a href="tel:+919792710010">97927 10010</a></div>
+            </div>
+          </div>
+          <div class="map-embed reveal">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d4008.039254748916!2d80.31807540316731!3d26.495765942241388!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399c38f3509095bb%3A0x27124eaf1d5b59a2!2sCoral%20Spa!5e0!3m2!1sen!2sin!4v1695293407978!5m2!1sen!2sin" loading="lazy" title="Coral Spa map preview" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+      </section>
+
+      <section class="testimonials" id="reviews">
+        <div class="wrap">
+          <div class="section-head">
             <div>
-              <span class="eyebrow">• LOCATION</span>
-              <h2>Find Us</h2>
-              <p>Basement, B.K-2 Tower 3/13A, Vishnu Puri, Company Bagh Chauraha, Kanpur-208002.</p>
+              <span class="eyebrow">Google Reviews</span>
+              <h2>What Kanpur's <em>saying.</em></h2>
             </div>
-            <div class="mini-map">
-              <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d4008.039254748916!2d80.31807540316731!3d26.495765942241388!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399c38f3509095bb%3A0x27124eaf1d5b59a2!2sCoral%20Spa!5e0!3m2!1sen!2sin!4v1695293407978!5m2!1sen!2sin" loading="lazy" title="Coral Spa map preview" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            </div>
-            <div class="section-actions">
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Coral%20Spa%20B.K-2%20Tower%203%2F13A%20Vishnu%20Puri%20Kanpur" target="_blank" rel="noreferrer">Open Maps</a>
-              <a class="btn secondary call-btn" href="tel:+919792710010">Call to Book</a>
-            </div>
-          </article>
+            <a class="btn btn-ghost" href="https://www.google.com/search?q=Coral+Spa+Kanpur+reviews" target="_blank" rel="noreferrer">Open Reviews</a>
+          </div>
+          <div class="t-grid">
+            <article class="t-card reveal">
+              <div class="t-head"><div class="t-avatar"></div><div><div class="t-name">Coral Spa guest</div><div class="t-meta">Posted on Google</div></div></div>
+              <div class="stars">5 / 5</div>
+              <p>A calm, professional spa experience with attentive therapists and a peaceful ambience.</p>
+              <div class="google-badge">Posted on Google</div>
+            </article>
+            <article class="t-card reveal">
+              <div class="t-head"><div class="t-avatar"></div><div><div class="t-name">Coral Spa guest</div><div class="t-meta">Posted on Google</div></div></div>
+              <div class="stars">5 / 5</div>
+              <p>The team helps you choose the right pressure and therapy instead of rushing the visit.</p>
+              <div class="google-badge">Posted on Google</div>
+            </article>
+            <article class="t-card reveal">
+              <div class="t-head"><div class="t-avatar"></div><div><div class="t-name">Coral Spa guest</div><div class="t-meta">Posted on Google</div></div></div>
+              <div class="stars">5 / 5</div>
+              <p>A reliable Kanpur wellness stop for bodywork, facials and grooming rituals.</p>
+              <div class="google-badge">Posted on Google</div>
+            </article>
+          </div>
         </div>
       </section>
     </main>
 
+    <section class="contact-strip">
+      <div class="wrap">
+        <div class="cs-item"><span>Address</span><p>Vishnu Puri, Kanpur</p></div>
+        <div class="cs-item"><span>Hours</span><p>Daily, 11:30 AM - 9:30 PM</p></div>
+        <div class="cs-item"><span>Call</span><a href="tel:+919792710010">97927 10010</a></div>
+      </div>
+    </section>
+
     <footer class="site-footer">
-      <div class="container footer-inner">
-        <p>Copyright <span data-year></span> Coral Spa. All rights reserved.</p>
-        <div class="footer-contact">
-          <span>Basement, B.K-2 Tower 3/13A, Vishnu Puri, Company Bagh Chauraha, Kanpur-208002</span>
-          <a href="tel:+919792710010">09792710010</a>
+      <div class="wrap">
+        <div class="foot-top">
+          <div>
+            <a class="brand" href="index.html">
+              <img class="brand-mark" src="assets/images/coral_spa_artwork.png" alt="">
+              <img class="brand-wordmark" src="assets/images/coral_spa_name.png" alt="Coral Spa">
+            </a>
+            <p class="foot-note">Considered wellness therapies, Moroccanoil hair rituals and grooming care in Vishnu Puri, Kanpur.</p>
+          </div>
+          <div class="foot-links">
+            <div class="foot-col">
+              <span>Explore</span>
+              <a href="services.html">Services</a>
+              <a href="about.html">About Us</a>
+              <a href="contact.html">Contact Us</a>
+            </div>
+            <div class="foot-col">
+              <span>Visit</span>
+              <a href="contact.html">Location and Hours</a>
+              <a href="tel:+919792710010">97927 10010</a>
+            </div>
+          </div>
+        </div>
+        <div class="foot-bottom">
+          <span>Copyright <span data-year></span> Coral Spa. All rights reserved.</span>
+          <span>Basement, B.K-2 Tower 3/13A, Vishnu Puri, Kanpur-208002</span>
         </div>
       </div>
     </footer>
+
+    <a class="float-call" href="tel:+919792710010" aria-label="Call Coral Spa to book">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .5 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.5-1 1-1h3.5c.5 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8z"/></svg>
+      <span>Call to Book</span>
+    </a>
 
     <script src="assets/js/services-data.js"></script>
     <script src="assets/js/main.js"></script>

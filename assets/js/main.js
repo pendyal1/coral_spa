@@ -1,6 +1,22 @@
 (function () {
+  const header = document.getElementById("siteHeader") || document.querySelector(".site-header");
   const navToggle = document.querySelector(".nav-toggle");
   const nav = document.querySelector(".site-nav");
+  const year = document.querySelector("[data-year]");
+
+  const phoneIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .5 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.5-1 1-1h3.5c.5 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8z"/></svg>';
+
+  if (year) {
+    year.textContent = String(new Date().getFullYear());
+  }
+
+  if (header) {
+    const updateHeader = () => {
+      header.classList.toggle("scrolled", window.scrollY > 40);
+    };
+    updateHeader();
+    window.addEventListener("scroll", updateHeader, { passive: true });
+  }
 
   if (navToggle && nav) {
     navToggle.addEventListener("click", () => {
@@ -8,14 +24,32 @@
       navToggle.setAttribute("aria-expanded", String(!expanded));
       nav.classList.toggle("is-open");
     });
+
+    nav.addEventListener("click", (event) => {
+      if (event.target.closest("a")) {
+        nav.classList.remove("is-open");
+        navToggle.setAttribute("aria-expanded", "false");
+      }
+    });
   }
 
-  const year = document.querySelector("[data-year]");
-  if (year) {
-    year.textContent = String(new Date().getFullYear());
+  const revealItems = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    revealItems.forEach((item) => observer.observe(item));
+  } else {
+    revealItems.forEach((item) => item.classList.add("in"));
   }
-
-  addCallTouchpoints();
 
   const preview = document.querySelector("[data-service-preview]");
   if (preview && window.CORAL_SERVICES) {
@@ -31,8 +65,9 @@
     preview.innerHTML = featured
       .map(([categoryName, serviceName]) => {
         const category = window.CORAL_SERVICES.find((item) => item.category === categoryName);
+        if (!category) return "";
         const service = category.services.find((item) => item.name === serviceName) || category.services[0];
-        return serviceCard(service, category.category, category.image);
+        return legacyServiceCard(service, category.image);
       })
       .join("");
   }
@@ -40,94 +75,124 @@
   const categories = document.querySelector("[data-service-categories]");
   if (categories && window.CORAL_SERVICES) {
     categories.innerHTML = window.CORAL_SERVICES.map(categorySection).join("");
+    document.querySelectorAll(".services-list .reveal").forEach((item) => item.classList.add("in"));
   }
 
-  function categorySection(category) {
+  function categorySection(category, categoryIndex) {
     const image = serviceImage(category.services[0], category.image);
     return `
-      <section class="service-category" id="${slug(category.category)}">
-        <div class="category-heading">
+      <section class="svc-group reveal" id="${slug(category.category)}">
+        <div class="svc-group-head">
           <div>
-            <h2>${category.category}</h2>
-            <p>${category.intro}</p>
+            <div class="svc-group-title">${escapeHtml(category.category)}</div>
+            <p>${escapeHtml(category.intro)}</p>
           </div>
-          <img src="${image}" alt="${category.category} at Coral Spa" loading="lazy">
+          <div class="svc-group-image scene">
+            <div class="scene-fill" style="background-image:url('${image}')"></div>
+          </div>
         </div>
-        <div class="service-grid">
-          ${category.services.map((service) => serviceCard(service, category.category, category.image)).join("")}
-        </div>
+        ${category.services.map((service, serviceIndex) => serviceItem(service, categoryIndex === 0 && serviceIndex === 0)).join("")}
       </section>
     `;
   }
 
-  function serviceImage(service, fallbackImage) {
-    if (service.image) return service.image;
-    if (service.name) return `assets/images/services/${slug(service.name)}.jpg`;
-    return fallbackImage;
-  }
+  function serviceItem(service, open) {
+    const prices = splitPair(service.price);
+    const durations = splitDurations(service.duration);
+    const tags = [
+      service.goodFor,
+      service.technique,
+      service.tag || ""
+    ]
+      .filter(Boolean)
+      .slice(0, 3);
 
-  function serviceCard(service, category, image) {
-    const tileImage = serviceImage(service, image);
-    const cardImage = tileImage.replace(/^assets\/images\//, "../images/");
     return `
-      <details class="service-card" style="--card-image: url('${cardImage}')">
+      <details class="svc-item" ${open ? "open" : ""}>
         <summary>
-          <span class="summary-label">View ritual details</span>
-          <img src="${tileImage}" alt="${service.name}" loading="lazy">
-          <div class="service-card-body">
-            ${service.tag ? `<span class="service-tag">${service.tag}</span>` : ""}
-            <h3>${service.name}</h3>
-            <p class="service-technique">${service.technique}</p>
-            <p>${service.description}</p>
-            <div class="service-meta">
-              <span>${service.duration}</span>
-              <strong>${service.price}</strong>
-            </div>
+          <div class="svc-title-block">
+            <h3>
+              ${escapeHtml(service.name)}
+              ${service.tag ? `<span class="${service.tag.toLowerCase() === "new" ? "new-tag" : "signature-tag"}">${escapeHtml(service.tag)}</span>` : ""}
+            </h3>
+            <span>${escapeHtml(service.technique)}</span>
+          </div>
+          <div class="svc-price">
+            ${priceBlock(prices[0], durations[0])}
+            ${prices[1] || durations[1] ? priceBlock(prices[1] || "-", durations[1] || "-") : ""}
+            <svg class="svc-chevron" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           </div>
         </summary>
-        <div class="service-detail">
-          <span>Good for</span>
-          <p>${service.goodFor}</p>
+        <div class="svc-detail">
+          <p>${escapeHtml(service.description)}</p>
+          <div class="tags">
+            ${tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}
+          </div>
         </div>
       </details>
     `;
   }
 
+  function legacyServiceCard(service, fallbackImage) {
+    const image = serviceImage(service, fallbackImage);
+    return `
+      <article class="ritual-card reveal in">
+        <span class="ritual-cat">${escapeHtml(service.technique)}</span>
+        <h3>${escapeHtml(service.name)}</h3>
+        <p>${escapeHtml(service.description)}</p>
+        <span class="${service.tag && service.tag.toLowerCase() === "new" ? "new-tag" : "signature-tag"}">${escapeHtml(service.price)}</span>
+        <span class="scene-tag" style="display:none">${escapeHtml(image)}</span>
+      </article>
+    `;
+  }
+
+  function priceBlock(price, duration) {
+    return `
+      <div class="p">
+        <strong>${escapeHtml(price || "-")}</strong>
+        <span>${escapeHtml(duration || "-")}</span>
+      </div>
+    `;
+  }
+
+  function splitPair(value) {
+    if (!value) return [];
+    return String(value)
+      .split("/")
+      .map((part) => part.trim())
+      .filter(Boolean);
+  }
+
+  function splitDurations(value) {
+    const parts = splitPair(value);
+    if (parts.length <= 1) return parts;
+    const unitMatch = String(value).match(/\b(Min|Hour|Hours|Hrs)\b/i);
+    const unit = unitMatch ? unitMatch[0] : "";
+    return parts.map((part) => (unit && !new RegExp(`\\b${unit}\\b`, "i").test(part) ? `${part} ${unit}` : part));
+  }
+
+  function serviceImage(service, fallbackImage) {
+    if (service && service.image) return service.image;
+    if (service && service.name) return `assets/images/services/${slug(service.name)}.jpg`;
+    return fallbackImage || "assets/images/gallery/coral-spa-main-suite.jpeg";
+  }
+
   function slug(value) {
-    return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    return String(value).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
   }
 
-  function addCallTouchpoints() {
-    const footer = document.querySelector(".site-footer");
-    if (footer && !document.querySelector(".booking-strip")) {
-      footer.insertAdjacentHTML(
-        "beforebegin",
-        `<section class="booking-strip" aria-label="Coral Spa booking details">
-          <div class="container booking-strip-inner">
-            <div>
-              <span class="eyebrow">• CALL FIRST</span>
-              <p>Basement, B.K-2 Tower 3/13A, Vishnu Puri, Company Bagh Chauraha, Kanpur-208002</p>
-            </div>
-            <div class="booking-strip-actions">
-              <span>Open daily, 11:30 AM - 9:30 PM</span>
-              <a class="btn call-btn" href="tel:+919792710010" aria-label="Call Coral Spa to book">
-                <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.3-.3.74-.4 1.13-.27 1.24.41 2.57.63 3.96.63.61 0 1.1.49 1.1 1.1v3.49c0 .61-.49 1.1-1.1 1.1C10.66 21.73 2.27 13.34 2.27 3.5c0-.61.49-1.1 1.1-1.1h3.5c.61 0 1.1.49 1.1 1.1 0 1.39.22 2.72.63 3.96.12.39.03.83-.28 1.13l-1.7 2.2Z"></path></svg>
-                Call to Book - 97927 10010
-              </a>
-            </div>
-          </div>
-        </section>`
-      );
-    }
-
-    if (!document.querySelector(".floating-call")) {
-      document.body.insertAdjacentHTML(
-        "beforeend",
-        `<a class="floating-call" href="tel:+919792710010" aria-label="Call Coral Spa to book">
-          <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.3-.3.74-.4 1.13-.27 1.24.41 2.57.63 3.96.63.61 0 1.1.49 1.1 1.1v3.49c0 .61-.49 1.1-1.1 1.1C10.66 21.73 2.27 13.34 2.27 3.5c0-.61.49-1.1 1.1-1.1h3.5c.61 0 1.1.49 1.1 1.1 0 1.39.22 2.72.63 3.96.12.39.03.83-.28 1.13l-1.7 2.2Z"></path></svg>
-          <span>Call</span>
-        </a>`
-      );
-    }
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
+
+  document.querySelectorAll(".btn.call-btn").forEach((button) => {
+    if (!button.querySelector("svg")) {
+      button.insertAdjacentHTML("afterbegin", phoneIcon);
+    }
+  });
 })();

@@ -4,18 +4,21 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Contact Us | Coral Spa</title>
-    <meta name="description" content="Contact Coral Spa in Kanpur, open Google Maps or call the spa to book.">
+    <meta name="description" content="Call Coral Spa in Kanpur, view hours, address and Google Maps directions.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,50,0..1&amp;family=Jost:wght@400;500;600&amp;family=Work+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&amp;family=Jost:wght@400;500;600&amp;family=Work+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
     <link rel="apple-touch-icon" href="assets/images/coral_spa_artwork.png">
     <link rel="stylesheet" href="assets/css/styles.css">
   </head>
   <body>
-    <header class="site-header">
-      <div class="container header-inner">
-        <a class="brand" href="index.html"><img class="brand-mark" src="assets/images/coral_spa_artwork.png" alt=""><img class="brand-wordmark" src="assets/images/coral_spa_name.png" alt="Coral Spa"></a>
+    <header class="site-header" id="siteHeader">
+      <div class="wrap header-inner">
+        <a class="brand" href="index.html">
+          <img class="brand-mark" src="assets/images/coral_spa_artwork.png" alt="">
+          <img class="brand-wordmark" src="assets/images/coral_spa_name.png" alt="Coral Spa">
+        </a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Open navigation">Menu</button>
         <nav class="site-nav" aria-label="Main navigation">
           <a href="index.html">Home</a>
@@ -23,67 +26,80 @@
           <a href="services.html">Services</a>
           <a class="active" href="contact.html">Contact Us</a>
         </nav>
-        <a class="btn header-cta call-btn" href="tel:+919792710010">Call to Book - 97927 10010</a>
+        <a class="call-pill header-cta" href="tel:+919792710010">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .5 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.5-1 1-1h3.5c.5 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8z"/></svg>
+          97927 10010
+        </a>
       </div>
     </header>
 
     <main>
-      <section class="page-hero image-backed" style="--page-hero-image: url('../images/gallery/coral-spa-reception.jpeg')">
-        <div class="container">
-          <div>
-            <h1>Call to book a <em>ritual</em>.</h1>
-            <p>For appointments, directions or treatment guidance, call Coral Spa directly. No forms, no booking engine.</p>
-            <div class="hero-actions">
-              <a class="btn call-btn" href="tel:+919792710010">Call to Book - 97927 10010</a>
-              <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&query=Coral%20Spa%20B.K-2%20Tower%203%2F13A%20Vishnu%20Puri%20Kanpur" target="_blank" rel="noreferrer">Open Maps</a>
-            </div>
-          </div>
-          <img src="assets/images/gallery/coral-spa-reception.jpeg" alt="Coral Spa reception and ambience">
+      <section class="page-header">
+        <div class="wrap">
+          <span class="eyebrow">Get In Touch</span>
+          <h1>One call is <em>all it takes.</em></h1>
+          <p>Coral Spa does not run online booking. Call first so the team can guide you to the right ritual and available therapist.</p>
         </div>
       </section>
 
-      <section class="section">
-        <div class="container contact-layout">
-          <div class="contact-stack">
-            <article class="contact-card">
-              <span class="eyebrow">• FIND US</span>
-              <h3>Coral Spa</h3>
-              <p>Basement, B.K-2 Tower 3/13A, Vishnu Puri<br>Company Bagh Chauraha<br>Kanpur-208002</p>
-              <div class="section-actions">
-                <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Coral%20Spa%20B.K-2%20Tower%203%2F13A%20Vishnu%20Puri%20Kanpur" target="_blank" rel="noreferrer">Open Google Maps</a>
+      <section class="contact-main">
+        <div class="wrap">
+          <div class="reveal">
+            <a class="big-call" href="tel:+919792710010">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .5 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.5-1 1-1h3.5c.5 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8z"/></svg>
+              97927 10010
+            </a>
+
+            <div class="contact-card">
+              <div class="info-row">
+                <div class="lbl">Address</div>
+                <div class="val">Basement, B.K-2 Tower 3/13A, Vishnu Puri, Company Bagh Chauraha, Kanpur-208002</div>
               </div>
-            </article>
-            <article class="contact-card">
-              <span class="eyebrow">• CONTACT US</span>
-              <h3>Call Coral Spa</h3>
-              <p>Mobile: <a href="tel:+919792710010">09792710010</a><br>Spa: <a href="tel:+915122540466">0512-2540466</a></p>
-              <div class="section-actions">
-                <a class="btn call-btn" href="tel:+919792710010">Call to Book</a>
-                <a class="btn secondary" href="tel:+915122540466">Call Spa</a>
+              <div class="info-row">
+                <div class="lbl">Spa</div>
+                <div class="val"><a href="tel:+915122540466">0512-2540466</a></div>
               </div>
-            </article>
-            <article class="contact-card">
-              <span class="eyebrow">• HOURS</span>
-              <h3>Open daily</h3>
-              <p>11:30 AM - 9:30 PM<br>Call first so the team can guide you to the right ritual and available therapist.</p>
-            </article>
+              <div class="info-row">
+                <div class="lbl">Mobile</div>
+                <div class="val"><a href="tel:+919792710010">09792710010</a></div>
+              </div>
+              <div class="hours-table" style="margin-top:16px;">
+                <div><span>Monday - Sunday</span><span>11:30 AM - 9:30 PM</span></div>
+              </div>
+              <div class="section-actions">
+                <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Coral%20Spa%20B.K-2%20Tower%203%2F13A%20Vishnu%20Puri%20Kanpur" target="_blank" rel="noreferrer">Open Google Maps</a>
+              </div>
+            </div>
           </div>
-          <div class="map-frame" aria-label="Google map preview">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d4008.039254748916!2d80.31807540316731!3d26.495765942241388!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399c38f3509095bb%3A0x27124eaf1d5b59a2!2sCoral%20Spa!5e0!3m2!1sen!2sin!4v1695293407978!5m2!1sen!2sin" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" title="Coral Spa on Google Maps"></iframe>
+
+          <div class="map-embed reveal" style="height:100%; min-height:520px;">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d4008.039254748916!2d80.31807540316731!3d26.495765942241388!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399c38f3509095bb%3A0x27124eaf1d5b59a2!2sCoral%20Spa!5e0!3m2!1sen!2sin!4v1695293407978!5m2!1sen!2sin" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" title="Coral Spa on Google Maps" style="min-height:520px;"></iframe>
           </div>
         </div>
       </section>
     </main>
 
+    <section class="contact-strip">
+      <div class="wrap">
+        <div class="cs-item"><span>Address</span><p>Vishnu Puri, Kanpur</p></div>
+        <div class="cs-item"><span>Hours</span><p>Daily, 11:30 AM - 9:30 PM</p></div>
+        <div class="cs-item"><span>Call</span><a href="tel:+919792710010">97927 10010</a></div>
+      </div>
+    </section>
+
     <footer class="site-footer">
-      <div class="container footer-inner">
-        <p>Copyright <span data-year></span> Coral Spa. All rights reserved.</p>
-        <div class="footer-contact">
-          <span>Basement, B.K-2 Tower 3/13A, Vishnu Puri, Company Bagh Chauraha, Kanpur-208002</span>
-          <a href="tel:+919792710010">09792710010</a>
+      <div class="wrap">
+        <div class="foot-bottom">
+          <span>Copyright <span data-year></span> Coral Spa. All rights reserved.</span>
+          <span>Basement, B.K-2 Tower 3/13A, Vishnu Puri, Kanpur-208002</span>
         </div>
       </div>
     </footer>
+
+    <a class="float-call" href="tel:+919792710010" aria-label="Call Coral Spa to book">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .5 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.5-1 1-1h3.5c.5 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8z"/></svg>
+      <span>Call to Book</span>
+    </a>
 
     <script src="assets/js/main.js"></script>
   </body>
