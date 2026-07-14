@@ -1,13 +1,14 @@
 window.CORAL_SERVICES = [
   {
-    category: "Signature Rituals",
-    intro: "The most-requested Coral Spa rituals, selected after a short phone consult so pressure, oil and pace are matched to the guest.",
+    category: "Specials",
+    intro: "Current Coral Spa signatures and newer recovery rituals. Pricing is listed as NA until confirmed by the client.",
+    image: "assets/images/categories/massage-icon.png",
     services: [
       {
         name: "The Jet Lag Reset",
         technique: "Jet Lag Recovery Massage",
         duration: "90 Min",
-        price: "",
+        price: "NA",
         tag: "Newly In",
         image: "assets/images/services/deep-tissue-massage.jpg",
         description: "A Swedish and oil-based recovery ritual with 60 minutes of bodywork followed by 30 minutes of head massage.",
@@ -17,7 +18,7 @@ window.CORAL_SERVICES = [
         name: "Deep Massage / Lymphatic Drainage",
         technique: "Lymphatic Drainage Massage",
         duration: "60 / 90 Min",
-        price: "",
+        price: "NA",
         tag: "Trending",
         image: "assets/images/services/whole-body.jpg",
         description: "Targeted massage using firm or light rhythmic work depending on the guest's needs and therapist recommendation.",
@@ -27,278 +28,391 @@ window.CORAL_SERVICES = [
         name: "The Heat Ritual",
         technique: "Hot Stone Massage",
         duration: "90 Min",
-        price: "",
+        price: "NA",
         tag: "Signature",
         image: "assets/images/services/hot-stone-massage.jpg",
-        description: "Warm basalt stones and essential oils are used to melt tension and create a grounded, slow release.",
-        goodFor: "Deep warmth, tight muscles and nervous-system reset."
+        description: "Warm basalt stones and essential oils are used to release tension and create a grounded nervous-system reset.",
+        goodFor: "Deep warmth, tight muscles and stress release."
       },
       {
         name: "The Nervous System Reset",
         technique: "Thai Aromatherapy Massage",
         duration: "60 / 90 Min",
-        price: "",
+        price: "NA",
         image: "assets/images/services/thai-oil-therapy.jpg",
         description: "Thai-style pressure work, yoga-inspired stretches and flowing oil strokes, paced to settle the body rather than rush it.",
-        goodFor: "Stress, restless sleep, body fatigue and guests who want pressure with a softer aromatic finish."
-      },
+        goodFor: "Stress, restless sleep and body fatigue."
+      }
     ]
   },
   {
-    category: "Bodywork",
-    intro: "Traditional bodywork for pressure, mobility and deep rest, with the technical treatment always shown under the branded name.",
+    category: "Massages",
+    intro: "Manual bodywork for relaxation, circulation, muscle relief and recovery.",
+    image: "assets/images/categories/massage-icon.png",
     services: [
       {
-        name: "The Slow Down",
-        technique: "Swedish Massage",
+        name: "Swedish Massage",
+        technique: "Classic Relaxation Massage",
         duration: "60 Min",
-        price: "",
+        price: "2500",
         image: "assets/images/services/swedish-massage.jpg",
-        description: "A classic full-body therapy with gentle to moderate pressure to ease soreness and bring the nervous system down.",
-        goodFor: "First-time spa guests, regular maintenance, mild soreness and a calmer end to the day."
+        description: "The most common and best-known spa massage. A therapeutic treatment for relieving muscle soreness, stimulating circulation and creating a relaxing healing experience.",
+        goodFor: "First-time guests, muscle soreness and relaxation."
       },
       {
-        name: "The Thai Oil Reset",
-        technique: "Thai Oil Therapy",
+        name: "Thai Oil Therapy",
+        technique: "Thai Pressure with Oil",
         duration: "60 / 90 Min",
-        price: "",
+        price: "2700 / 3500",
         image: "assets/images/services/thai-oil-therapy.jpg",
-        description: "Thai pressure work and flowing oil strokes using a seasonal essential-oil blend.",
-        goodFor: "Body stiffness, long workdays and guests who want movement without a dry massage."
+        description: "A blend of Eastern and Western techniques combining Thai-style deep tissue work, yoga stretching and flowing Swedish-style oil strokes.",
+        goodFor: "Body stiffness, long workdays and pressure with oil."
       },
       {
-        name: "The Thai Stretch",
-        technique: "Thai Dry Massage",
+        name: "Thai Dry Massage",
+        technique: "Thai Yoga Massage",
         duration: "60 Min",
-        price: "",
+        price: "2900",
         image: "assets/images/services/thai-dry-massage.jpg",
-        description: "Traditional Thai yoga massage with assisted stretching and steady pressure along energy lines. No oil is used.",
-        goodFor: "Mobility, stiffness, heavy legs and guests who prefer a clothed, oil-free ritual."
+        description: "Traditional Thai yoga massage with passive stretching and pressure along Sen lines. No oil is used and loose cotton clothing is provided.",
+        goodFor: "Mobility, stiffness and oil-free bodywork."
       },
       {
-        name: "The Balinese Release",
-        technique: "Balinese Massage",
+        name: "Balinese Massage",
+        technique: "Pressure Point and Stretch Massage",
         duration: "60 Min",
-        price: "",
+        price: "2700",
         image: "assets/images/services/balinese-massage.jpg",
-        description: "Kneading, pressure-point work and stretching to release soft tissue and reduce held stress.",
-        goodFor: "General tension, low energy, shoulder fatigue and guests who like a more active massage."
+        description: "A hands-on treatment using kneading, pressure-point work and stretching to release soft tissue, reduce stress and improve range of movement.",
+        goodFor: "Stress, shoulder fatigue and active massage."
       },
       {
-        name: "The Knot Fixer",
-        technique: "Deep Tissue Massage",
+        name: "Deep Tissue Massage",
+        technique: "Focused Deep Pressure",
         duration: "60 / 90 Min",
-        price: "",
+        price: "2900 / 3700",
         tag: "Most Booked",
         image: "assets/images/services/deep-tissue-massage.jpg",
-        description: "Focused deeper pressure targets chronic muscle tension in tissue, tendons and fascia.",
+        description: "Deep pressure focuses on the deepest layers of muscle tissue, tendons and fascia to release chronic muscle tension.",
         goodFor: "Knots, desk posture and gym soreness."
       },
       {
-        name: "The Herbal Compress",
-        technique: "Potli Massage",
-        duration: "60 Min",
-        price: "",
-        image: "assets/images/services/potli-massage.jpg",
-        description: "Heated herbal pouches are pressed and rolled to relax tight muscles and support circulation.",
-        goodFor: "Stiffness, body ache, sluggish circulation and guests who like warmth with herbal aroma."
-      },
-      {
-        name: "The Quick Fix",
-        technique: "Foot & Head Massage",
-        duration: "30 / 45 Min",
-        price: "",
-        image: "assets/images/services/thai-foot-spa.jpg",
-        description: "Compact pressure work for the feet, head, neck and shoulders when there is no time for a full ritual.",
-        goodFor: "Lunch-break fatigue, travel legs, screen posture and quick stress relief."
-      }
-    ]
-  },
-  {
-    category: "Skin Rituals",
-    intro: "Facials are named by the result a guest wants, with the technical focus shown clearly underneath.",
-    services: [
-      {
-        name: "The Glass Skin Facial",
-        technique: "Brightening & Hydration Facial",
-        duration: "60 Min",
-        price: "",
-        image: "assets/images/services/brightening-party-glow-facial.jpg",
-        description: "A glow-focused facial for dull or tanned skin, using brightening actives to revive the complexion.",
-        goodFor: "Dullness, event prep, uneven tone and guests who want visible radiance."
-      },
-      {
-        name: "The Clean Slate Facial",
-        technique: "Deep Cleanse Facial",
-        duration: "30 / 60 Min",
-        price: "",
-        image: "assets/images/services/clean-up.jpg",
-        description: "A clarifying cleanse for congestion, blackheads and post-blemish marks.",
-        goodFor: "Acne-prone skin, city pollution, clogged pores and a clean reset."
-      },
-      {
-        name: "The Calm Facial",
-        technique: "Soothing Facial, Sensitive Skin",
-        duration: "60 Min",
-        price: "",
-        image: "assets/images/services/signature-facial.jpg",
-        description: "A customized facial paced around skin comfort, product choice and a balanced finish.",
-        goodFor: "Sensitivity, redness, tired skin and guests who want guidance before product selection."
-      },
-      {
-        name: "The Firming Facial",
-        technique: "Anti-Ageing Facial",
-        duration: "60 Min",
-        price: "",
-        image: "assets/images/services/anti-ageing-facial.jpg",
-        description: "A nourishing facial with collagen, vitamin C and hyaluronic acid to soften fine lines and replenish tired skin.",
-        goodFor: "Fine lines, dryness, mature skin and guests who want a firmer, rested look."
-      },
-      {
-        name: "The Gold Finish",
-        technique: "Gold Facial",
-        duration: "60 Min",
-        price: "",
-        image: "assets/images/services/gold-facial.jpg",
-        description: "Gold-infused products promote radiance, firmness and a polished glow before special occasions.",
-        goodFor: "Occasion prep, dullness and guests who want a more luminous finish."
-      },
-      {
-        name: "The De-Tan Reset",
-        technique: "Face, Arms or Full Body De-Tanning",
-        duration: "As advised",
-        price: "",
-        image: "assets/images/services/face-neck-and-arms.jpg",
-        description: "Targeted brightening treatments for skin affected by sun exposure and city pollution.",
-        goodFor: "Face, neck, arms or full-body tan correction before a cleaner skin routine."
-      }
-    ]
-  },
-  {
-    category: "Polish & Wraps",
-    intro: "Full-body exfoliation and wraps for softer texture, better oil absorption and a warmer, slower body ritual.",
-    services: [
-      {
-        name: "The Glow Wrap",
-        technique: "Full Body Polish & Wrap",
+        name: "Hot Stone Massage",
+        technique: "Heated Basalt Stone Therapy",
         duration: "90 Min",
-        price: "",
-        tag: "Most Booked",
-        image: "assets/images/services/chocolate-wrap.jpg",
-        description: "A body polish followed by a nourishing wrap to soften, warm and leave the skin with a clean glow.",
-        goodFor: "Texture, dryness, dullness and guests who want a full body refresh."
+        price: "4600",
+        image: "assets/images/services/hot-stone-massage.jpg",
+        description: "Traditional massage techniques with warmed basalt stones placed and moved across energy points to melt tension and energize the body.",
+        goodFor: "Deep warmth, tight muscles and slow release."
       },
       {
-        name: "The Honey Polish",
-        technique: "Apple and Honey Scrub",
+        name: "Potli Massage",
+        technique: "Heated Herbal Pouch Massage",
+        duration: "60 Min",
+        price: "5100",
+        image: "assets/images/services/potli-massage.jpg",
+        description: "Heated herbal pouches are pressed and rolled across the body to support pain relief, muscle relaxation, circulation and stress reduction.",
+        goodFor: "Body ache, stiffness and herbal warmth."
+      }
+    ]
+  },
+  {
+    category: "Facials",
+    intro: "Facials for cleansing, hydration, acne care, brightening, ageing support and occasion glow.",
+    image: "assets/images/categories/facial-icon.png",
+    services: [
+      {
+        name: "Anti Acne Facial",
+        technique: "Acne and Blemish Care",
+        duration: "60 Min",
+        price: "3100",
+        image: "assets/images/services/anti-acne-facial.jpg",
+        description: "Designed for pimples, acne, blackheads and healthier-looking skin. The mask helps reduce inflammation and supports clearer skin.",
+        goodFor: "Acne-prone skin, blackheads and blemishes."
+      },
+      {
+        name: "Anti-Ageing Facial",
+        technique: "Collagen, Vitamin C and Hyaluronic Facial",
+        duration: "60 Min",
+        price: "3100",
+        image: "assets/images/services/anti-ageing-facial.jpg",
+        description: "Replenishes the skin with collagen, vitamin C and hyaluronic acid to soften fine lines and support a firmer, rested look.",
+        goodFor: "Fine lines, dryness and mature skin."
+      },
+      {
+        name: "Brightening Party Glow Facial",
+        technique: "Brightening Facial",
+        duration: "60 Min",
+        price: "3300",
+        image: "assets/images/services/brightening-party-glow-facial.jpg",
+        description: "Recommended for tanned skin, using brightening botanicals such as liquorice, dandelion and carrot for a healthy glow.",
+        goodFor: "Tan, dullness and event prep."
+      },
+      {
+        name: "Gold Facial",
+        technique: "Gold Radiance Facial",
+        duration: "60 Min",
+        price: "3600",
+        image: "assets/images/services/gold-facial.jpg",
+        description: "Gold-infused products are used to promote skin radiance, firmness and a polished glow.",
+        goodFor: "Occasion prep, radiance and firmness."
+      },
+      {
+        name: "Signature Facial",
+        technique: "Custom Facial",
+        duration: "60 Min",
+        price: "4100",
+        image: "assets/images/services/signature-facial.jpg",
+        description: "Tailored to individual skin needs and may combine different techniques and products based on the guest's skin condition.",
+        goodFor: "Customized care, tired skin and visible glow."
+      },
+      {
+        name: "Clean-up",
+        technique: "Mini Cleanse Facial",
+        duration: "30 Min",
+        price: "2300",
+        image: "assets/images/services/clean-up.jpg",
+        description: "A mini cleanup facial to lighten the skin, remove impurities and refresh the face. Suitable for all skin types.",
+        goodFor: "Monthly maintenance, clogged pores and quick refresh."
+      }
+    ]
+  },
+  {
+    category: "Body Polish",
+    intro: "Body scrubs that gently slough off dead skin and prepare the body for better product and oil absorption.",
+    image: "assets/images/categories/bodypolish-icon.png",
+    services: [
+      {
+        name: "Apple and Honey Scrub",
+        technique: "Fruit Acid and Honey Polish",
         duration: "45 Min",
-        price: "",
+        price: "2500",
         image: "assets/images/services/apple-and-honey-scrub.jpg",
-        description: "Apple fruit acids and honey hydrate, brighten and smooth the skin.",
-        goodFor: "Dryness, rough texture and a soft brightened finish."
+        description: "Apple fruit acids gently exfoliate while honey hydrates and softens, leaving the skin smooth, radiant and refreshed.",
+        goodFor: "Dryness, texture and brightening."
       },
       {
-        name: "The Sandalwood Polish",
+        name: "Sandalwood",
         technique: "Sandalwood Body Polish",
         duration: "45 Min",
-        price: "",
+        price: "2300",
         image: "assets/images/services/sandalwood.jpg",
-        description: "A grounding aromatic polish that helps purify, de-tan and calm the skin.",
-        goodFor: "Oily skin, heat, city tan and guests who prefer a quieter aromatic finish."
+        description: "Recommended for oily and acne-prone skin, with a lightening, de-tanning and antibacterial effect.",
+        goodFor: "Oily skin, tan and aromatic calm."
       },
       {
-        name: "The Cocoa Wrap",
-        technique: "Chocolate Wrap",
-        duration: "90 Min",
-        price: "",
-        image: "assets/images/services/chocolate-wrap.jpg",
-        description: "A warm chocolate mask rich in antioxidants to soften, moisturize and leave skin silky.",
-        goodFor: "Dryness, dull skin and guests who want a warmer, indulgent body ritual."
+        name: "Chocolate Scrub",
+        technique: "Antioxidant Body Scrub",
+        duration: "45 Min",
+        price: "2500",
+        image: "assets/images/services/chocolate-scrub.jpg",
+        description: "A chocolate-based scrub rich in antioxidants, vitamins and minerals to support exfoliation, circulation and skin softness.",
+        goodFor: "Dullness, stress relief and soft skin."
       },
       {
-        name: "The Mineral Wrap",
-        technique: "Clay Wrap",
-        duration: "90 Min",
-        price: "",
-        image: "assets/images/services/clay-wrap.jpg",
-        description: "A mineral-rich clay and marine mud wrap that supports circulation and improves skin tone and texture.",
-        goodFor: "Texture, heaviness, uneven tone and guests who prefer a grounded mineral ritual."
+        name: "Lavender Scrub",
+        technique: "Calming Lavender Polish",
+        duration: "45 Min",
+        price: "2300",
+        image: "assets/images/services/lavender-scrub.jpg",
+        description: "Lavender gently hydrates, soothes irritated skin and brings a calming aroma to the body polish ritual.",
+        goodFor: "Sensitive skin, calm and gentle exfoliation."
       }
     ]
   },
   {
-    category: "Hands & Feet",
-    intro: "Focused hand, foot and nail care with shaping, cuticle work, massage and a clean finish.",
+    category: "Body Wraps",
+    intro: "Body polish followed by a body mask that is left on for 20 to 30 minutes to support detoxification and mineral absorption.",
+    image: "assets/images/categories/bodywrap-icon.png",
     services: [
       {
-        name: "The Refresh",
-        technique: "Manicure & Pedicure",
-        duration: "As advised",
-        price: "",
-        image: "assets/images/services/spa-manicure.jpg",
-        description: "A clean grooming ritual for hands and feet, with shaping, soak, cuticle care and massage.",
-        goodFor: "Maintenance, comfort, clean nails and guests who want a polished finish without fuss."
+        name: "Chocolate Wrap",
+        technique: "Hot Chocolate Body Mask",
+        duration: "90 Min",
+        price: "3500",
+        image: "assets/images/services/chocolate-wrap.jpg",
+        description: "A warm chocolate mask rich in antioxidants to soften, moisturize and leave the skin with a silky glow.",
+        goodFor: "Dry skin, glow and indulgent warmth."
       },
       {
-        name: "The Thai Foot Ritual",
+        name: "Clay Wrap",
+        technique: "Mineral Mud Body Wrap",
+        duration: "90 Min",
+        price: "3000",
+        image: "assets/images/services/clay-wrap.jpg",
+        description: "A mineral-rich clay and marine mud mask that supports circulation while improving skin texture and tone.",
+        goodFor: "Texture, tone and mineral care."
+      }
+    ]
+  },
+  {
+    category: "Foot Reflexology",
+    intro: "Traditional Thai foot work using manual and stick techniques to ease tension in the foot and calf.",
+    image: "assets/images/categories/foot-icon.png",
+    services: [
+      {
+        name: "Thai Foot",
         technique: "Thai Foot Reflexology",
-        duration: "30 / 45 Min",
-        price: "",
+        duration: "30 Min",
+        price: "1100",
         image: "assets/images/services/thai-foot.jpg",
-        description: "Traditional Thai foot work using manual and stick techniques to ease tension in the foot and calf.",
-        goodFor: "Heavy legs, travel, standing work and a lighter walk out."
+        description: "Traditional Thai foot massage using manual and stick techniques to ease tension and stiffness in the foot and calf area.",
+        goodFor: "Heavy legs, travel and standing work."
       },
       {
-        name: "The French Finish",
-        technique: "French Manicure or Pedicure",
+        name: "Thai Foot Spa",
+        technique: "Extended Thai Foot Reflexology",
+        duration: "45 Min",
+        price: "1600",
+        image: "assets/images/services/thai-foot-spa.jpg",
+        description: "An extended Thai foot therapy in reclining chairs, designed to leave guests walking out with a lighter step.",
+        goodFor: "Tired feet, calf stiffness and foot care."
+      }
+    ]
+  },
+  {
+    category: "Head Massage",
+    intro: "Focused head, neck, shoulder and back therapies for quick stress relief.",
+    image: "assets/images/categories/head-icon.png",
+    services: [
+      {
+        name: "Head Massage",
+        technique: "Champi",
+        duration: "30 Min",
+        price: "850",
+        image: "assets/images/services/head-massage.jpg",
+        description: "A strong traditional head massage using fast strokes and pressure on trigger points to induce relaxation.",
+        goodFor: "Stress, screen fatigue and quick reset."
+      },
+      {
+        name: "De-stress Massage",
+        technique: "Shoulder, Neck and Back Therapy",
+        duration: "30 Min",
+        price: "1600",
+        image: "assets/images/services/de-stress-massage.jpg",
+        description: "A focused trigger-point therapy for the shoulder, neck and back area, suited to long driving or computer work.",
+        goodFor: "Neck tension, shoulder tightness and desk posture."
+      }
+    ]
+  },
+  {
+    category: "De-tanning",
+    intro: "Targeted therapies for skin affected by sunlight, pollution and tanning.",
+    image: "assets/images/categories/detanning-icon.png",
+    services: [
+      {
+        name: "Face",
+        technique: "Face De-tan",
         duration: "As advised",
-        price: "",
-        image: "assets/images/services/french-manicure.jpg",
-        description: "A refined nail finish with classic French styling for hands or feet.",
-        goodFor: "Occasions, understated grooming and guests who prefer a clean, minimal nail look."
+        price: "600",
+        image: "assets/images/services/face.jpg",
+        description: "A focused face de-tan treatment to help skin affected by sun exposure and pollution.",
+        goodFor: "Face tan, dullness and quick correction."
+      },
+      {
+        name: "Face, Neck and Arms",
+        technique: "Upper Body De-tan",
+        duration: "As advised",
+        price: "1200",
+        image: "assets/images/services/face-neck-and-arms.jpg",
+        description: "A de-tan package for the face, neck and arms, the areas most exposed to sun and pollution.",
+        goodFor: "Face, neck and arm tan."
+      },
+      {
+        name: "Whole Body",
+        technique: "Full Body De-tan",
+        duration: "As advised",
+        price: "2100",
+        image: "assets/images/services/whole-body.jpg",
+        description: "A full-body therapy to help skin fight visible effects of sun and pollution.",
+        goodFor: "Full-body tan and uneven tone."
+      }
+    ]
+  },
+  {
+    category: "Manicure & Pedicure",
+    intro: "Hand, foot and nail grooming with shaping, cuticle care, soak, massage and polish where desired.",
+    image: "assets/images/categories/manicure.jpg",
+    services: [
+      {
+        name: "Regular Manicure",
+        technique: "Classic Hand Grooming",
+        duration: "As advised",
+        price: "1300",
+        image: "assets/images/services/regular-manicure.jpg",
+        description: "Basic manicure with nail trimming, shaping, cuticle care, hand soak, hand massage and polish if desired.",
+        goodFor: "Clean nails, hand care and maintenance."
+      },
+      {
+        name: "Spa Manicure",
+        technique: "Luxury Hand Ritual",
+        duration: "As advised",
+        price: "1900",
+        image: "assets/images/services/spa-manicure.jpg",
+        description: "A richer manicure with exfoliation, hydrating mask or wrap, extended massage and aromatherapy.",
+        goodFor: "Relaxation, dry hands and polished finish."
+      },
+      {
+        name: "Regular Pedicure",
+        technique: "Classic Foot Grooming",
+        duration: "As advised",
+        price: "1300",
+        image: "assets/images/services/regular-pedicure.jpg",
+        description: "Basic pedicure with soak, nail trimming and shaping, cuticle care, exfoliation, callus removal, massage and polish if desired.",
+        goodFor: "Foot care, maintenance and clean nails."
+      },
+      {
+        name: "Spa Pedicure",
+        technique: "Luxury Foot Ritual",
+        duration: "As advised",
+        price: "1900",
+        image: "assets/images/services/spa-pedicure.jpg",
+        description: "Pedicure with additional features such as aromatherapy, hot towel wraps and extended massage.",
+        goodFor: "Tired feet, relaxation and polished finish."
       }
     ]
   },
   {
     category: "Hair Spa",
-    intro: "Nourishing scalp and hair rituals for hydration, repair, smoothness and volume, finished with Moroccan Oil where advised.",
+    intro: "Hair and scalp rituals for hydration, repair, smoothing and visible volume.",
+    image: "assets/images/categories/hairspa.jpg",
     services: [
       {
-        name: "Moroccan Oil Hair Reset",
-        technique: "Repair and Restore Hair Spa",
+        name: "Intense Hydrating Spa",
+        technique: "Hydration Hair Spa",
         duration: "As advised",
-        price: "",
+        price: "2600",
+        image: "assets/images/services/intense-hydrating-spa.jpg",
+        description: "A deep hydration and moisturization treatment for dry, damaged or frizzy hair.",
+        goodFor: "Dryness, frizz and softness."
+      },
+      {
+        name: "Repair and Restore Hair Spa",
+        technique: "Protein Repair Hair Spa",
+        duration: "As advised",
+        price: "3100",
         tag: "Signature",
         image: "assets/images/services/repair-and-restore-hair-spa.jpg",
-        description: "Protein-rich care to rebuild strength, reduce breakage and improve elasticity, finished with the Moroccan Oil range.",
-        goodFor: "Breakage, frizz, dry ends and hair that needs a clean reset."
+        description: "Protein-rich care to rebuild and fortify the hair shaft, reducing breakage and improving resilience and elasticity.",
+        goodFor: "Breakage, weak hair and repair."
       },
       {
-        name: "The Hydration Reset",
-        technique: "Intense Hydrating Spa",
+        name: "Smoothing Hair Spa",
+        technique: "Deep Smoothing Spa",
         duration: "As advised",
-        price: "",
-        image: "assets/images/services/intense-hydrating-spa.jpg",
-        description: "Deep hydration and moisturization for dry, damaged or frizzy hair.",
-        goodFor: "Dryness, roughness, dullness and hair that needs softness."
-      },
-      {
-        name: "The Smooth Finish",
-        technique: "Smoothing Hair Spa",
-        duration: "As advised",
-        price: "",
+        price: "2900",
         image: "assets/images/services/smoothing-hair-spa.jpg",
-        description: "Conditioning proteins deeply nourish the hair for smoother texture and movement.",
-        goodFor: "Frizz, coarse texture and guests who want a softer, controlled finish."
+        description: "A deep smoothing spa enriched with conditioning protein for nourishment, elasticity and a softer finish.",
+        goodFor: "Frizz, coarse texture and smoothness."
       },
       {
-        name: "The Volume Lift",
-        technique: "Volumizing Hair Spa",
+        name: "Volumizing Hair Spa",
+        technique: "Volume Hair Spa",
         duration: "As advised",
-        price: "",
+        price: "2600",
         image: "assets/images/services/volumizing-hair-spa.jpg",
-        description: "A treatment designed to add visible volume, body and fullness.",
-        goodFor: "Flat hair, low body and guests who want a lighter, fuller look."
+        description: "A volume-focused treatment aimed at adding body, fullness and lift to the hair.",
+        goodFor: "Flat hair, low body and volume."
       }
     ]
   }
