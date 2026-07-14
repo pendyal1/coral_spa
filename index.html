@@ -169,6 +169,28 @@
         </div>
       </section>
 
+      <section class="testimonials plain-art-section google-reviews-section" id="reviews">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Google Reviews</span>
+              <h2 class="reveal">What Kanpur is <em>saying.</em></h2>
+            </div>
+            <p>Live five-star Google reviews from recent guests.</p>
+          </div>
+          <div class="reviews google-reviews-grid" data-google-reviews>
+            <article class="review-card">
+              <div class="stars" aria-label="5 stars">★★★★★</div>
+              <p>Connecting the latest five-star Google reviews.</p>
+              <span>Live Google Reviews</span>
+            </article>
+          </div>
+          <div class="section-actions reviews-actions">
+            <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Coral%20Spa%20B.K-2%20Tower%203%2F13A%20Vishnu%20Puri%20Kanpur" target="_blank" rel="noreferrer">Open Google Reviews</a>
+          </div>
+        </div>
+      </section>
+
       <section class="location-strip plain-art-section" id="location">
         <div class="wrap">
           <div class="reveal">
@@ -230,6 +252,14 @@
     </a>
 
     <script src="assets/js/services-data.js"></script>
+    <script>
+      window.CORAL_GOOGLE_REVIEWS = {
+        apiKey: "",
+        placeId: "",
+        placeQuery: "Coral Spa B.K-2 Tower 3/13A Vishnu Puri Kanpur",
+        mapsUrl: "https://www.google.com/maps/search/?api=1&query=Coral%20Spa%20B.K-2%20Tower%203%2F13A%20Vishnu%20Puri%20Kanpur"
+      };
+    </script>
     <script src="assets/js/main.js"></script>
   </body>
 </html>

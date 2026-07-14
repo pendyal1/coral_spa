@@ -821,12 +821,39 @@ figcaption {
   gap: 34px;
 }
 
+.google-reviews-section .section-head {
+  align-items: flex-start;
+}
+
+.google-reviews-grid {
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+
 .t-card,
 .review-card {
   padding: 28px 26px;
   border: 1px solid rgba(246, 203, 163, 0.12);
   border-radius: 8px;
   background: var(--espresso);
+}
+
+.review-card {
+  min-height: 220px;
+}
+
+.review-card a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(240, 148, 106, 0.5);
+  text-underline-offset: 3px;
+}
+
+.google-review-empty {
+  max-width: 520px;
+}
+
+.reviews-actions {
+  justify-content: center;
 }
 
 .t-head {
