@@ -2,7 +2,7 @@ window.CORAL_SERVICES = [
   {
     category: "Specials",
     intro: "Current Coral Spa signatures and newer recovery rituals. Pricing is listed as NA until confirmed by the client.",
-    image: "assets/images/categories/massage-icon.png",
+    image: "assets/images/categories/specials.jpg",
     services: [
       {
         name: "The Jet Lag Reset",
