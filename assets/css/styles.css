@@ -169,20 +169,13 @@ img {
 .brand {
   display: flex;
   align-items: center;
-  gap: clamp(10px, 1.2vw, 16px);
   min-width: 0;
-  flex: 0 1 330px;
+  flex: 0 0 auto;
 }
 
-.brand-mark {
-  width: clamp(56px, 6vw, 78px);
-  height: clamp(56px, 6vw, 78px);
-  object-fit: contain;
-}
-
-.brand-wordmark {
-  width: clamp(160px, 17vw, 242px);
-  height: clamp(58px, 6.2vw, 90px);
+.brand-logo {
+  width: auto;
+  height: clamp(72px, 7.4vw, 104px);
   object-fit: contain;
 }
 
@@ -1443,14 +1436,8 @@ figcaption {
     width: min(100% - 28px, 1180px);
   }
 
-  .brand-mark {
-    width: 52px;
-    height: 52px;
-  }
-
-  .brand-wordmark {
-    width: 142px;
-    height: 54px;
+  .brand-logo {
+    height: 72px;
   }
 
   .brand {
