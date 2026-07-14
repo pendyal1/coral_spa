@@ -335,7 +335,7 @@ img {
 
 .hero-photo .scene-fill {
   filter: sepia(0.24) saturate(1.08) brightness(0.48) contrast(1.12);
-  transform: rotate(8deg) scale(1.18);
+  transform: rotate(4deg) scale(1.14);
 }
 
 .hero-scrim {
@@ -424,6 +424,32 @@ img {
 
 .rituals {
   background: var(--espresso);
+}
+
+.plain-art-section {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.plain-art-section::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: clamp(-250px, -11vw, -110px);
+  z-index: 0;
+  width: clamp(420px, 48vw, 820px);
+  aspect-ratio: 1;
+  background: url("../images/coral_spa_artwork.png") center / contain no-repeat;
+  filter: sepia(0.18) saturate(0.9) brightness(0.62);
+  opacity: 0.075;
+  pointer-events: none;
+  transform: translateY(-50%) rotate(-8deg);
+}
+
+.plain-art-section > .wrap {
+  position: relative;
+  z-index: 1;
 }
 
 .section-head {
