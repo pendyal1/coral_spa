@@ -57,7 +57,7 @@
     const featured = [
       ["Signature Rituals", "The Heat Ritual"],
       ["Signature Rituals", "The Jet Lag Reset"],
-      ["Signature Rituals", "Deep Massage / Lymphatic Drainage"],
+      ["Signature Rituals", "Lymphatic Drainage"],
       ["Bodywork", "The Knot Fixer"],
       ["Skin Rituals", "The Glass Skin Facial"],
       ["Hair Spa", "Moroccan Oil Hair Reset"]
