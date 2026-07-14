@@ -437,6 +437,7 @@ img {
   position: absolute;
   top: 50%;
   right: clamp(-250px, -11vw, -110px);
+  left: auto;
   z-index: 0;
   width: clamp(420px, 48vw, 820px);
   aspect-ratio: 1;
@@ -445,6 +446,20 @@ img {
   opacity: 0.075;
   pointer-events: none;
   transform: translateY(-50%) rotate(-8deg);
+}
+
+main > .plain-art-section:nth-of-type(even)::before {
+  right: auto;
+  left: clamp(-250px, -11vw, -110px);
+  transform: translateY(-50%) rotate(8deg) scaleX(-1);
+}
+
+main > .plain-art-section:nth-of-type(4n + 1)::before {
+  top: 42%;
+}
+
+main > .plain-art-section:nth-of-type(4n + 3)::before {
+  top: 58%;
 }
 
 .plain-art-section > .wrap {
