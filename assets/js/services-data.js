@@ -15,7 +15,7 @@ window.CORAL_SERVICES = [
         goodFor: "Travel fatigue, heavy legs and post-flight stiffness."
       },
       {
-        name: "Deep Massage / Lymphatic Drainage",
+        name: "Lymphatic Drainage",
         technique: "Lymphatic Drainage Massage",
         duration: "60 / 90 Min",
         price: "NA",
