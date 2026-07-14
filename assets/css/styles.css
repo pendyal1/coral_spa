@@ -335,7 +335,7 @@ img {
 
 .hero-photo .scene-fill {
   filter: sepia(0.24) saturate(1.08) brightness(0.48) contrast(1.12);
-  transform: rotate(4deg) scale(1.14);
+  transform: rotate(1deg) scale(1.1);
 }
 
 .hero-scrim {
