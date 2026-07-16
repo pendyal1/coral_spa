@@ -1097,13 +1097,18 @@ figcaption {
 }
 
 .service-nav-tile::before {
-  content: "";
+  display: none;
+}
+
+.service-nav-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background-image: var(--tile-image);
-  background-position: center;
-  background-size: cover;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center;
   filter: sepia(0.26) saturate(0.92) brightness(0.72) contrast(1.08);
   transform: scale(1.02);
   transition: filter 0.25s ease, transform 0.25s ease;
@@ -1136,7 +1141,7 @@ figcaption {
   filter: brightness(1.08);
 }
 
-.service-nav-tile:hover::before {
+.service-nav-tile:hover .service-nav-bg {
   filter: sepia(0.2) saturate(1) brightness(0.82) contrast(1.08);
   transform: scale(1.06);
 }

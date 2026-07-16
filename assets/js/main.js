@@ -152,7 +152,8 @@
   function serviceNavTile(category) {
     const image = category.image || serviceImage(category.services[0]);
     return `
-      <a class="service-nav-tile" href="#${slug(category.category)}" style="--tile-image:url('${escapeHtml(image)}')">
+      <a class="service-nav-tile" href="#${slug(category.category)}">
+        <img class="service-nav-bg" src="${escapeHtml(image)}" alt="" loading="lazy">
         <span>${escapeHtml(category.category)}</span>
       </a>
     `;
