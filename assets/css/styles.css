@@ -1086,12 +1086,7 @@ figcaption {
   padding: 20px 14px;
   border: 1px solid rgba(246, 203, 163, 0.16);
   border-radius: 6px;
-  background:
-    linear-gradient(180deg, rgba(20, 10, 5, 0.2), rgba(20, 10, 5, 0.8)),
-    var(--tile-image),
-    var(--umber);
-  background-position: center;
-  background-size: cover;
+  background: var(--umber);
   color: var(--ivory);
   font-family: var(--label);
   font-size: 11px;
@@ -1106,15 +1101,28 @@ figcaption {
   position: absolute;
   inset: 0;
   z-index: 0;
+  background-image: var(--tile-image);
+  background-position: center;
+  background-size: cover;
+  filter: sepia(0.26) saturate(0.92) brightness(0.72) contrast(1.08);
+  transform: scale(1.02);
+  transition: filter 0.25s ease, transform 0.25s ease;
+}
+
+.service-nav-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   background:
     radial-gradient(ellipse at 50% 20%, rgba(240, 148, 106, 0.18), transparent 52%),
-    rgba(20, 10, 5, 0.35);
+    linear-gradient(180deg, rgba(20, 10, 5, 0.18), rgba(20, 10, 5, 0.78));
   pointer-events: none;
 }
 
 .service-nav-tile span {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: 92%;
   padding: 8px 10px;
   background: rgba(20, 10, 5, 0.42);
@@ -1126,6 +1134,11 @@ figcaption {
   color: var(--sunset);
   transform: translateY(-2px);
   filter: brightness(1.08);
+}
+
+.service-nav-tile:hover::before {
+  filter: sepia(0.2) saturate(1) brightness(0.82) contrast(1.08);
+  transform: scale(1.06);
 }
 
 .svc-group {
