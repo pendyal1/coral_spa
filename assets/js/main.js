@@ -159,7 +159,7 @@
   }
 
   function categorySection(category, categoryIndex) {
-    const image = serviceImage(category.services[0], category.image);
+    const image = category.image || serviceImage(category.services[0]);
     return `
       <section class="svc-group reveal" id="${slug(category.category)}">
         <div class="svc-group-head">

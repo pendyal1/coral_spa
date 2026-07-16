@@ -341,7 +341,7 @@ img {
 
 .hero-slide {
   opacity: 0;
-  animation: heroFade 21s ease-in-out infinite;
+  animation: heroFade 30s linear infinite;
 }
 
 .hero-slide:nth-child(1) {
@@ -349,11 +349,23 @@ img {
 }
 
 .hero-slide:nth-child(2) {
-  animation-delay: 7s;
+  animation-delay: 10s;
 }
 
 .hero-slide:nth-child(3) {
-  animation-delay: 14s;
+  animation-delay: 20s;
+}
+
+.hero-slide-main {
+  background-position: center 50%;
+}
+
+.hero-slide-reception {
+  background-position: center 34%;
+}
+
+.hero-slide-treatment {
+  background-position: center 76%;
 }
 
 .hero-scrim {
@@ -411,11 +423,11 @@ img {
 
 @keyframes heroFade {
   0%,
-  23% {
+  30% {
     opacity: 1;
   }
-  33%,
-  90% {
+  38%,
+  92% {
     opacity: 0;
   }
   100% {
@@ -853,7 +865,7 @@ figcaption {
   display: flex;
   width: max-content;
   min-width: 100%;
-  animation: reviewWheel 42s linear infinite;
+  animation: reviewWheel 62s linear infinite;
 }
 
 .google-reviews-section {
@@ -873,8 +885,9 @@ figcaption {
 }
 
 .review-card {
-  min-height: 220px;
-  min-width: min(360px, calc(100vw - 56px));
+  min-height: 188px;
+  min-width: min(300px, calc(100vw - 56px));
+  max-width: 300px;
 }
 
 .review-card a {
@@ -971,6 +984,43 @@ figcaption {
   background-position: center;
   filter: sepia(0.26) saturate(0.95) brightness(0.42) contrast(1.12);
   transform: scale(1.04);
+}
+
+.page-header-slideshow::before {
+  display: none;
+}
+
+.page-header-slides {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.page-header-slide {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  filter: sepia(0.24) saturate(1.02) brightness(0.46) contrast(1.12);
+  opacity: 0;
+  transform: scale(1.06);
+  animation: heroFade 30s linear infinite;
+}
+
+.page-header-slide:nth-child(1) {
+  opacity: 1;
+  background-position: center 56%;
+}
+
+.page-header-slide:nth-child(2) {
+  animation-delay: 10s;
+  background-position: center 34%;
+}
+
+.page-header-slide:nth-child(3) {
+  animation-delay: 20s;
+  background-position: center 76%;
 }
 
 .page-header::after {
@@ -1528,6 +1578,7 @@ figcaption {
   align-items: center;
   justify-content: center;
   gap: 10px;
+  width: 178px;
   padding: 16px 24px;
   border-radius: 999px;
   background: var(--ember);
@@ -1807,6 +1858,7 @@ figcaption {
   .float-call,
   .floating-call,
   .hero-slide,
+  .page-header-slide,
   .google-reviews-grid.is-scrollable {
     animation: none;
   }
@@ -1816,6 +1868,14 @@ figcaption {
   }
 
   .hero-slide:not(:first-child) {
+    opacity: 0;
+  }
+
+  .page-header-slide:first-child {
+    opacity: 1;
+  }
+
+  .page-header-slide:not(:first-child) {
     opacity: 0;
   }
 }

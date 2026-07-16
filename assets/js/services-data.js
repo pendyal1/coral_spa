@@ -2,7 +2,7 @@ window.CORAL_SERVICES = [
   {
     category: "Specials",
     intro: "Current Coral Spa signatures and newer recovery rituals. Pricing is listed as NA until confirmed by the client.",
-    image: "assets/images/categories/specials.jpg",
+    image: "assets/images/services/hot-stone-massage.jpg",
     services: [
       {
         name: "The Jet Lag Reset",
@@ -332,7 +332,7 @@ window.CORAL_SERVICES = [
   {
     category: "Manicure & Pedicure",
     intro: "Hand, foot and nail grooming with shaping, cuticle care, soak, massage and polish where desired.",
-    image: "assets/images/categories/manicure.jpg",
+    image: "assets/images/gallery/coral-spa-pedicure-lounge.jpeg",
     services: [
       {
         name: "Regular Manicure",
@@ -375,7 +375,7 @@ window.CORAL_SERVICES = [
   {
     category: "Hair Spa",
     intro: "Hair and scalp rituals for hydration, repair, smoothing and visible volume.",
-    image: "assets/images/categories/hairspa.jpg",
+    image: "assets/images/stock/unsplash-hair-spa.jpg",
     services: [
       {
         name: "Intense Hydrating Spa",
