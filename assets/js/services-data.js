@@ -2,7 +2,7 @@ window.CORAL_SERVICES = [
   {
     category: "Specials",
     intro: "Current Coral Spa signatures and newer recovery rituals. Pricing is listed as NA until confirmed by the client.",
-    image: "assets/images/services/hot-stone-massage.jpg",
+    image: "assets/images/categories/generated/specials.jpg",
     services: [
       {
         name: "The Jet Lag Reset",
@@ -48,7 +48,7 @@ window.CORAL_SERVICES = [
   {
     category: "Massages",
     intro: "Manual bodywork for relaxation, circulation, muscle relief and recovery.",
-    image: "assets/images/stock/unsplash-massages.jpg",
+    image: "assets/images/categories/generated/massages.jpg",
     services: [
       {
         name: "Swedish Massage",
@@ -119,7 +119,7 @@ window.CORAL_SERVICES = [
   {
     category: "Facials",
     intro: "Facials for cleansing, hydration, acne care, brightening, ageing support and occasion glow.",
-    image: "assets/images/stock/unsplash-facials.jpg",
+    image: "assets/images/categories/generated/facials.jpg",
     services: [
       {
         name: "Anti Acne Facial",
@@ -180,7 +180,7 @@ window.CORAL_SERVICES = [
   {
     category: "Body Polish",
     intro: "Body scrubs that gently slough off dead skin and prepare the body for better product and oil absorption.",
-    image: "assets/images/stock/unsplash-body-polish.jpg",
+    image: "assets/images/categories/generated/body-polish.jpg",
     services: [
       {
         name: "Apple and Honey Scrub",
@@ -223,7 +223,7 @@ window.CORAL_SERVICES = [
   {
     category: "Body Wraps",
     intro: "Body polish followed by a body mask that is left on for 20 to 30 minutes to support detoxification and mineral absorption.",
-    image: "assets/images/stock/unsplash-body-wraps.jpg",
+    image: "assets/images/categories/generated/body-wraps.jpg",
     services: [
       {
         name: "Chocolate Wrap",
@@ -248,7 +248,7 @@ window.CORAL_SERVICES = [
   {
     category: "Foot Reflexology",
     intro: "Traditional Thai foot work using manual and stick techniques to ease tension in the foot and calf.",
-    image: "assets/images/gallery/coral-spa-foot-therapy.jpeg",
+    image: "assets/images/categories/generated/foot-reflexology.jpg",
     services: [
       {
         name: "Thai Foot",
@@ -273,7 +273,7 @@ window.CORAL_SERVICES = [
   {
     category: "Head Massage",
     intro: "Focused head, neck, shoulder and back therapies for quick stress relief.",
-    image: "assets/images/stock/unsplash-head-massage.jpg",
+    image: "assets/images/categories/generated/head-massage.jpg",
     services: [
       {
         name: "Head Massage",
@@ -298,7 +298,7 @@ window.CORAL_SERVICES = [
   {
     category: "De-tanning",
     intro: "Targeted therapies for skin affected by sunlight, pollution and tanning.",
-    image: "assets/images/stock/unsplash-de-tanning.jpg",
+    image: "assets/images/categories/generated/de-tanning.jpg",
     services: [
       {
         name: "Face",
@@ -332,7 +332,7 @@ window.CORAL_SERVICES = [
   {
     category: "Manicure & Pedicure",
     intro: "Hand, foot and nail grooming with shaping, cuticle care, soak, massage and polish where desired.",
-    image: "assets/images/gallery/coral-spa-pedicure-lounge.jpeg",
+    image: "assets/images/categories/generated/manicure-pedicure.jpg",
     services: [
       {
         name: "Regular Manicure",
@@ -375,7 +375,7 @@ window.CORAL_SERVICES = [
   {
     category: "Hair Spa",
     intro: "Hair and scalp rituals for hydration, repair, smoothing and visible volume.",
-    image: "assets/images/stock/unsplash-hair-spa.jpg",
+    image: "assets/images/categories/generated/hair-spa.jpg",
     services: [
       {
         name: "Intense Hydrating Spa",
