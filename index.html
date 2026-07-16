@@ -35,7 +35,9 @@
     <main>
       <section class="hero">
         <div class="hero-photo scene">
-          <div class="scene-fill" style="background-image:url('assets/images/gallery/coral-spa-main-suite.jpeg')"></div>
+          <div class="scene-fill hero-slide" style="background-image:url('assets/images/gallery/coral-spa-main-suite.jpeg')"></div>
+          <div class="scene-fill hero-slide" style="background-image:url('assets/images/gallery/coral-spa-reception.jpeg')"></div>
+          <div class="scene-fill hero-slide" style="background-image:url('assets/images/gallery/coral-spa-treatment-room.jpeg')"></div>
           <div class="scene-glow"></div>
           <div class="hero-scrim"></div>
           <span class="scene-tag">Coral Spa, Kanpur</span>
@@ -50,7 +52,6 @@
             </a>
           </div>
         </div>
-        <div class="scroll-cue"><span class="line"></span> Scroll</div>
       </section>
 
       <section class="spotlight trend-section plain-art-section" id="signature">
@@ -61,30 +62,30 @@
             <p>Start here if you are coming in tired, tight or unsure what to book. The team will confirm the right ritual by phone.</p>
           </div>
           <div class="trend-grid reveal">
-            <article class="trend-card scene">
+            <a class="trend-card scene" href="services.html#the-jet-lag-reset">
               <div class="scene-fill" style="background-image:url('assets/images/services/deep-tissue-massage.jpg')"></div>
               <div class="trend-copy">
                 <span>Newly In</span>
                 <h3>The Jet Lag Reset</h3>
                 <p>Swedish and oil-based recovery with 60 minutes of bodywork and 30 minutes of head massage.</p>
               </div>
-            </article>
-            <article class="trend-card scene">
+            </a>
+            <a class="trend-card scene" href="services.html#lymphatic-drainage">
               <div class="scene-fill" style="background-image:url('assets/images/services/whole-body.jpg')"></div>
               <div class="trend-copy">
                 <span>Trending</span>
                 <h3>Lymphatic Drainage</h3>
                 <p>For heavy legs, travel fatigue and water retention, with pressure guided by the therapist.</p>
               </div>
-            </article>
-            <article class="trend-card scene">
+            </a>
+            <a class="trend-card scene" href="services.html#the-heat-ritual">
               <div class="scene-fill" style="background-image:url('assets/images/services/hot-stone-massage.jpg')"></div>
               <div class="trend-copy">
                 <span>Signature</span>
                 <h3>The Heat Ritual</h3>
                 <p>Hot stones, essential oils and steady warmth for a slower nervous-system reset.</p>
               </div>
-            </article>
+            </a>
           </div>
         </div>
       </section>
@@ -98,21 +99,21 @@
             </div>
           </div>
           <div class="ritual-grid">
-            <article class="ritual-card reveal">
+            <a class="ritual-card reveal" href="services.html#massages">
               <span class="ritual-cat">Massage</span>
               <h3>Bodywork and Recovery</h3>
               <p>Swedish, Thai, Balinese, deep tissue, hot stone and newer recovery rituals for tension, travel fatigue and everyday stress.</p>
-            </article>
-            <article class="ritual-card reveal">
+            </a>
+            <a class="ritual-card reveal" href="services.html#facials">
               <span class="ritual-cat">Skin and Glow</span>
               <h3>Facials, Polish and Wraps</h3>
               <p>Facials, de-tanning, body polish and body wraps for clear skin, glow, softness and occasion-ready care.</p>
-            </article>
-            <article class="ritual-card reveal">
+            </a>
+            <a class="ritual-card reveal" href="services.html#hair-spa">
               <span class="ritual-cat">Hair and Nails</span>
               <h3>Hair, Hands and Feet</h3>
               <p>Moroccan Oil hair spa rituals, manicures, pedicures, foot reflexology and focused head massage.</p>
-            </article>
+            </a>
           </div>
         </div>
       </section>
@@ -176,7 +177,6 @@
               <span class="eyebrow">Google Reviews</span>
               <h2 class="reveal">What Kanpur is <em>saying.</em></h2>
             </div>
-            <p>Live five-star Google reviews from recent guests.</p>
           </div>
           <div class="reviews google-reviews-grid" data-google-reviews>
             <article class="review-card">
@@ -195,7 +195,7 @@
         <div class="wrap">
           <div class="reveal">
             <span class="eyebrow">Find Us</span>
-            <h2>Vishnu Puri, <em>Kanpur.</em></h2>
+            <h2>We're <em>here.</em></h2>
             <div class="info-row">
               <div class="lbl">Address</div>
               <div class="val">Basement, B.K-2 Tower 3/13A, Vishnu Puri, Company Bagh Chauraha, Kanpur-208002</div>
@@ -247,9 +247,10 @@
       </div>
     </footer>
 
-    <a class="float-call" href="services.html" aria-label="View full menu">
-      <span>View Full Menu</span>
-    </a>
+    <div class="floating-actions" aria-label="Quick actions">
+      <a class="float-call" href="services.html" aria-label="View full menu"><span>View Full Menu</span></a>
+      <a class="float-call float-call-secondary" href="contact.html" aria-label="Contact us"><span>Contact Us</span></a>
+    </div>
 
     <script src="assets/js/services-data.js"></script>
     <script>

@@ -48,7 +48,7 @@ window.CORAL_SERVICES = [
   {
     category: "Massages",
     intro: "Manual bodywork for relaxation, circulation, muscle relief and recovery.",
-    image: "assets/images/categories/massage-icon.png",
+    image: "assets/images/stock/unsplash-massages.jpg",
     services: [
       {
         name: "Swedish Massage",
@@ -119,7 +119,7 @@ window.CORAL_SERVICES = [
   {
     category: "Facials",
     intro: "Facials for cleansing, hydration, acne care, brightening, ageing support and occasion glow.",
-    image: "assets/images/categories/facial-icon.png",
+    image: "assets/images/stock/unsplash-facials.jpg",
     services: [
       {
         name: "Anti Acne Facial",
@@ -180,7 +180,7 @@ window.CORAL_SERVICES = [
   {
     category: "Body Polish",
     intro: "Body scrubs that gently slough off dead skin and prepare the body for better product and oil absorption.",
-    image: "assets/images/categories/bodypolish-icon.png",
+    image: "assets/images/stock/unsplash-body-polish.jpg",
     services: [
       {
         name: "Apple and Honey Scrub",
@@ -223,7 +223,7 @@ window.CORAL_SERVICES = [
   {
     category: "Body Wraps",
     intro: "Body polish followed by a body mask that is left on for 20 to 30 minutes to support detoxification and mineral absorption.",
-    image: "assets/images/categories/bodywrap-icon.png",
+    image: "assets/images/stock/unsplash-body-wraps.jpg",
     services: [
       {
         name: "Chocolate Wrap",
@@ -248,7 +248,7 @@ window.CORAL_SERVICES = [
   {
     category: "Foot Reflexology",
     intro: "Traditional Thai foot work using manual and stick techniques to ease tension in the foot and calf.",
-    image: "assets/images/categories/foot-icon.png",
+    image: "assets/images/gallery/coral-spa-foot-therapy.jpeg",
     services: [
       {
         name: "Thai Foot",
@@ -273,7 +273,7 @@ window.CORAL_SERVICES = [
   {
     category: "Head Massage",
     intro: "Focused head, neck, shoulder and back therapies for quick stress relief.",
-    image: "assets/images/categories/head-icon.png",
+    image: "assets/images/stock/unsplash-head-massage.jpg",
     services: [
       {
         name: "Head Massage",
@@ -298,7 +298,7 @@ window.CORAL_SERVICES = [
   {
     category: "De-tanning",
     intro: "Targeted therapies for skin affected by sunlight, pollution and tanning.",
-    image: "assets/images/categories/detanning-icon.png",
+    image: "assets/images/stock/unsplash-de-tanning.jpg",
     services: [
       {
         name: "Face",
