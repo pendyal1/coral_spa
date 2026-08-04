@@ -2,92 +2,70 @@
   "use strict";
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const smallScreen = window.matchMedia("(max-width: 760px)");
-  let revealObserver;
-  let parallaxObserver;
-  const activeParallax = new Set();
-  let parallaxScheduled = false;
+  let revealObserver = null;
 
-  document.documentElement.classList.add("motion-enabled");
-  initRevealObserver();
-  observeMotionContent(document);
-  initParallaxObserver();
+  initRevealSystem();
+  document.addEventListener("coral:content-rendered", () => observeRevealContent(document));
+  if (reduceMotion.addEventListener) reduceMotion.addEventListener("change", handleMotionPreference);
+  else reduceMotion.addListener(handleMotionPreference);
 
-  document.addEventListener("coral:content-rendered", () => observeMotionContent(document));
-  reduceMotion.addEventListener("change", handleMotionPreference);
-  smallScreen.addEventListener("change", handleMotionPreference);
+  function initRevealSystem() {
+    if (reduceMotion.matches || !("IntersectionObserver" in window)) {
+      showAll(document);
+      return;
+    }
 
-  function initRevealObserver() {
-    if (reduceMotion.matches || !("IntersectionObserver" in window)) return;
-    revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-revealed");
-        revealObserver.unobserve(entry.target);
-      });
-    }, { threshold: 0.12, rootMargin: "0px 0px -6%" });
-  }
-
-  function observeMotionContent(root) {
-    root.querySelectorAll("[data-stagger]").forEach((parent) => {
-      Array.from(parent.children).forEach((child, index) => child.style.setProperty("--stagger-index", String(index)));
-    });
-    root.querySelectorAll("[data-reveal]:not([data-motion-observed])").forEach((item) => {
-      item.dataset.motionObserved = "true";
-      if (reduceMotion.matches || !revealObserver) item.classList.add("is-revealed");
-      else revealObserver.observe(item);
-    });
-    if (parallaxObserver) {
-      root.querySelectorAll("[data-parallax-media]:not([data-parallax-observed])").forEach((item) => {
-        item.dataset.parallaxObserved = "true";
-        parallaxObserver.observe(item);
-      });
+    try {
+      revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.dataset.revealState = "visible";
+          revealObserver.unobserve(entry.target);
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -6%" });
+      observeRevealContent(document);
+    } catch (error) {
+      revealObserver = null;
+      showAll(document);
     }
   }
 
-  function initParallaxObserver() {
-    if (reduceMotion.matches || smallScreen.matches || !("IntersectionObserver" in window)) return;
-    parallaxObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) activeParallax.add(entry.target);
-        else activeParallax.delete(entry.target);
+  function observeRevealContent(root) {
+    root.querySelectorAll("[data-stagger]").forEach((parent) => {
+      Array.from(parent.children).forEach((child, index) => {
+        child.style.setProperty("--stagger-index", String(index));
       });
-      scheduleParallax();
-    }, { rootMargin: "12% 0px" });
-    document.querySelectorAll("[data-parallax-media]").forEach((item) => {
-      item.dataset.parallaxObserved = "true";
-      parallaxObserver.observe(item);
     });
-    window.addEventListener("scroll", scheduleParallax, { passive: true });
-    window.addEventListener("resize", scheduleParallax, { passive: true });
+
+    root.querySelectorAll("[data-reveal]:not([data-reveal-observed])").forEach((item) => {
+      item.dataset.revealObserved = "true";
+      if (reduceMotion.matches || !revealObserver) {
+        item.dataset.revealState = "visible";
+        return;
+      }
+
+      try {
+        revealObserver.observe(item);
+        item.dataset.revealState = "pending";
+      } catch (error) {
+        item.dataset.revealState = "visible";
+      }
+    });
   }
 
-  function scheduleParallax() {
-    if (parallaxScheduled || !activeParallax.size) return;
-    parallaxScheduled = true;
-    window.requestAnimationFrame(updateParallax);
-  }
-
-  function updateParallax() {
-    const viewport = window.innerHeight;
-    activeParallax.forEach((item) => {
-      const rect = item.getBoundingClientRect();
-      const progress = (rect.top + rect.height / 2 - viewport / 2) / viewport;
-      const offset = Math.max(-1, Math.min(1, progress)) * -18;
-      item.style.setProperty("--parallax-y", `${offset.toFixed(2)}px`);
+  function showAll(root) {
+    root.querySelectorAll("[data-reveal]").forEach((item) => {
+      item.dataset.revealState = "visible";
     });
-    parallaxScheduled = false;
   }
 
   function handleMotionPreference() {
-    if (reduceMotion.matches || smallScreen.matches) {
-      activeParallax.clear();
-      if (parallaxObserver) parallaxObserver.disconnect();
-      parallaxObserver = null;
-      document.querySelectorAll("[data-parallax-media]").forEach((item) => item.style.removeProperty("--parallax-y"));
-      document.querySelectorAll("[data-reveal]").forEach((item) => item.classList.add("is-revealed"));
+    if (reduceMotion.matches) {
+      if (revealObserver) revealObserver.disconnect();
+      revealObserver = null;
+      showAll(document);
       return;
     }
-    if (!parallaxObserver) initParallaxObserver();
+    if (!revealObserver) initRevealSystem();
   }
 })();

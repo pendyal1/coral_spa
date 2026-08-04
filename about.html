@@ -29,15 +29,15 @@
 
     <main id="main-content">
       <section class="cinematic-hero page-hero" aria-labelledby="about-title">
-        <div class="media-background" data-video-background data-autoplay="true">
+        <div class="media-background" data-video-background data-video-valid="false" data-autoplay="false">
           <picture class="media-background__poster"><source media="(max-width: 767px)" srcset="assets/images/posters/about-hero-poster-mobile.webp"><img src="assets/images/posters/about-hero-poster-desktop.webp" width="1920" height="1080" alt="" fetchpriority="high"></picture>
           <video muted playsinline loop preload="metadata" poster="assets/images/posters/about-hero-poster-desktop.webp" aria-hidden="true">
-            <source src="assets/videos/about-hero-mobile.webm" type="video/webm" media="(max-width: 767px)"><source src="assets/videos/about-hero-mobile.mp4" type="video/mp4" media="(max-width: 767px)"><source src="assets/videos/about-hero-desktop.webm" type="video/webm"><source src="assets/videos/about-hero-desktop.mp4" type="video/mp4">
+            <source data-src="assets/videos/about-hero-mobile.webm" type="video/webm" media="(max-width: 767px)"><source data-src="assets/videos/about-hero-mobile.mp4" type="video/mp4" media="(max-width: 767px)"><source data-src="assets/videos/about-hero-desktop.webm" type="video/webm"><source data-src="assets/videos/about-hero-desktop.mp4" type="video/mp4">
           </video>
           <div class="media-background__scrim"></div>
         </div>
         <div class="wrap hero-content"><h1 id="about-title" data-reveal="fade-up">Warm rooms, trained hands and <em>rituals that feel personal.</em></h1><p class="hero-lede" data-reveal="fade-up">Coral Spa brings massage, skin, hair and grooming care together in a calm space shaped by comfort, technique and attentive hospitality.</p></div>
-        <button class="media-toggle" type="button" data-video-toggle aria-pressed="false"><span data-video-toggle-label>Pause video</span></button>
+        <button class="media-toggle" type="button" data-video-toggle aria-pressed="true" aria-label="Background video unavailable" hidden><span class="media-toggle__icon" data-video-toggle-icon aria-hidden="true">&gt;</span><span data-video-toggle-label>Play video</span></button>
       </section>
 
       <section class="section story-section">

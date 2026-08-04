@@ -4,16 +4,16 @@
 
 ## Production Status
 
-Generated and integrated media currently available:
+Validated media currently available:
 
-- `Massages`: 4K desktop/mobile source masters, 8-second WebM/MP4 delivery loops and a WebP poster.
-- `Facials`: 4K desktop/mobile source masters, 8-second WebM/MP4 delivery loops and a WebP poster.
-- `Body Polish` and `Body Wraps`: one shared body-care presentation set, while both canonical service categories remain separate.
-- `Hair Spa`: 4K desktop/mobile source masters, 8-second WebM/MP4 delivery loops and a WebP poster.
-- `Manicure & Pedicure`: hands-and-feet 4K desktop/mobile source masters, 8-second WebM/MP4 delivery loops and a WebP poster.
-- `About hero`: 4K desktop/mobile source masters, 10-second WebM/MP4 delivery loops and responsive WebP posters.
-- `Services hero`: 4K desktop/mobile source masters, 9-second WebM/MP4 delivery loops and responsive WebP posters.
-- `Contact hero`: 4K desktop/mobile source masters, 8-second WebM/MP4 delivery loops and responsive WebP posters.
+- `Home hero`: genuine landscape and portrait Pexels footage, transcoded to silent H.264 MP4 and VP9 WebM delivery files with posters extracted from the footage.
+- Source footage: [Professional Massage on Spa](https://www.pexels.com/video/professional-massage-on-spa-6187311/) and [Professional Massage](https://www.pexels.com/video/professional-massage-6186728/) by Tima Miroshnichenko, used under the Pexels license.
+
+Poster-only media awaiting genuine footage:
+
+- `Massages`, `Facials`, `Body Polish`, `Body Wraps`, `Hair Spa`, and `Manicure & Pedicure` have approved posters but no approved genuine video.
+- `About hero`, `Services hero`, and `Contact hero` have approved posters but no approved genuine video.
+- Existing encoded files for these slots were rejected because they animate a single still image. They are not loaded by page markup.
 - `About story` and `coral-botanical-texture`: optimized WebP images ready for integration.
 
 Local generation masters are retained in `assets/media/source/` and excluded from Git deployment. Browser delivery uses optimized desktop and mobile files to keep GitHub Pages transfer sizes practical.
@@ -90,7 +90,7 @@ All content images require intrinsic width and height, responsive `srcset`/`size
 
 ## Existing Fallbacks
 
-Every filename listed in the manifest currently exists. Hero videos and posters, responsive category and signature imagery, real-location gallery crops, about imagery and decorative textures are integrated or retained as ready fallbacks. Run the manifest validation after any replacement so case mismatches do not reach GitHub Pages.
+Every filename listed in the manifest currently exists, but existence does not imply video approval. `video-audit.json` is the authority for whether a video may be loaded. Run both manifest validation and `ffprobe` after any replacement so case or codec problems do not reach GitHub Pages.
 
 Before page implementation, validate the manifest with:
 

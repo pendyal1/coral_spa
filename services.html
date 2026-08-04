@@ -18,9 +18,9 @@
 
     <main id="main-content">
       <section class="cinematic-hero page-hero" aria-labelledby="services-title">
-        <div class="media-background" data-video-background data-autoplay="true"><picture class="media-background__poster"><source media="(max-width: 767px)" srcset="assets/images/posters/services-hero-poster-mobile.webp"><img src="assets/images/posters/services-hero-poster-desktop.webp" width="1920" height="1080" alt="" fetchpriority="high"></picture><video muted playsinline loop preload="metadata" poster="assets/images/posters/services-hero-poster-desktop.webp" aria-hidden="true"><source src="assets/videos/services-hero-mobile.webm" type="video/webm" media="(max-width: 767px)"><source src="assets/videos/services-hero-mobile.mp4" type="video/mp4" media="(max-width: 767px)"><source src="assets/videos/services-hero-desktop.webm" type="video/webm"><source src="assets/videos/services-hero-desktop.mp4" type="video/mp4"></video><div class="media-background__scrim"></div></div>
+        <div class="media-background" data-video-background data-video-valid="false" data-autoplay="false"><picture class="media-background__poster"><source media="(max-width: 767px)" srcset="assets/images/posters/services-hero-poster-mobile.webp"><img src="assets/images/posters/services-hero-poster-desktop.webp" width="1920" height="1080" alt="" fetchpriority="high"></picture><video muted playsinline loop preload="none" poster="assets/images/posters/services-hero-poster-desktop.webp" aria-hidden="true"><source data-src="assets/videos/services-hero-mobile.webm" type="video/webm" media="(max-width: 767px)"><source data-src="assets/videos/services-hero-mobile.mp4" type="video/mp4" media="(max-width: 767px)"><source data-src="assets/videos/services-hero-desktop.webm" type="video/webm"><source data-src="assets/videos/services-hero-desktop.mp4" type="video/mp4"></video><div class="media-background__scrim"></div></div>
         <div class="wrap hero-content"><h1 id="services-title" data-reveal="fade-up">Spa rituals for how you want to <em>feel.</em></h1><p class="hero-lede" data-reveal="fade-up">Browse Coral Spa’s bodywork, skin, hair, hands and feet rituals.</p></div>
-        <button class="media-toggle" type="button" data-video-toggle aria-pressed="false"><span data-video-toggle-label>Pause video</span></button>
+        <button class="media-toggle" type="button" data-video-toggle aria-pressed="true" aria-label="Background video unavailable" hidden><span class="media-toggle__icon" data-video-toggle-icon aria-hidden="true">&gt;</span><span data-video-toggle-label>Play video</span></button>
       </section>
 
       <nav class="service-category-bar" aria-label="Service categories" data-service-nav-container>
@@ -38,7 +38,108 @@
           </div>
           <div class="service-categories" data-service-categories></div>
           <noscript>
-            <div class="noscript-services"><p>JavaScript is unavailable. The categories below remain available; call <a href="tel:+919792710010">+91 97927 10010</a> for the complete current menu.</p><section id="specials"><h2>Specials</h2></section><section id="massages"><h2>Massages</h2></section><section id="facials"><h2>Facials</h2></section><section id="body-polish"><h2>Body Polish</h2></section><section id="body-wraps"><h2>Body Wraps</h2></section><section id="foot-reflexology"><h2>Foot Reflexology</h2></section><section id="head-massage-category"><h2>Head Massage</h2></section><section id="de-tanning"><h2>De-tanning</h2></section><section id="manicure-pedicure"><h2>Manicure &amp; Pedicure</h2></section><section id="hair-spa"><h2>Hair Spa</h2></section></div>
+            <div class="noscript-services">
+              <p>JavaScript is unavailable. The complete Coral Spa menu remains available below.</p>
+              <section class="noscript-service-group" id="specials">
+                <h2>Specials</h2>
+                <p>Current Coral Spa signatures and newer recovery rituals. Pricing is listed as NA until confirmed by the client.</p>
+                <div class="noscript-service-list">
+                  <article class="noscript-service-card"><h3>The Jet Lag Reset</h3><p>A Swedish and oil-based recovery ritual with 60 minutes of bodywork followed by 30 minutes of head massage.</p><dl><div><dt>Duration</dt><dd>90 Min</dd></div><div><dt>Price</dt><dd>NA</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Lymphatic Drainage</h3><p>Targeted massage using firm or light rhythmic work depending on the guest's needs and therapist recommendation.</p><dl><div><dt>Duration</dt><dd>60 / 90 Min</dd></div><div><dt>Price</dt><dd>NA</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>The Heat Ritual</h3><p>Warm basalt stones and essential oils are used to release tension and create a grounded nervous-system reset.</p><dl><div><dt>Duration</dt><dd>90 Min</dd></div><div><dt>Price</dt><dd>NA</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>The Nervous System Reset</h3><p>Thai-style pressure work, yoga-inspired stretches and flowing oil strokes, paced to settle the body rather than rush it.</p><dl><div><dt>Duration</dt><dd>60 / 90 Min</dd></div><div><dt>Price</dt><dd>NA</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                </div>
+              </section>
+              <section class="noscript-service-group" id="massages">
+                <h2>Massages</h2>
+                <p>Manual bodywork for relaxation, circulation, muscle relief and recovery.</p>
+                <div class="noscript-service-list">
+                  <article class="noscript-service-card"><h3>Swedish Massage</h3><p>The most common and best-known spa massage. A therapeutic treatment for relieving muscle soreness, stimulating circulation and creating a relaxing healing experience.</p><dl><div><dt>Duration</dt><dd>60 Min</dd></div><div><dt>Price</dt><dd>₹2500</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Thai Oil Therapy</h3><p>A blend of Eastern and Western techniques combining Thai-style deep tissue work, yoga stretching and flowing Swedish-style oil strokes.</p><dl><div><dt>Duration</dt><dd>60 / 90 Min</dd></div><div><dt>Price</dt><dd>₹2700 / 3500</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Thai Dry Massage</h3><p>Traditional Thai yoga massage with passive stretching and pressure along Sen lines. No oil is used and loose cotton clothing is provided.</p><dl><div><dt>Duration</dt><dd>60 Min</dd></div><div><dt>Price</dt><dd>₹2900</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Balinese Massage</h3><p>A hands-on treatment using kneading, pressure-point work and stretching to release soft tissue, reduce stress and improve range of movement.</p><dl><div><dt>Duration</dt><dd>60 Min</dd></div><div><dt>Price</dt><dd>₹2700</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Deep Tissue Massage</h3><p>Deep pressure focuses on the deepest layers of muscle tissue, tendons and fascia to release chronic muscle tension.</p><dl><div><dt>Duration</dt><dd>60 / 90 Min</dd></div><div><dt>Price</dt><dd>₹2900 / 3700</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Hot Stone Massage</h3><p>Traditional massage techniques with warmed basalt stones placed and moved across energy points to melt tension and energize the body.</p><dl><div><dt>Duration</dt><dd>90 Min</dd></div><div><dt>Price</dt><dd>₹4600</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Potli Massage</h3><p>Heated herbal pouches are pressed and rolled across the body to support pain relief, muscle relaxation, circulation and stress reduction.</p><dl><div><dt>Duration</dt><dd>60 Min</dd></div><div><dt>Price</dt><dd>₹5100</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                </div>
+              </section>
+              <section class="noscript-service-group" id="facials">
+                <h2>Facials</h2>
+                <p>Facials for cleansing, hydration, acne care, brightening, ageing support and occasion glow.</p>
+                <div class="noscript-service-list">
+                  <article class="noscript-service-card"><h3>Anti Acne Facial</h3><p>Designed for pimples, acne, blackheads and healthier-looking skin. The mask helps reduce inflammation and supports clearer skin.</p><dl><div><dt>Duration</dt><dd>60 Min</dd></div><div><dt>Price</dt><dd>₹3100</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Anti-Ageing Facial</h3><p>Replenishes the skin with collagen, vitamin C and hyaluronic acid to soften fine lines and support a firmer, rested look.</p><dl><div><dt>Duration</dt><dd>60 Min</dd></div><div><dt>Price</dt><dd>₹3100</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Brightening Party Glow Facial</h3><p>Recommended for tanned skin, using brightening botanicals such as liquorice, dandelion and carrot for a healthy glow.</p><dl><div><dt>Duration</dt><dd>60 Min</dd></div><div><dt>Price</dt><dd>₹3300</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Gold Facial</h3><p>Gold-infused products are used to promote skin radiance, firmness and a polished glow.</p><dl><div><dt>Duration</dt><dd>60 Min</dd></div><div><dt>Price</dt><dd>₹3600</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Signature Facial</h3><p>Tailored to individual skin needs and may combine different techniques and products based on the guest's skin condition.</p><dl><div><dt>Duration</dt><dd>60 Min</dd></div><div><dt>Price</dt><dd>₹4100</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Clean-up</h3><p>A mini cleanup facial to lighten the skin, remove impurities and refresh the face. Suitable for all skin types.</p><dl><div><dt>Duration</dt><dd>30 Min</dd></div><div><dt>Price</dt><dd>₹2300</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                </div>
+              </section>
+              <section class="noscript-service-group" id="body-polish">
+                <h2>Body Polish</h2>
+                <p>Body scrubs that gently slough off dead skin and prepare the body for better product and oil absorption.</p>
+                <div class="noscript-service-list">
+                  <article class="noscript-service-card"><h3>Apple and Honey Scrub</h3><p>Apple fruit acids gently exfoliate while honey hydrates and softens, leaving the skin smooth, radiant and refreshed.</p><dl><div><dt>Duration</dt><dd>45 Min</dd></div><div><dt>Price</dt><dd>₹2500</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Sandalwood</h3><p>Recommended for oily and acne-prone skin, with a lightening, de-tanning and antibacterial effect.</p><dl><div><dt>Duration</dt><dd>45 Min</dd></div><div><dt>Price</dt><dd>₹2300</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Chocolate Scrub</h3><p>A chocolate-based scrub rich in antioxidants, vitamins and minerals to support exfoliation, circulation and skin softness.</p><dl><div><dt>Duration</dt><dd>45 Min</dd></div><div><dt>Price</dt><dd>₹2500</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Lavender Scrub</h3><p>Lavender gently hydrates, soothes irritated skin and brings a calming aroma to the body polish ritual.</p><dl><div><dt>Duration</dt><dd>45 Min</dd></div><div><dt>Price</dt><dd>₹2300</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                </div>
+              </section>
+              <section class="noscript-service-group" id="body-wraps">
+                <h2>Body Wraps</h2>
+                <p>Body polish followed by a body mask that is left on for 20 to 30 minutes to support detoxification and mineral absorption.</p>
+                <div class="noscript-service-list">
+                  <article class="noscript-service-card"><h3>Chocolate Wrap</h3><p>A warm chocolate mask rich in antioxidants to soften, moisturize and leave the skin with a silky glow.</p><dl><div><dt>Duration</dt><dd>90 Min</dd></div><div><dt>Price</dt><dd>₹3500</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Clay Wrap</h3><p>A mineral-rich clay and marine mud mask that supports circulation while improving skin texture and tone.</p><dl><div><dt>Duration</dt><dd>90 Min</dd></div><div><dt>Price</dt><dd>₹3000</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                </div>
+              </section>
+              <section class="noscript-service-group" id="foot-reflexology">
+                <h2>Foot Reflexology</h2>
+                <p>Traditional Thai foot work using manual and stick techniques to ease tension in the foot and calf.</p>
+                <div class="noscript-service-list">
+                  <article class="noscript-service-card"><h3>Thai Foot</h3><p>Traditional Thai foot massage using manual and stick techniques to ease tension and stiffness in the foot and calf area.</p><dl><div><dt>Duration</dt><dd>30 Min</dd></div><div><dt>Price</dt><dd>₹1100</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Thai Foot Spa</h3><p>An extended Thai foot therapy in reclining chairs, designed to leave guests walking out with a lighter step.</p><dl><div><dt>Duration</dt><dd>45 Min</dd></div><div><dt>Price</dt><dd>₹1600</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                </div>
+              </section>
+              <section class="noscript-service-group" id="head-massage-category">
+                <h2>Head Massage</h2>
+                <p>Focused head, neck, shoulder and back therapies for quick stress relief.</p>
+                <div class="noscript-service-list">
+                  <article class="noscript-service-card"><h3>Head Massage</h3><p>A strong traditional head massage using fast strokes and pressure on trigger points to induce relaxation.</p><dl><div><dt>Duration</dt><dd>30 Min</dd></div><div><dt>Price</dt><dd>₹850</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>De-stress Massage</h3><p>A focused trigger-point therapy for the shoulder, neck and back area, suited to long driving or computer work.</p><dl><div><dt>Duration</dt><dd>30 Min</dd></div><div><dt>Price</dt><dd>₹1600</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                </div>
+              </section>
+              <section class="noscript-service-group" id="de-tanning">
+                <h2>De-tanning</h2>
+                <p>Targeted therapies for skin affected by sunlight, pollution and tanning.</p>
+                <div class="noscript-service-list">
+                  <article class="noscript-service-card"><h3>Face</h3><p>A focused face de-tan treatment to help skin affected by sun exposure and pollution.</p><dl><div><dt>Duration</dt><dd>As advised</dd></div><div><dt>Price</dt><dd>₹600</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Face, Neck and Arms</h3><p>A de-tan package for the face, neck and arms, the areas most exposed to sun and pollution.</p><dl><div><dt>Duration</dt><dd>As advised</dd></div><div><dt>Price</dt><dd>₹1200</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Whole Body</h3><p>A full-body therapy to help skin fight visible effects of sun and pollution.</p><dl><div><dt>Duration</dt><dd>As advised</dd></div><div><dt>Price</dt><dd>₹2100</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                </div>
+              </section>
+              <section class="noscript-service-group" id="manicure-pedicure">
+                <h2>Manicure &amp; Pedicure</h2>
+                <p>Hand, foot and nail grooming with shaping, cuticle care, soak, massage and polish where desired.</p>
+                <div class="noscript-service-list">
+                  <article class="noscript-service-card"><h3>Regular Manicure</h3><p>Basic manicure with nail trimming, shaping, cuticle care, hand soak, hand massage and polish if desired.</p><dl><div><dt>Duration</dt><dd>As advised</dd></div><div><dt>Price</dt><dd>₹1300</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Spa Manicure</h3><p>A richer manicure with exfoliation, hydrating mask or wrap, extended massage and aromatherapy.</p><dl><div><dt>Duration</dt><dd>As advised</dd></div><div><dt>Price</dt><dd>₹1900</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Regular Pedicure</h3><p>Basic pedicure with soak, nail trimming and shaping, cuticle care, exfoliation, callus removal, massage and polish if desired.</p><dl><div><dt>Duration</dt><dd>As advised</dd></div><div><dt>Price</dt><dd>₹1300</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Spa Pedicure</h3><p>Pedicure with additional features such as aromatherapy, hot towel wraps and extended massage.</p><dl><div><dt>Duration</dt><dd>As advised</dd></div><div><dt>Price</dt><dd>₹1900</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                </div>
+              </section>
+              <section class="noscript-service-group" id="hair-spa">
+                <h2>Hair Spa</h2>
+                <p>Hair and scalp rituals for hydration, repair, smoothing and visible volume.</p>
+                <div class="noscript-service-list">
+                  <article class="noscript-service-card"><h3>Intense Hydrating Spa</h3><p>A deep hydration and moisturization treatment for dry, damaged or frizzy hair.</p><dl><div><dt>Duration</dt><dd>As advised</dd></div><div><dt>Price</dt><dd>₹2600</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Repair and Restore Hair Spa</h3><p>Protein-rich care to rebuild and fortify the hair shaft, reducing breakage and improving resilience and elasticity.</p><dl><div><dt>Duration</dt><dd>As advised</dd></div><div><dt>Price</dt><dd>₹3100</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Smoothing Hair Spa</h3><p>A deep smoothing spa enriched with conditioning protein for nourishment, elasticity and a softer finish.</p><dl><div><dt>Duration</dt><dd>As advised</dd></div><div><dt>Price</dt><dd>₹2900</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                  <article class="noscript-service-card"><h3>Volumizing Hair Spa</h3><p>A volume-focused treatment aimed at adding body, fullness and lift to the hair.</p><dl><div><dt>Duration</dt><dd>As advised</dd></div><div><dt>Price</dt><dd>₹2600</dd></div></dl><a href="tel:+919792710010">Call to book</a></article>
+                </div>
+              </section>
+            </div>
+
           </noscript>
           <div class="menu-callout" data-reveal="fade-up"><p>Bookings are confirmed by phone.</p><a class="button button--primary button--arrow" href="tel:+919792710010">Call +91 97927 10010 <span aria-hidden="true">→</span></a></div>
         </div>

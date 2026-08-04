@@ -40,12 +40,12 @@
 
     <main id="main-content">
       <section class="cinematic-hero home-hero" aria-labelledby="home-title">
-        <div class="media-background" data-video-background data-autoplay="true">
+        <div class="media-background" data-video-background data-video-valid="true" data-autoplay="true">
           <picture class="media-background__poster">
             <source media="(max-width: 767px)" srcset="assets/images/posters/home-hero-poster-mobile.webp">
             <img src="assets/images/posters/home-hero-poster.webp" width="1920" height="1080" alt="" fetchpriority="high">
           </picture>
-          <video muted playsinline loop preload="metadata" poster="assets/images/posters/home-hero-poster.webp" aria-hidden="true">
+          <video class="hero-video" muted autoplay playsinline loop preload="metadata" poster="assets/images/posters/home-hero-poster.webp" aria-hidden="true">
             <source src="assets/videos/home-hero-mobile.webm" type="video/webm" media="(max-width: 767px)">
             <source src="assets/videos/home-hero-mobile.mp4" type="video/mp4" media="(max-width: 767px)">
             <source src="assets/videos/home-hero-desktop.webm" type="video/webm">
@@ -62,41 +62,64 @@
           </div>
         </div>
         <a class="scroll-cue" href="#signature"><span>Explore</span><i aria-hidden="true"></i></a>
-        <button class="media-toggle" type="button" data-video-toggle aria-pressed="false"><span data-video-toggle-label>Pause video</span></button>
+        <button class="media-toggle" type="button" data-video-toggle aria-pressed="false" aria-label="Pause background video"><span class="media-toggle__icon" data-video-toggle-icon aria-hidden="true">||</span><span data-video-toggle-label>Pause video</span></button>
       </section>
 
       <section class="section section--editorial" id="signature">
         <div class="wrap">
           <header class="section-heading" data-reveal="fade-up">
             <h2>Current favourites, <em>chosen by how guests want to feel.</em></h2>
-            <p>Start here if you are arriving tired, tight or unsure what to book. Every booking is confirmed by phone so the team can guide you to the right ritual.</p>
+            <p>Start here if you are coming in tired, tight or unsure what to book. The team will confirm the right ritual by phone.</p>
           </header>
-          <div class="signature-rail" data-signature-rail data-stagger></div>
-          <noscript><p><a class="text-link" href="services.html#specials">Browse Coral Spa signature rituals</a></p></noscript>
+          <div class="signature-rail" data-stagger>
+            <a class="signature-card" href="services.html#the-jet-lag-reset" data-reveal="fade-up">
+              <div class="signature-card__media"><img src="assets/images/signatures/jet-lag-reset-desktop.webp" srcset="assets/images/signatures/jet-lag-reset-mobile.webp 960w, assets/images/signatures/jet-lag-reset-desktop.webp 1920w" sizes="(max-width: 720px) 82vw, 30vw" width="900" height="1200" loading="lazy" decoding="async" alt=""></div>
+              <div class="signature-card__copy"><span>Newly In</span><h3>The Jet Lag Reset</h3><p>Swedish and oil-based recovery with 60 minutes of bodywork and 30 minutes of head massage.</p><div class="signature-card__meta"><span>View treatment</span><i aria-hidden="true">→</i></div></div>
+            </a>
+            <a class="signature-card" href="services.html#lymphatic-drainage" data-reveal="fade-up">
+              <div class="signature-card__media"><img src="assets/images/signatures/lymphatic-drainage-desktop.webp" srcset="assets/images/signatures/lymphatic-drainage-mobile.webp 960w, assets/images/signatures/lymphatic-drainage-desktop.webp 1920w" sizes="(max-width: 720px) 82vw, 30vw" width="900" height="1200" loading="lazy" decoding="async" alt=""></div>
+              <div class="signature-card__copy"><span>Trending</span><h3>Lymphatic Drainage</h3><p>For heavy legs, travel fatigue and water retention, with pressure guided by the therapist.</p><div class="signature-card__meta"><span>View treatment</span><i aria-hidden="true">→</i></div></div>
+            </a>
+            <a class="signature-card" href="services.html#the-heat-ritual" data-reveal="fade-up">
+              <div class="signature-card__media"><img src="assets/images/signatures/heat-ritual-desktop.webp" srcset="assets/images/signatures/heat-ritual-mobile.webp 960w, assets/images/signatures/heat-ritual-desktop.webp 1920w" sizes="(max-width: 720px) 82vw, 30vw" width="900" height="1200" loading="lazy" decoding="async" alt=""></div>
+              <div class="signature-card__copy"><span>Signature</span><h3>The Heat Ritual</h3><p>Hot stones, essential oils and steady warmth for a slower nervous-system reset.</p><div class="signature-card__meta"><span>View treatment</span><i aria-hidden="true">→</i></div></div>
+            </a>
+          </div>
         </div>
       </section>
 
       <section class="section section--categories texture-surface" id="treatments">
         <div class="wrap">
-          <header class="section-heading section-heading--split" data-reveal="fade-up">
-            <h2>Ten ways to find <em>your ritual.</em></h2>
-            <p>Explore the exact treatment categories in the Coral Spa menu, from bodywork and skin care to hair, hands and feet.</p>
+          <header class="section-heading" data-reveal="fade-up">
+            <h2>Treatments <em>Overview.</em></h2>
           </header>
-          <div class="category-grid" data-home-categories data-stagger></div>
-          <noscript><p><a class="text-link" href="services.html">View all treatment categories</a></p></noscript>
+          <div class="overview-grid" data-stagger>
+            <a class="overview-card" href="services.html#massages" data-category-video-slot data-video-valid="false" data-video-webm="assets/videos/category-massage-desktop.webm" data-video-mp4="assets/videos/category-massage-desktop.mp4" data-reveal="fade-up">
+              <div class="overview-card__media"><img src="assets/images/categories/category-massage.webp" width="1920" height="1080" loading="lazy" decoding="async" alt=""></div>
+              <div class="overview-card__copy"><span>Massage</span><h3>Bodywork and Recovery</h3><p>Swedish, Thai, Balinese, deep tissue, hot stone and newer recovery rituals for tension, travel fatigue and everyday stress.</p><i aria-hidden="true">→</i></div>
+            </a>
+            <a class="overview-card" href="services.html#facials" data-category-video-slot data-video-valid="false" data-video-webm="assets/videos/category-facials-desktop.webm" data-video-mp4="assets/videos/category-facials-desktop.mp4" data-reveal="fade-up">
+              <div class="overview-card__media"><img src="assets/images/categories/category-facials.webp" width="1920" height="1080" loading="lazy" decoding="async" alt=""></div>
+              <div class="overview-card__copy"><span>Skin and Glow</span><h3>Facials, Polish and Wraps</h3><p>Facials, de-tanning, body polish and body wraps for clear skin, glow, softness and occasion-ready care.</p><i aria-hidden="true">→</i></div>
+            </a>
+            <a class="overview-card" href="services.html#hair-spa" data-category-video-slot data-video-valid="false" data-video-webm="assets/videos/category-hair-spa-desktop.webm" data-video-mp4="assets/videos/category-hair-spa-desktop.mp4" data-reveal="fade-up">
+              <div class="overview-card__media"><img src="assets/images/categories/category-hands-feet.webp" width="1920" height="1080" loading="lazy" decoding="async" alt=""></div>
+              <div class="overview-card__copy"><span>Hair and Nails</span><h3>Hair, Hands and Feet</h3><p>Moroccan Oil hair spa rituals, manicures, pedicures, foot reflexology and focused head massage.</p><i aria-hidden="true">→</i></div>
+            </a>
+          </div>
         </div>
       </section>
 
-      <section class="section section--why">
+      <section class="section section--why" id="why-coral-spa">
         <div class="wrap why-layout">
           <header class="section-heading" data-reveal="horizontal">
-            <h2>Care with a <em>considered pace.</em></h2>
-            <p>Coral Spa combines consult-first service with a broad menu of established bodywork, skin, hair and grooming rituals.</p>
+            <h2>Trained hands, <em>not guesswork.</em></h2>
           </header>
           <div class="why-points" data-stagger>
-            <article class="editorial-point" data-reveal="fade-up"><span>01</span><h3>Call-first care</h3><p>Every booking is confirmed by phone so the team can guide you to the right ritual.</p></article>
-            <article class="editorial-point" data-reveal="fade-up"><span>02</span><h3>Personalized to your needs</h3><p>Pressure, oil and timing are adjusted for the guest instead of following a fixed script.</p></article>
-            <article class="editorial-point" data-reveal="fade-up"><span>03</span><h3>Professional products</h3><p>Premium oils, skin-care formulas, body care and Moroccan Oil hair products are matched to the ritual.</p></article>
+            <article class="editorial-point" data-reveal="fade-up"><span>01</span><h3>Certified Therapists</h3><p>Therapists work across Thai, Balinese, Swedish, deep pressure, hot stone and lymphatic techniques.</p></article>
+            <article class="editorial-point" data-reveal="fade-up"><span>02</span><h3>Call-First Care</h3><p>Every booking is confirmed by phone so that the team can guide you to the right ritual.</p></article>
+            <article class="editorial-point" data-reveal="fade-up"><span>03</span><h3>Personalized to Your Needs</h3><p>Pressure, oil and timing are adjusted for the guest instead of following a fixed script.</p></article>
+            <article class="editorial-point" data-reveal="fade-up"><span>04</span><h3>Professional Products</h3><p>The team uses premium oils, skin-care formulas, body care and Moroccan Oil hair products matched to the ritual.</p></article>
           </div>
         </div>
       </section>
@@ -109,16 +132,19 @@
           </header>
           <div class="editorial-gallery">
             <figure class="gallery-item gallery-item--tall" data-reveal="fade-up" data-parallax-media>
-              <picture><source type="image/webp" srcset="assets/images/gallery/coral-spa-reception-640.webp 640w, assets/images/gallery/coral-spa-reception-1200.webp 1200w"><img src="assets/images/gallery/coral-spa-reception.jpeg" width="1600" height="900" sizes="(max-width: 720px) 100vw, 44vw" loading="lazy" decoding="async" alt="Coral Spa reception with illuminated display shelves"></picture><figcaption>Reception</figcaption>
+              <picture><source type="image/webp" srcset="assets/images/gallery/coral-spa-reception-640.webp 640w, assets/images/gallery/coral-spa-reception-1200.webp 1200w"><img src="assets/images/gallery/coral-spa-reception.jpeg" width="1600" height="900" sizes="(max-width: 720px) 100vw, 44vw" loading="lazy" decoding="async" alt="Coral Spa reception with illuminated display shelves"></picture><figcaption>Reception and Lounge</figcaption>
             </figure>
             <figure class="gallery-item" data-reveal="fade-up" data-parallax-media>
-              <picture><source type="image/webp" srcset="assets/images/gallery/coral-spa-therapy-suite-640.webp 640w, assets/images/gallery/coral-spa-therapy-suite-1200.webp 1200w"><img src="assets/images/gallery/coral-spa-therapy-suite.jpeg" width="1600" height="1204" sizes="(max-width: 720px) 100vw, 50vw" loading="lazy" decoding="async" alt="Coral Spa therapy suite with a treatment bed"></picture><figcaption>Therapy suite</figcaption>
+              <picture><source type="image/webp" srcset="assets/images/gallery/coral-spa-therapy-suite-640.webp 640w, assets/images/gallery/coral-spa-therapy-suite-1200.webp 1200w"><img src="assets/images/gallery/coral-spa-therapy-suite.jpeg" width="1600" height="1204" sizes="(max-width: 720px) 100vw, 50vw" loading="lazy" decoding="async" alt="Coral Spa therapy suite with a treatment bed"></picture><figcaption>Treatment Suite</figcaption>
             </figure>
             <figure class="gallery-item" data-reveal="fade-up" data-parallax-media>
-              <picture><source type="image/webp" srcset="assets/images/gallery/coral-spa-pedicure-lounge-640.webp 640w, assets/images/gallery/coral-spa-pedicure-lounge-1200.webp 1200w"><img src="assets/images/gallery/coral-spa-pedicure-lounge.jpeg" width="1600" height="900" sizes="(max-width: 720px) 100vw, 50vw" loading="lazy" decoding="async" alt="Coral Spa pedicure lounge with reclining chairs and foot baths"></picture><figcaption>Foot-care lounge</figcaption>
+              <picture><source type="image/webp" srcset="assets/images/gallery/coral-spa-pedicure-lounge-640.webp 640w, assets/images/gallery/coral-spa-pedicure-lounge-1200.webp 1200w"><img src="assets/images/gallery/coral-spa-pedicure-lounge.jpeg" width="1600" height="900" sizes="(max-width: 720px) 100vw, 50vw" loading="lazy" decoding="async" alt="Coral Spa pedicure lounge with reclining chairs and foot baths"></picture><figcaption>Foot Care Room</figcaption>
             </figure>
             <figure class="gallery-item gallery-item--wide" data-reveal="fade-up" data-parallax-media>
-              <picture><source type="image/webp" srcset="assets/images/gallery/coral-spa-waiting-lounge-640.webp 640w, assets/images/gallery/coral-spa-waiting-lounge-1200.webp 1200w"><img src="assets/images/gallery/coral-spa-waiting-lounge.jpeg" width="1600" height="900" sizes="(max-width: 720px) 100vw, 72vw" loading="lazy" decoding="async" alt="Coral Spa waiting lounge with upholstered seating and warm lighting"></picture><figcaption>Waiting lounge</figcaption>
+              <picture><source type="image/webp" srcset="assets/images/gallery/coral-spa-waiting-lounge-640.webp 640w, assets/images/gallery/coral-spa-waiting-lounge-1200.webp 1200w"><img src="assets/images/gallery/coral-spa-waiting-lounge.jpeg" width="1600" height="900" sizes="(max-width: 720px) 100vw, 72vw" loading="lazy" decoding="async" alt="Coral Spa waiting lounge with upholstered seating and warm lighting"></picture><figcaption>Waiting Lounge</figcaption>
+            </figure>
+            <figure class="gallery-item" data-reveal="fade-up" data-parallax-media>
+              <picture><source type="image/webp" srcset="assets/images/gallery/coral-spa-art-corner-640.webp 640w, assets/images/gallery/coral-spa-art-corner-1200.webp 1200w"><img src="assets/images/gallery/coral-spa-art-corner.jpeg" width="1600" height="900" sizes="(max-width: 720px) 100vw, 44vw" loading="lazy" decoding="async" alt="Decorative art and warm lighting inside Coral Spa"></picture><figcaption>Art and Detail</figcaption>
             </figure>
           </div>
         </div>

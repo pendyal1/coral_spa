@@ -17,8 +17,17 @@ Then open `http://localhost:4173`.
 - `assets/js/services-data.js`: single source of truth for service categories and treatments.
 - `assets/js/main.js`: navigation, service rendering/filtering and page interactions.
 - `assets/js/media.js`: viewport-aware video loading, playback and fallbacks.
-- `assets/js/motion.js`: reduced-motion-aware reveals and restrained parallax.
+- `assets/js/motion.js`: progressive, reduced-motion-aware section reveals.
 - `assets/media/asset-manifest.json`: canonical media inventory and delivery requirements.
+- `assets/media/video-audit.json`: visual authenticity status for every video group.
+- `assets/media/video-probe-report.json`: generated codec, dimensions, duration and audio audit for every video file.
+
+Run production regression and media checks:
+
+```sh
+npm test
+npm run audit:videos
+```
 
 Do not add private API keys to frontend files. Live integrations that require secrets must use a separately hosted serverless endpoint; the public site uses direct Google links as its safe fallback.
 

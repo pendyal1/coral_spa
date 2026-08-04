@@ -21,6 +21,18 @@
     "The Heat Ritual": mediaPair("assets/images/signatures/heat-ritual-desktop.webp", "assets/images/signatures/heat-ritual-mobile.webp")
   };
 
+  const categoryVideoSlots = {
+    Massages: videoSlot("category-massage"),
+    Facials: videoSlot("category-facials"),
+    "Body Polish": videoSlot("category-body-care"),
+    "Body Wraps": videoSlot("category-body-care"),
+    "Foot Reflexology": videoSlot("category-hands-feet"),
+    "Head Massage": videoSlot("category-massage"),
+    "De-tanning": videoSlot("category-facials"),
+    "Manicure & Pedicure": videoSlot("category-hands-feet"),
+    "Hair Spa": videoSlot("category-hair-spa")
+  };
+
   const longDescriptions = {
     "The Jet Lag Reset": "A recovery-focused Coral Spa ritual for guests arriving tired, heavy or out of rhythm. Swedish-style oil work eases the body first, followed by focused head massage to settle screen fatigue, travel stress and post-flight stiffness.",
     "Lymphatic Drainage": "A light-to-medium rhythmic massage designed to support fluid movement, ease heaviness and help the body feel less stagnant. Pressure is selected by the therapist after a short consult.",
@@ -129,7 +141,7 @@
         <section class="service-group" id="${id}" data-service-group="${escapeHtml(category.category)}">
           <header class="service-group__header" data-reveal="fade-up">
             <div><h2>${escapeHtml(category.category)}</h2><p>${escapeHtml(category.intro)}</p></div>
-            <figure data-parallax-media><img ${responsiveImageAttributes(categoryImage(category), "(max-width: 720px) 92vw, 34vw")} width="1920" height="1080" loading="lazy" decoding="async" alt=""></figure>
+            <figure class="category-media" ${categoryVideoAttributes(category)}><img ${responsiveImageAttributes(categoryImage(category), "(max-width: 720px) 92vw, 34vw")} width="1920" height="1080" loading="lazy" decoding="async" alt=""></figure>
           </header>
           <div class="service-list">${category.services.map((service) => serviceRow(service, category.category)).join("")}</div>
         </section>`;
@@ -252,6 +264,18 @@
   }
 
   function mediaPair(desktop, mobile) { return { desktop, mobile: mobile || desktop }; }
+  function videoSlot(name) {
+    return {
+      valid: false,
+      webm: `assets/videos/${name}-desktop.webm`,
+      mp4: `assets/videos/${name}-desktop.mp4`
+    };
+  }
+  function categoryVideoAttributes(category) {
+    const slot = categoryVideoSlots[category.category];
+    if (!slot) return "";
+    return `data-category-video-slot data-video-valid="${slot.valid}" data-video-webm="${escapeHtml(slot.webm)}" data-video-mp4="${escapeHtml(slot.mp4)}"`;
+  }
   function categoryImage(category) { return categoryImages[category.category] || mediaPair(category.image); }
   function responsiveImageAttributes(media, sizes) {
     return `src="${escapeHtml(media.desktop)}" srcset="${escapeHtml(media.mobile)} 960w, ${escapeHtml(media.desktop)} 1920w" sizes="${escapeHtml(sizes)}"`;

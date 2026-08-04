@@ -1,0 +1,68 @@
+{
+  "auditedAt": "2026-08-05",
+  "criteria": "Genuine subject or camera motion; valid browser codec; no audio; matching poster fallback.",
+  "assets": [
+    {
+      "id": "home-hero",
+      "status": "approved-genuine-video",
+      "integrated": true,
+      "desktopSource": "assets/videos/home-hero-desktop.webm",
+      "desktopFallback": "assets/videos/home-hero-desktop.mp4",
+      "mobileSource": "assets/videos/home-hero-mobile.webm",
+      "mobileFallback": "assets/videos/home-hero-mobile.mp4",
+      "poster": "assets/images/posters/home-hero-poster.webp",
+      "provenance": [
+        "https://www.pexels.com/video/professional-massage-on-spa-6187311/",
+        "https://www.pexels.com/video/professional-massage-6186728/"
+      ]
+    },
+    {
+      "id": "about-hero",
+      "status": "rejected-still-motion",
+      "integrated": false,
+      "fallback": "assets/images/posters/about-hero-poster-desktop.webp"
+    },
+    {
+      "id": "services-hero",
+      "status": "rejected-still-motion",
+      "integrated": false,
+      "fallback": "assets/images/posters/services-hero-poster-desktop.webp"
+    },
+    {
+      "id": "contact-hero",
+      "status": "rejected-still-motion",
+      "integrated": false,
+      "fallback": "assets/images/posters/contact-hero-poster-desktop.webp"
+    },
+    {
+      "id": "category-massage",
+      "status": "rejected-still-motion",
+      "integrated": false,
+      "fallback": "assets/images/categories/category-massage.webp"
+    },
+    {
+      "id": "category-facials",
+      "status": "rejected-still-motion",
+      "integrated": false,
+      "fallback": "assets/images/categories/category-facials.webp"
+    },
+    {
+      "id": "category-body-care",
+      "status": "rejected-still-motion",
+      "integrated": false,
+      "fallback": "assets/images/categories/category-body-care.webp"
+    },
+    {
+      "id": "category-hair-spa",
+      "status": "rejected-still-motion",
+      "integrated": false,
+      "fallback": "assets/images/categories/category-hair-spa.webp"
+    },
+    {
+      "id": "category-hands-feet",
+      "status": "rejected-still-motion",
+      "integrated": false,
+      "fallback": "assets/images/categories/category-hands-feet.webp"
+    }
+  ]
+}

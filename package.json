@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "dev": "python3 -m http.server 4173"
+    "dev": "python3 -m http.server 4173",
+    "test": "node scripts/regression-check.cjs",
+    "audit:videos": "node scripts/audit-videos.cjs"
   },
   "devDependencies": {}
 }
