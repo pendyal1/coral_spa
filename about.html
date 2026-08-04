@@ -29,18 +29,18 @@
 
     <main id="main-content">
       <section class="cinematic-hero page-hero" aria-labelledby="about-title">
-        <div class="media-background" data-video-background data-video-valid="false" data-autoplay="false">
+        <div class="media-background" data-video-background data-video-valid="true" data-autoplay="true">
           <picture class="media-background__poster"><source media="(max-width: 767px)" srcset="assets/images/posters/about-hero-poster-mobile.webp"><img src="assets/images/posters/about-hero-poster-desktop.webp" width="1920" height="1080" alt="" fetchpriority="high"></picture>
-          <video muted playsinline loop preload="metadata" poster="assets/images/posters/about-hero-poster-desktop.webp" aria-hidden="true">
-            <source data-src="assets/videos/about-hero-mobile.webm" type="video/webm" media="(max-width: 767px)"><source data-src="assets/videos/about-hero-mobile.mp4" type="video/mp4" media="(max-width: 767px)"><source data-src="assets/videos/about-hero-desktop.webm" type="video/webm"><source data-src="assets/videos/about-hero-desktop.mp4" type="video/mp4">
+          <video class="hero-video" muted autoplay playsinline loop preload="metadata" poster="assets/images/posters/about-hero-poster-desktop.webp" aria-hidden="true">
+            <source src="assets/videos/about-hero-mobile.webm" type="video/webm" media="(max-width: 767px)"><source src="assets/videos/about-hero-mobile.mp4" type="video/mp4" media="(max-width: 767px)"><source src="assets/videos/about-hero-desktop.webm" type="video/webm"><source src="assets/videos/about-hero-desktop.mp4" type="video/mp4">
           </video>
           <div class="media-background__scrim"></div>
         </div>
         <div class="wrap hero-content"><h1 id="about-title" data-reveal="fade-up">Warm rooms, trained hands and <em>rituals that feel personal.</em></h1><p class="hero-lede" data-reveal="fade-up">Coral Spa brings massage, skin, hair and grooming care together in a calm space shaped by comfort, technique and attentive hospitality.</p></div>
-        <button class="media-toggle" type="button" data-video-toggle aria-pressed="true" aria-label="Background video unavailable" hidden><span class="media-toggle__icon" data-video-toggle-icon aria-hidden="true">&gt;</span><span data-video-toggle-label>Play video</span></button>
+        <button class="media-toggle" type="button" data-video-toggle aria-pressed="false" aria-label="Pause background video"><span class="media-toggle__icon" data-video-toggle-icon aria-hidden="true">||</span><span data-video-toggle-label>Pause video</span></button>
       </section>
 
-      <section class="section story-section">
+      <section class="section story-section surface-wood">
         <div class="wrap story-layout">
           <figure class="story-image" data-reveal="scale-in" data-parallax-media>
             <picture><source type="image/webp" srcset="assets/images/gallery/coral-spa-reception-640.webp 640w, assets/images/gallery/coral-spa-reception-1200.webp 1200w"><img src="assets/images/gallery/coral-spa-reception.jpeg" width="1600" height="900" sizes="(max-width: 820px) 100vw, 52vw" alt="Coral Spa reception and arrival lounge" decoding="async"></picture><figcaption>Coral Spa reception, Kanpur</figcaption>
@@ -49,7 +49,7 @@
         </div>
       </section>
 
-      <section class="section certification-section texture-surface">
+      <section class="section certification-section surface-botanical">
         <div class="wrap certification-layout">
           <div class="certification-copy" data-reveal="horizontal"><h2>Certified quality <em>management.</em></h2><p>Coral Spa’s quality management system is certified to ISO 9001:2015 for the beauty and wellness services listed on the certificate. The certificate is issued by Magnitude Management Services Pvt. Ltd. and bears EGAC and IAF recognition marks.</p><p class="inspection-note">Select the certificate to inspect it at full size.</p></div>
           <button class="certificate-button" type="button" data-certificate-open aria-haspopup="dialog" aria-controls="certificateDialog" data-reveal="scale-in">
@@ -58,9 +58,9 @@
         </div>
       </section>
 
-      <section class="section therapists-section">
+      <section class="section therapists-section surface-stone">
         <div class="wrap therapists-layout">
-          <div class="therapists-visual" aria-hidden="true" data-reveal="fade-in"><img src="assets/images/about/about-story.webp" width="1920" height="1080" alt="" loading="lazy" decoding="async"></div>
+          <div class="therapists-visual" aria-hidden="true" data-reveal="fade-in"><picture><source media="(max-width: 720px)" srcset="assets/images/about/therapists-at-work-mobile.webp"><img src="assets/images/about/therapists-at-work-desktop.webp" width="1920" height="1080" alt="" loading="lazy" decoding="async"></picture></div>
           <div class="therapists-copy" data-reveal="fade-up"><h2>Our <em>therapists.</em></h2><p>The Coral Spa team delivers the massage, facial, body-care, hair-spa and grooming menu presented on this site. A short phone conversation helps match each guest with an appropriate ritual and available therapist.</p><a class="button button--primary button--arrow" href="tel:+919792710010">Speak with the team <span aria-hidden="true">→</span></a></div>
         </div>
       </section>

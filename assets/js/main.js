@@ -44,6 +44,8 @@
   initHeader();
   initNavigation();
   renderHomeContent();
+  initGalleryShowcase();
+  initGoogleReviews();
   renderServicesMenu();
   initServiceSearch();
   initAnchorNavigation();
@@ -132,13 +134,16 @@
     if (!root || !services.length) return;
 
     if (nav) {
-      nav.innerHTML = services.map((category) => `<a href="#${categoryHash(category.category)}" data-category-link="${categoryHash(category.category)}">${escapeHtml(category.category)}</a>`).join("");
+      nav.innerHTML = services.map((category) => {
+        const id = categoryHash(category.category);
+        return `<a class="service-nav-tile" href="#${id}" data-category-link="${id}"><img ${responsiveImageAttributes(categoryImage(category), "(max-width: 719px) 46vw, (max-width: 1279px) 18vw, 9vw")} width="960" height="1200" loading="lazy" decoding="async" alt=""><span>${escapeHtml(category.category)}</span></a>`;
+      }).join("");
     }
 
-    root.innerHTML = services.map((category) => {
+    root.innerHTML = services.map((category, categoryIndex) => {
       const id = categoryHash(category.category);
       return `
-        <section class="service-group" id="${id}" data-service-group="${escapeHtml(category.category)}">
+        <section class="service-group ${categoryIndex % 2 === 0 ? "surface-stone" : "surface-deep"}" id="${id}" data-service-group="${escapeHtml(category.category)}">
           <header class="service-group__header" data-reveal="fade-up">
             <div><h2>${escapeHtml(category.category)}</h2><p>${escapeHtml(category.intro)}</p></div>
             <figure class="category-media" ${categoryVideoAttributes(category)}><img ${responsiveImageAttributes(categoryImage(category), "(max-width: 720px) 92vw, 34vw")} width="1920" height="1080" loading="lazy" decoding="async" alt=""></figure>
@@ -150,6 +155,238 @@
     initActiveCategory();
     openInitialServiceHash();
     document.dispatchEvent(new CustomEvent("coral:content-rendered"));
+  }
+
+  function initGalleryShowcase() {
+    const root = document.querySelector("[data-gallery-showcase]");
+    if (!root) return;
+    const focus = root.querySelector("[data-gallery-focus]");
+    const focusSource = root.querySelector("[data-gallery-focus-source]");
+    const focusImage = root.querySelector("[data-gallery-focus-image]");
+    const caption = root.querySelector("[data-gallery-caption]");
+    const thumbs = Array.from(root.querySelectorAll("[data-gallery-thumb]"));
+    if (!focus || !focusSource || !focusImage || !caption || thumbs.length !== 4) return;
+
+    const readItem = (element) => ({
+      src: element.dataset.gallerySrc,
+      small: element.dataset.gallerySmall,
+      large: element.dataset.galleryLarge,
+      caption: element.dataset.galleryCaption,
+      alt: element.dataset.galleryAlt
+    });
+    const items = [readItem(focus), ...thumbs.map(readItem)];
+    thumbs.forEach((button, index) => { button.dataset.galleryIndex = String(index + 1); });
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let focusedIndex = 0;
+    let timer = null;
+    let paused = false;
+    let manualResumeAt = 0;
+
+    const render = (nextIndex) => {
+      focusedIndex = (nextIndex + items.length) % items.length;
+      const focused = items[focusedIndex];
+      root.classList.add("is-changing");
+      window.setTimeout(() => {
+        focus.dataset.gallerySrc = focused.src;
+        focus.dataset.gallerySmall = focused.small;
+        focus.dataset.galleryLarge = focused.large;
+        focus.dataset.galleryCaption = focused.caption;
+        focus.dataset.galleryAlt = focused.alt;
+        focusSource.srcset = `${focused.small} 640w, ${focused.large} 1200w`;
+        focusImage.src = focused.src;
+        focusImage.alt = focused.alt;
+        caption.textContent = focused.caption;
+
+        const remaining = items.map((item, index) => ({ item, index })).filter(({ index }) => index !== focusedIndex);
+        thumbs.forEach((button, slot) => {
+          const { item, index } = remaining[slot];
+          const image = button.querySelector("img");
+          const label = button.querySelector("span");
+          button.dataset.galleryIndex = String(index);
+          button.dataset.gallerySrc = item.src;
+          button.dataset.gallerySmall = item.small;
+          button.dataset.galleryLarge = item.large;
+          button.dataset.galleryCaption = item.caption;
+          button.dataset.galleryAlt = item.alt;
+          button.setAttribute("aria-label", `Show ${item.caption}`);
+          button.setAttribute("aria-pressed", "false");
+          image.src = item.small;
+          label.textContent = item.caption;
+        });
+        root.classList.remove("is-changing");
+      }, reduceMotion.matches ? 0 : 130);
+    };
+
+    const stop = () => {
+      if (timer) window.clearTimeout(timer);
+      timer = null;
+    };
+    const schedule = (minimumDelay = 5500) => {
+      stop();
+      if (paused || reduceMotion.matches || document.hidden) return;
+      const delay = Math.max(minimumDelay, manualResumeAt - Date.now());
+      timer = window.setTimeout(() => {
+        render(focusedIndex + 1);
+        schedule(5500);
+      }, delay);
+    };
+    const select = (index, manual) => {
+      if (manual) manualResumeAt = Date.now() + 10000;
+      render(index);
+      schedule(manual ? 10000 : 5500);
+    };
+
+    thumbs.forEach((button) => button.addEventListener("click", () => select(Number(button.dataset.galleryIndex), true)));
+    root.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      event.preventDefault();
+      select(focusedIndex + (event.key === "ArrowRight" ? 1 : -1), true);
+    });
+    root.addEventListener("mouseenter", () => { paused = true; stop(); });
+    root.addEventListener("mouseleave", () => { paused = false; schedule(); });
+    root.addEventListener("focusin", () => { paused = true; stop(); });
+    root.addEventListener("focusout", (event) => {
+      if (root.contains(event.relatedTarget)) return;
+      paused = false;
+      schedule();
+    });
+    document.addEventListener("visibilitychange", () => document.hidden ? stop() : schedule());
+    const handleMotionChange = () => reduceMotion.matches ? stop() : schedule();
+    if (reduceMotion.addEventListener) reduceMotion.addEventListener("change", handleMotionChange);
+    else reduceMotion.addListener(handleMotionChange);
+
+    render(0);
+    schedule();
+  }
+
+  async function initGoogleReviews() {
+    const roots = Array.from(document.querySelectorAll("[data-google-reviews]"));
+    if (!roots.length) return;
+    const config = window.CORAL_GOOGLE_REVIEWS || {};
+    const mapsUrl = config.mapsUrl || "https://www.google.com/maps/search/?api=1&query=Coral%20Spa%20B.K-2%20Tower%203%2F13A%20Vishnu%20Puri%20Kanpur";
+
+    try {
+      let reviews = [];
+      let liveMapsUrl = mapsUrl;
+      if (config.endpoint) {
+        const response = await fetch(config.endpoint, { headers: { Accept: "application/json" } });
+        if (!response.ok) throw new Error("Reviews endpoint returned an unsuccessful response");
+        const payload = await response.json();
+        reviews = normalizeReviews(payload.reviews || payload);
+        liveMapsUrl = payload.mapsUrl || mapsUrl;
+      } else if (config.apiKey) {
+        await loadGoogleMaps(config.apiKey);
+        const place = await resolveGooglePlace(config);
+        await place.fetchFields({ fields: ["displayName", "googleMapsURI", "rating", "userRatingCount", "reviews"] });
+        reviews = normalizeReviews(place.reviews || []);
+        liveMapsUrl = place.googleMapsURI || mapsUrl;
+      } else {
+        renderGoogleReviewFallback(roots, mapsUrl);
+        return;
+      }
+
+      const fiveStarReviews = reviews.filter((review) => review.rating === 5).sort(newestReviewFirst).slice(0, 5);
+      if (!fiveStarReviews.length) throw new Error("No five-star reviews were returned");
+      renderGoogleReviews(roots, fiveStarReviews, liveMapsUrl);
+    } catch (error) {
+      renderGoogleReviewFallback(roots, mapsUrl);
+    }
+  }
+
+  function loadGoogleMaps(apiKey) {
+    if (window.google && window.google.maps && window.google.maps.importLibrary) return Promise.resolve();
+    if (window.__coralGoogleMapsPromise) return window.__coralGoogleMapsPromise;
+    window.__coralGoogleMapsPromise = new Promise((resolve, reject) => {
+      const callbackName = `coralGoogleMapsReady_${Date.now()}`;
+      window[callbackName] = () => { delete window[callbackName]; resolve(); };
+      const script = document.createElement("script");
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&v=weekly&libraries=places&callback=${callbackName}`;
+      script.async = true;
+      script.defer = true;
+      script.onerror = () => { delete window[callbackName]; reject(new Error("Google Maps could not load")); };
+      document.head.appendChild(script);
+    });
+    return window.__coralGoogleMapsPromise;
+  }
+
+  async function resolveGooglePlace(config) {
+    const { Place } = await window.google.maps.importLibrary("places");
+    if (config.placeId) return new Place({ id: config.placeId });
+    const result = await Place.searchByText({
+      textQuery: config.placeQuery || "Coral Spa Kanpur",
+      fields: ["id", "displayName", "googleMapsURI"],
+      maxResultCount: 1
+    });
+    if (!result.places || !result.places[0]) throw new Error("Google place not found");
+    return result.places[0];
+  }
+
+  function normalizeReviews(reviews) {
+    if (!Array.isArray(reviews)) return [];
+    return reviews.map((review) => {
+      const author = review.authorAttribution || review.author || {};
+      const text = review.text && typeof review.text === "object" ? review.text.text : review.text;
+      return {
+        authorName: author.displayName || review.authorName || "Google reviewer",
+        authorUrl: safeExternalUrl(author.uri || review.authorUrl),
+        rating: Number(review.rating || 0),
+        text: String(text || "").trim(),
+        publishTime: review.publishTime || review.time || "",
+        relativeTime: review.relativePublishTimeDescription || review.relativeTime || ""
+      };
+    });
+  }
+
+  function newestReviewFirst(a, b) {
+    return reviewTime(b.publishTime) - reviewTime(a.publishTime);
+  }
+
+  function reviewTime(value) {
+    const parsed = typeof value === "number" ? value * 1000 : Date.parse(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  function renderGoogleReviews(roots, reviews, mapsUrl) {
+    const cards = reviews.map((review) => {
+      const author = review.authorUrl
+        ? `<a href="${escapeHtml(review.authorUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(review.authorName)}</a>`
+        : escapeHtml(review.authorName);
+      return `<article class="review-card"><div class="review-card__stars" aria-label="5 stars">★★★★★</div>${review.text ? `<p>${escapeHtml(trimReview(review.text))}</p>` : ""}<span>${author}${review.relativeTime ? ` · ${escapeHtml(review.relativeTime)}` : ""}</span></article>`;
+    }).join("");
+    roots.forEach((root) => {
+      root.innerHTML = cards;
+      root.dataset.reviewState = "ready";
+      root.setAttribute("aria-busy", "false");
+    });
+    updateGoogleReviewLinks(mapsUrl);
+  }
+
+  function renderGoogleReviewFallback(roots, mapsUrl) {
+    const card = `<article class="review-card review-card--fallback"><div class="review-card__stars" aria-hidden="true">★★★★★</div><p>Open Coral Spa’s Google listing to read the latest reviews and ratings directly from the source.</p><span><a href="${escapeHtml(mapsUrl)}" target="_blank" rel="noopener noreferrer">Open Google Reviews</a></span></article>`;
+    roots.forEach((root) => {
+      root.innerHTML = card;
+      root.dataset.reviewState = "fallback";
+      root.setAttribute("aria-busy", "false");
+    });
+  }
+
+  function updateGoogleReviewLinks(url) {
+    const safe = safeExternalUrl(url);
+    if (!safe) return;
+    document.querySelectorAll('#reviews a[href*="google.com/maps"]').forEach((link) => { link.href = safe; });
+  }
+
+  function trimReview(text) {
+    return text.length > 220 ? `${text.slice(0, 217).trim()}...` : text;
+  }
+
+  function safeExternalUrl(value) {
+    try {
+      const url = new URL(String(value || ""), window.location.href);
+      return url.protocol === "https:" ? url.href : "";
+    } catch (error) {
+      return "";
+    }
   }
 
   function serviceRow(service, category) {

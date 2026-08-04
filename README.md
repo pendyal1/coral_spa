@@ -29,7 +29,9 @@ npm test
 npm run audit:videos
 ```
 
-Do not add private API keys to frontend files. Live integrations that require secrets must use a separately hosted serverless endpoint; the public site uses direct Google links as its safe fallback.
+Do not add private API keys to frontend files. The reviews component reads `assets/js/google-reviews-config.js` and accepts either a secure external `endpoint` or a Google Maps JavaScript API browser `apiKey`. The committed configuration is empty, so the public site safely falls back to a direct Google Reviews link without an error.
+
+For production reviews, copy the shape documented in `assets/js/google-reviews-config.example.js`. Prefer a serverless endpoint. If a browser key is used, restrict it to `https://pendyal1.github.io/coral_spa/*`, restrict it to only the required Maps JavaScript and Places APIs, and monitor quota and billing. Never commit an unrestricted key.
 
 ## Deploy to GitHub Pages
 

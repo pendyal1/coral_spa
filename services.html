@@ -18,24 +18,26 @@
 
     <main id="main-content">
       <section class="cinematic-hero page-hero" aria-labelledby="services-title">
-        <div class="media-background" data-video-background data-video-valid="false" data-autoplay="false"><picture class="media-background__poster"><source media="(max-width: 767px)" srcset="assets/images/posters/services-hero-poster-mobile.webp"><img src="assets/images/posters/services-hero-poster-desktop.webp" width="1920" height="1080" alt="" fetchpriority="high"></picture><video muted playsinline loop preload="none" poster="assets/images/posters/services-hero-poster-desktop.webp" aria-hidden="true"><source data-src="assets/videos/services-hero-mobile.webm" type="video/webm" media="(max-width: 767px)"><source data-src="assets/videos/services-hero-mobile.mp4" type="video/mp4" media="(max-width: 767px)"><source data-src="assets/videos/services-hero-desktop.webm" type="video/webm"><source data-src="assets/videos/services-hero-desktop.mp4" type="video/mp4"></video><div class="media-background__scrim"></div></div>
+        <div class="media-background" data-video-background data-video-valid="true" data-autoplay="true"><picture class="media-background__poster"><source media="(max-width: 767px)" srcset="assets/images/posters/services-hero-poster-mobile.webp"><img src="assets/images/posters/services-hero-poster-desktop.webp" width="1920" height="1080" alt="" fetchpriority="high"></picture><video class="hero-video" muted autoplay playsinline loop preload="metadata" poster="assets/images/posters/services-hero-poster-desktop.webp" aria-hidden="true"><source src="assets/videos/services-hero-mobile.webm" type="video/webm" media="(max-width: 767px)"><source src="assets/videos/services-hero-mobile.mp4" type="video/mp4" media="(max-width: 767px)"><source src="assets/videos/services-hero-desktop.webm" type="video/webm"><source src="assets/videos/services-hero-desktop.mp4" type="video/mp4"></video><div class="media-background__scrim"></div></div>
         <div class="wrap hero-content"><h1 id="services-title" data-reveal="fade-up">Spa rituals for how you want to <em>feel.</em></h1><p class="hero-lede" data-reveal="fade-up">Browse Coral Spa’s bodywork, skin, hair, hands and feet rituals.</p></div>
-        <button class="media-toggle" type="button" data-video-toggle aria-pressed="true" aria-label="Background video unavailable" hidden><span class="media-toggle__icon" data-video-toggle-icon aria-hidden="true">&gt;</span><span data-video-toggle-label>Play video</span></button>
+        <button class="media-toggle" type="button" data-video-toggle aria-pressed="false" aria-label="Pause background video"><span class="media-toggle__icon" data-video-toggle-icon aria-hidden="true">||</span><span data-video-toggle-label>Pause video</span></button>
       </section>
 
-      <nav class="service-category-bar" aria-label="Service categories" data-service-nav-container>
-        <div class="wrap service-category-bar__track" data-service-nav>
-          <a href="#specials">Specials</a><a href="#massages">Massages</a><a href="#facials">Facials</a><a href="#body-polish">Body Polish</a><a href="#body-wraps">Body Wraps</a><a href="#foot-reflexology">Foot Reflexology</a><a href="#head-massage-category">Head Massage</a><a href="#de-tanning">De-tanning</a><a href="#manicure-pedicure">Manicure &amp; Pedicure</a><a href="#hair-spa">Hair Spa</a>
-        </div>
-      </nav>
-
-      <section class="section services-menu">
+      <section class="section service-category-section surface-wood" id="service-categories" data-service-nav-container>
         <div class="wrap">
           <div class="service-tools" data-reveal="fade-up">
             <label for="serviceSearch">Find a treatment</label>
             <div class="search-field"><input id="serviceSearch" type="search" inputmode="search" autocomplete="off" placeholder="Search by treatment, category or need" data-service-search><button type="button" data-search-clear aria-label="Clear service search">Clear</button></div>
             <p class="filter-status" data-filter-status aria-live="polite"></p>
           </div>
+          <nav class="service-nav-grid" aria-label="Service categories" data-service-nav>
+          <a href="#specials">Specials</a><a href="#massages">Massages</a><a href="#facials">Facials</a><a href="#body-polish">Body Polish</a><a href="#body-wraps">Body Wraps</a><a href="#foot-reflexology">Foot Reflexology</a><a href="#head-massage-category">Head Massage</a><a href="#de-tanning">De-tanning</a><a href="#manicure-pedicure">Manicure &amp; Pedicure</a><a href="#hair-spa">Hair Spa</a>
+          </nav>
+        </div>
+      </section>
+
+      <section class="section services-menu surface-deep">
+        <div class="wrap">
           <div class="service-categories" data-service-categories></div>
           <noscript>
             <div class="noscript-services">
@@ -141,7 +143,7 @@
             </div>
 
           </noscript>
-          <div class="menu-callout" data-reveal="fade-up"><p>Bookings are confirmed by phone.</p><a class="button button--primary button--arrow" href="tel:+919792710010">Call +91 97927 10010 <span aria-hidden="true">→</span></a></div>
+          <div class="menu-callout surface-botanical" data-reveal="fade-up"><p>Not sure which ritual is right for you? Call our team for friendly guidance and current availability.</p><a class="button button--primary button--arrow" href="tel:+919792710010">Call to plan your visit <span aria-hidden="true">→</span></a></div>
         </div>
       </section>
     </main>

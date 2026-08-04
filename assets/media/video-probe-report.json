@@ -1,5 +1,5 @@
 {
-  "auditedAt": "2026-08-04T21:28:42.649Z",
+  "auditedAt": "2026-08-04T22:57:38.312Z",
   "note": "Codec validity does not establish genuine motion. contentStatus records the separate visual contact-sheet audit.",
   "assets": [
     {
@@ -7,52 +7,52 @@
       "exists": true,
       "nonzero": true,
       "decodable": true,
-      "durationSeconds": 10,
+      "durationSeconds": 8.5,
       "dimensions": "1920x1080",
-      "sizeBytes": 668731,
+      "sizeBytes": 1237279,
       "codec": "h264",
       "browserCompatible": true,
       "audioTrack": false,
-      "contentStatus": "rejected-still-motion"
+      "contentStatus": "approved-genuine-video"
     },
     {
       "asset": "assets/videos/about-hero-desktop.webm",
       "exists": true,
       "nonzero": true,
       "decodable": true,
-      "durationSeconds": 10,
+      "durationSeconds": 8.5,
       "dimensions": "1920x1080",
-      "sizeBytes": 185755,
+      "sizeBytes": 407202,
       "codec": "vp9",
       "browserCompatible": true,
       "audioTrack": false,
-      "contentStatus": "rejected-still-motion"
+      "contentStatus": "approved-genuine-video"
     },
     {
       "asset": "assets/videos/about-hero-mobile.mp4",
       "exists": true,
       "nonzero": true,
       "decodable": true,
-      "durationSeconds": 10,
+      "durationSeconds": 8.5,
       "dimensions": "1080x1920",
-      "sizeBytes": 713673,
+      "sizeBytes": 1129815,
       "codec": "h264",
       "browserCompatible": true,
       "audioTrack": false,
-      "contentStatus": "rejected-still-motion"
+      "contentStatus": "approved-genuine-video"
     },
     {
       "asset": "assets/videos/about-hero-mobile.webm",
       "exists": true,
       "nonzero": true,
       "decodable": true,
-      "durationSeconds": 10,
+      "durationSeconds": 8.5,
       "dimensions": "1080x1920",
-      "sizeBytes": 159861,
+      "sizeBytes": 331314,
       "codec": "vp9",
       "browserCompatible": true,
       "audioTrack": false,
-      "contentStatus": "rejected-still-motion"
+      "contentStatus": "approved-genuine-video"
     },
     {
       "asset": "assets/videos/category-body-care-desktop.mp4",
@@ -319,52 +319,52 @@
       "exists": true,
       "nonzero": true,
       "decodable": true,
-      "durationSeconds": 8,
+      "durationSeconds": 7.958,
       "dimensions": "1920x1080",
-      "sizeBytes": 711085,
+      "sizeBytes": 2804625,
       "codec": "h264",
       "browserCompatible": true,
       "audioTrack": false,
-      "contentStatus": "rejected-still-motion"
+      "contentStatus": "approved-genuine-video"
     },
     {
       "asset": "assets/videos/contact-hero-desktop.webm",
       "exists": true,
       "nonzero": true,
       "decodable": true,
-      "durationSeconds": 8,
+      "durationSeconds": 7.959,
       "dimensions": "1920x1080",
-      "sizeBytes": 286545,
+      "sizeBytes": 1150690,
       "codec": "vp9",
       "browserCompatible": true,
       "audioTrack": false,
-      "contentStatus": "rejected-still-motion"
+      "contentStatus": "approved-genuine-video"
     },
     {
       "asset": "assets/videos/contact-hero-mobile.mp4",
       "exists": true,
       "nonzero": true,
       "decodable": true,
-      "durationSeconds": 8,
+      "durationSeconds": 7.958,
       "dimensions": "1080x1920",
-      "sizeBytes": 755791,
+      "sizeBytes": 2152741,
       "codec": "h264",
       "browserCompatible": true,
       "audioTrack": false,
-      "contentStatus": "rejected-still-motion"
+      "contentStatus": "approved-genuine-video"
     },
     {
       "asset": "assets/videos/contact-hero-mobile.webm",
       "exists": true,
       "nonzero": true,
       "decodable": true,
-      "durationSeconds": 8,
+      "durationSeconds": 7.959,
       "dimensions": "1080x1920",
-      "sizeBytes": 345641,
+      "sizeBytes": 1178258,
       "codec": "vp9",
       "browserCompatible": true,
       "audioTrack": false,
-      "contentStatus": "rejected-still-motion"
+      "contentStatus": "approved-genuine-video"
     },
     {
       "asset": "assets/videos/home-hero-desktop.mp4",
@@ -423,52 +423,52 @@
       "exists": true,
       "nonzero": true,
       "decodable": true,
-      "durationSeconds": 9,
+      "durationSeconds": 8.875,
       "dimensions": "1920x1080",
-      "sizeBytes": 728395,
+      "sizeBytes": 1441268,
       "codec": "h264",
       "browserCompatible": true,
       "audioTrack": false,
-      "contentStatus": "rejected-still-motion"
+      "contentStatus": "approved-genuine-video"
     },
     {
       "asset": "assets/videos/services-hero-desktop.webm",
       "exists": true,
       "nonzero": true,
       "decodable": true,
-      "durationSeconds": 9,
+      "durationSeconds": 8.875,
       "dimensions": "1920x1080",
-      "sizeBytes": 274066,
+      "sizeBytes": 516458,
       "codec": "vp9",
       "browserCompatible": true,
       "audioTrack": false,
-      "contentStatus": "rejected-still-motion"
+      "contentStatus": "approved-genuine-video"
     },
     {
       "asset": "assets/videos/services-hero-mobile.mp4",
       "exists": true,
       "nonzero": true,
       "decodable": true,
-      "durationSeconds": 9,
+      "durationSeconds": 8.875,
       "dimensions": "1080x1920",
-      "sizeBytes": 665712,
+      "sizeBytes": 1204410,
       "codec": "h264",
       "browserCompatible": true,
       "audioTrack": false,
-      "contentStatus": "rejected-still-motion"
+      "contentStatus": "approved-genuine-video"
     },
     {
       "asset": "assets/videos/services-hero-mobile.webm",
       "exists": true,
       "nonzero": true,
       "decodable": true,
-      "durationSeconds": 9,
+      "durationSeconds": 8.875,
       "dimensions": "1080x1920",
-      "sizeBytes": 216712,
+      "sizeBytes": 530560,
       "codec": "vp9",
       "browserCompatible": true,
       "audioTrack": false,
-      "contentStatus": "rejected-still-motion"
+      "contentStatus": "approved-genuine-video"
     }
   ]
 }

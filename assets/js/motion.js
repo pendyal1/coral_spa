@@ -3,11 +3,13 @@
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   let revealObserver = null;
+  let scrollCheckScheduled = false;
 
   initRevealSystem();
   document.addEventListener("coral:content-rendered", () => observeRevealContent(document));
   if (reduceMotion.addEventListener) reduceMotion.addEventListener("change", handleMotionPreference);
   else reduceMotion.addListener(handleMotionPreference);
+  window.addEventListener("scroll", schedulePassedRevealCheck, { passive: true });
 
   function initRevealSystem() {
     if (reduceMotion.matches || !("IntersectionObserver" in window)) {
@@ -22,7 +24,7 @@
           entry.target.dataset.revealState = "visible";
           revealObserver.unobserve(entry.target);
         });
-      }, { threshold: 0.12, rootMargin: "0px 0px -6%" });
+      }, { threshold: 0, rootMargin: "600px 0px 600px" });
       observeRevealContent(document);
     } catch (error) {
       revealObserver = null;
@@ -56,6 +58,19 @@
   function showAll(root) {
     root.querySelectorAll("[data-reveal]").forEach((item) => {
       item.dataset.revealState = "visible";
+    });
+  }
+
+  function schedulePassedRevealCheck() {
+    if (scrollCheckScheduled || !revealObserver) return;
+    scrollCheckScheduled = true;
+    window.requestAnimationFrame(() => {
+      document.querySelectorAll('[data-reveal-state="pending"]').forEach((item) => {
+        if (item.getBoundingClientRect().top >= window.innerHeight * 0.94) return;
+        item.dataset.revealState = "visible";
+        revealObserver.unobserve(item);
+      });
+      scrollCheckScheduled = false;
     });
   }
 

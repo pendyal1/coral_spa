@@ -7,13 +7,15 @@
 Validated media currently available:
 
 - `Home hero`: genuine landscape and portrait Pexels footage, transcoded to silent H.264 MP4 and VP9 WebM delivery files with posters extracted from the footage.
+- `About hero`: genuine therapist-preparation footage, cropped below the face and transcoded to silent desktop and mobile H.264/VP9 files.
+- `Services hero`: a genuine-motion sequence of massage, serum preparation and treatment-room preparation footage.
+- `Contact hero`: genuine forward-moving corridor footage with visible frame-to-frame parallax; it is decorative hospitality footage and is not presented as Coral Spa's actual building.
 - Source footage: [Professional Massage on Spa](https://www.pexels.com/video/professional-massage-on-spa-6187311/) and [Professional Massage](https://www.pexels.com/video/professional-massage-6186728/) by Tima Miroshnichenko, used under the Pexels license.
 
 Poster-only media awaiting genuine footage:
 
 - `Massages`, `Facials`, `Body Polish`, `Body Wraps`, `Hair Spa`, and `Manicure & Pedicure` have approved posters but no approved genuine video.
-- `About hero`, `Services hero`, and `Contact hero` have approved posters but no approved genuine video.
-- Existing encoded files for these slots were rejected because they animate a single still image. They are not loaded by page markup.
+- Category preview video files remain rejected because they animate a single still image. They are not loaded by page markup.
 - `About story` and `coral-botanical-texture`: optimized WebP images ready for integration.
 
 Local generation masters are retained in `assets/media/source/` and excluded from Git deployment. Browser delivery uses optimized desktop and mobile files to keep GitHub Pages transfer sizes practical.

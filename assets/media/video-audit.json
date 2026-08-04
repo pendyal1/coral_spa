@@ -18,21 +18,43 @@
     },
     {
       "id": "about-hero",
-      "status": "rejected-still-motion",
-      "integrated": false,
-      "fallback": "assets/images/posters/about-hero-poster-desktop.webp"
+      "status": "approved-genuine-video",
+      "integrated": true,
+      "desktopSource": "assets/videos/about-hero-desktop.webm",
+      "desktopFallback": "assets/videos/about-hero-desktop.mp4",
+      "mobileSource": "assets/videos/about-hero-mobile.webm",
+      "mobileFallback": "assets/videos/about-hero-mobile.mp4",
+      "poster": "assets/images/posters/about-hero-poster-desktop.webp",
+      "contactSheet": "assets/media/contact-sheets/about-hero-desktop.webp",
+      "provenance": ["https://www.pexels.com/video/woman-lighting-candles-6628247/"]
     },
     {
       "id": "services-hero",
-      "status": "rejected-still-motion",
-      "integrated": false,
-      "fallback": "assets/images/posters/services-hero-poster-desktop.webp"
+      "status": "approved-genuine-video",
+      "integrated": true,
+      "desktopSource": "assets/videos/services-hero-desktop.webm",
+      "desktopFallback": "assets/videos/services-hero-desktop.mp4",
+      "mobileSource": "assets/videos/services-hero-mobile.webm",
+      "mobileFallback": "assets/videos/services-hero-mobile.mp4",
+      "poster": "assets/images/posters/services-hero-poster-desktop.webp",
+      "contactSheet": "assets/media/contact-sheets/services-hero-desktop.webp",
+      "provenance": [
+        "https://www.pexels.com/video/professional-massage-at-spa-6187085/",
+        "https://www.pexels.com/video/a-person-putting-a-droplets-of-serum-oil-in-a-bowl-7305918/",
+        "https://www.pexels.com/video/woman-lighting-candles-6628247/"
+      ]
     },
     {
       "id": "contact-hero",
-      "status": "rejected-still-motion",
-      "integrated": false,
-      "fallback": "assets/images/posters/contact-hero-poster-desktop.webp"
+      "status": "approved-genuine-video",
+      "integrated": true,
+      "desktopSource": "assets/videos/contact-hero-desktop.webm",
+      "desktopFallback": "assets/videos/contact-hero-desktop.mp4",
+      "mobileSource": "assets/videos/contact-hero-mobile.webm",
+      "mobileFallback": "assets/videos/contact-hero-mobile.mp4",
+      "poster": "assets/images/posters/contact-hero-poster-desktop.webp",
+      "contactSheet": "assets/media/contact-sheets/contact-hero-desktop.webp",
+      "provenance": ["https://www.pexels.com/video/elegant-hotel-corridor-interior-view-31751335/"]
     },
     {
       "id": "category-massage",
