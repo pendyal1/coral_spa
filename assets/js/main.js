@@ -44,6 +44,7 @@
   initHeader();
   initNavigation();
   initWhyMedia();
+  initWhyActionAvoidance();
   renderHomeContent();
   initGalleryShowcase();
   initGoogleReviews();
@@ -135,6 +136,26 @@
       video.addEventListener("error", () => root.classList.remove("is-video-ready"));
       document.addEventListener("visibilitychange", () => document.hidden ? video.pause() : root.dataset.motionActive === "true" && play());
     });
+  }
+
+  function initWhyActionAvoidance() {
+    const actions = document.querySelector(".floating-actions");
+    const backToTop = document.querySelector(".back-to-top");
+    const sections = Array.from(document.querySelectorAll(".why-section"));
+    if (!actions || !sections.length || !("IntersectionObserver" in window)) return;
+
+    const visibleSections = new Set();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) visibleSections.add(entry.target);
+        else visibleSections.delete(entry.target);
+      });
+      const shouldClearContent = visibleSections.size > 0;
+      actions.classList.toggle("is-why-safe", shouldClearContent);
+      if (backToTop) backToTop.classList.toggle("is-why-safe", shouldClearContent);
+    }, { threshold: 0, rootMargin: "-8% 0px -8% 0px" });
+
+    sections.forEach((section) => observer.observe(section));
   }
 
   function refreshDynamicContent(root) {

@@ -9,7 +9,7 @@ const port = 4175;
 const debugPort = 9333;
 const origin = `http://127.0.0.1:${port}`;
 const basePath = "/coral_spa/";
-const sizes = [[2560, 1440], [1920, 1080], [1440, 900], [1280, 800], [1024, 768], [768, 1024], [430, 932], [390, 844], [375, 812], [320, 568]];
+const sizes = [[2560, 1440], [1920, 1080], [1536, 1024], [1440, 900], [1280, 800], [1024, 768], [768, 1024], [430, 932], [390, 844], [375, 812], [320, 568]];
 const pages = ["index.html", "about.html", "services.html", "contact.html"];
 const mime = {
   ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "text/javascript; charset=utf-8",
@@ -221,7 +221,7 @@ async function run() {
             trendingVisible: visible(document.querySelector('#signature')), trendingCards: document.querySelectorAll('#signature .signature-card').length,
             trendingNames: [...document.querySelectorAll('#signature h3')].map((node) => node.textContent.trim()),
             overviewVisible: visible(document.querySelector('#treatments')), overviewCards: document.querySelectorAll('#treatments .overview-card').length,
-            whyVisible: visible(document.querySelector('#why-coral-spa')), whyItems: document.querySelectorAll('#why-coral-spa .why-orbit__statement').length, whyFocal: !!document.querySelector('#why-coral-spa .why-orbit__focal img'),
+            whyVisible: visible(document.querySelector('#why-coral-spa')), whyItems: document.querySelectorAll('#why-coral-spa .why-statement').length, whyFocal: !!document.querySelector('#why-coral-spa .why-media img'),
             galleryVisible: visible(document.querySelector('#gallery')), galleryFocus: document.querySelectorAll('[data-gallery-focus]').length, galleryThumbs: document.querySelectorAll('[data-gallery-thumb]').length,
             galleryUnique: new Set([...document.querySelectorAll('[data-gallery-focus], [data-gallery-thumb]')].map((node) => node.dataset.gallerySrc)).size,
             galleryFocusWidth: document.querySelector('[data-gallery-focus]')?.getBoundingClientRect().width || 0,
@@ -230,6 +230,11 @@ async function run() {
             galleryImageOpacity: Number(getComputedStyle(document.querySelector('[data-gallery-focus-image]')).opacity),
             reviewsVisible: visible(document.querySelector('#reviews')), reviewState: document.querySelector('[data-google-reviews]')?.dataset.reviewState,
             locationVisible: visible(document.querySelector('#location')), footerVisible: visible(document.querySelector('.site-footer'))
+          };
+          if (document.body.classList.contains('about-page')) return { ...base,
+            whyVisible: visible(document.querySelector('#why-coral-spa')),
+            whyItems: document.querySelectorAll('#why-coral-spa .why-statement').length,
+            whyFocal: !!document.querySelector('#why-coral-spa .why-media img')
           };
           if (document.body.classList.contains('services-page')) {
             const rows = [...document.querySelectorAll('[data-service-item]')];
@@ -260,6 +265,7 @@ async function run() {
           if (!result.galleryVisible || result.galleryFocus !== 1 || result.galleryThumbs !== 4 || result.galleryUnique !== 5 || !(result.galleryFocusWidth > 0) || !(result.galleryFocusHeight > 0) || !(result.galleryImageNaturalWidth > 0) || !(result.galleryImageOpacity > 0.95)) failures.push(`${label}: gallery structure or focus-image assertion failed`);
           if (!result.reviewsVisible || result.reviewState !== 'fallback' || !result.locationVisible || !result.footerVisible) failures.push(`${label}: reviews, location or footer assertion failed`);
         }
+        if (page === 'about.html' && (!result.whyVisible || result.whyItems !== 4 || !result.whyFocal)) failures.push(`${label}: About Why Coral Spa composition assertion failed`);
         if (page === 'services.html') {
           const expectedColumns = width >= 1280 ? 10 : width >= 720 ? 5 : 2;
           const expectedRatio = width <= 720 ? 4 / 3 : 16 / 9;
@@ -272,6 +278,43 @@ async function run() {
         if (page === 'contact.html' && (result.contactCards !== 5 || result.separateMap || !result.phonesNoWrap || !result.phonesFit || !result.mapUsable)) failures.push(`${label}: unified contact grid assertion failed`);
         report.push({ label, videoDiagnostic, ...result });
       }
+    }
+
+    const whyCaptureSizes = new Set(["2560x1440", "1920x1080", "1536x1024", "1440x900", "1024x768", "768x1024", "430x932", "390x844", "320x568"]);
+    for (const [width, height] of sizes.filter(([w, h]) => whyCaptureSizes.has(`${w}x${h}`))) {
+      await client.send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: 1, mobile: width <= 430 });
+      await navigate(`${origin}${basePath}index.html?why-visual=${width}x${height}`);
+      await evaluate(`document.documentElement.style.scrollBehavior = 'auto'; scrollTo(0, document.querySelector('#why-coral-spa').offsetTop - 72)`);
+      await delay(1250);
+      const whyVisual = JSON.parse(await evaluate(`JSON.stringify((() => {
+        const section = document.querySelector('#why-coral-spa');
+        const heading = section.querySelector('.section-heading');
+        const media = section.querySelector('.why-media');
+        const statements = [...section.querySelectorAll('.why-statement')];
+        const personalized = section.querySelector('.why-statement--personalized h3');
+        const quick = document.querySelector('.floating-actions');
+        const visible = (node) => { const style = getComputedStyle(node); const rect = node.getBoundingClientRect(); return rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && Number(style.opacity) > .95; };
+        const overlaps = (a, b) => a.left < b.right - 1 && a.right > b.left + 1 && a.top < b.bottom - 1 && a.bottom > b.top + 1;
+        const mediaRect = media.getBoundingClientRect();
+        const statementRects = statements.map((node) => node.getBoundingClientRect());
+        const styleIsBoxless = (node) => { const style = getComputedStyle(node.querySelector('.why-statement__motion')); return style.backgroundImage === 'none' && style.backgroundColor === 'rgba(0, 0, 0, 0)' && parseFloat(style.borderTopWidth) === 0 && parseFloat(style.borderBottomWidth) === 0 && style.boxShadow === 'none'; };
+        const lineHeight = parseFloat(getComputedStyle(personalized).lineHeight);
+        const personalizedLines = Math.round(personalized.getBoundingClientRect().height / lineHeight);
+        const quickRect = quick.getBoundingClientRect();
+        const contentRects = [mediaRect, ...statements.flatMap((node) => [...node.querySelectorAll('h3, p')].map((part) => part.getBoundingClientRect()))];
+        return {
+          headingVisible: visible(heading), statements: statements.length, mediaWidth: mediaRect.width,
+          widestStatement: Math.max(...statementRects.map((rect) => rect.width)), boxless: statements.every(styleIsBoxless),
+          personalizedLines, forcedBreaks: statements.some((node) => node.querySelector('h3 br')),
+          mediaOverlap: statementRects.some((rect) => overlaps(rect, mediaRect)), quickOverlap: contentRects.some((rect) => overlaps(rect, quickRect)),
+          outerTransformsStable: statements.every((node) => getComputedStyle(node).transform === 'none'),
+          overflow: document.documentElement.scrollWidth - innerWidth
+        };
+      })())`));
+      if (!whyVisual.headingVisible || whyVisual.statements !== 4 || !whyVisual.boxless || whyVisual.forcedBreaks || whyVisual.mediaOverlap || whyVisual.quickOverlap || !whyVisual.outerTransformsStable || whyVisual.overflow > 1) failures.push(`Why composition ${width}x${height} failed: ${JSON.stringify(whyVisual)}`);
+      if (width > 1100 && (whyVisual.personalizedLines > 2 || whyVisual.mediaWidth <= whyVisual.widestStatement)) failures.push(`Why desktop hierarchy ${width}x${height} failed: ${JSON.stringify(whyVisual)}`);
+      const screenshot = await client.send("Page.captureScreenshot", { format: "png", fromSurface: true });
+      fs.writeFileSync(path.join(artifactDir, `why-coral-spa-${width}x${height}.png`), Buffer.from(screenshot.result.data, "base64"));
     }
 
     await client.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
@@ -288,7 +331,7 @@ async function run() {
     if (staggerBefore.revealed !== 0 || staggerBefore.state !== 'pending') failures.push(`Off-screen stagger group started too early: ${JSON.stringify(staggerBefore)}`);
     await evaluate(`document.querySelector('#why-coral-spa [data-stagger-group]').scrollIntoView({ block: 'center' })`);
     const staggerAfter = JSON.parse(await evaluate(`new Promise((resolve) => { setTimeout(() => { const root = document.querySelector('#why-coral-spa [data-stagger-group]'); const times = [...root.querySelectorAll('[data-stagger-item]')].map((item) => Number(item.dataset.revealedAt || 0)); resolve(JSON.stringify({ state: root.dataset.staggerState, times })); }, 1200); })`));
-    if (staggerAfter.state !== 'complete' || staggerAfter.times.length !== 4 || staggerAfter.times.some((time, index) => !time || (index && time <= staggerAfter.times[index - 1]))) failures.push(`Stagger order assertion failed: ${JSON.stringify(staggerAfter)}`);
+    if (staggerAfter.state !== 'complete' || staggerAfter.times.length !== 5 || staggerAfter.times.some((time, index) => !time || (index && time <= staggerAfter.times[index - 1]))) failures.push(`Stagger order assertion failed: ${JSON.stringify(staggerAfter)}`);
 
     await navigate(`${origin}${basePath}index.html?gallery-manual=1`);
     for (let index = 0; index < 4; index += 1) {
@@ -382,7 +425,7 @@ async function run() {
     await client.send("Page.navigate", { url: `${origin}${basePath}index.html?no-js=1` });
     await delay(800);
     await client.send("Emulation.setScriptExecutionDisabled", { value: false });
-    const noJs = JSON.parse(await evaluate(`JSON.stringify((() => { const focus = document.querySelector('[data-gallery-focus]'); const image = document.querySelector('[data-gallery-focus-image]'); return { trending: document.querySelectorAll('#signature .signature-card').length, overview: document.querySelectorAll('#treatments .overview-card').length, why: document.querySelectorAll('#why-coral-spa .why-orbit__statement').length, galleryItems: document.querySelectorAll('[data-gallery-focus], [data-gallery-thumb]').length, galleryWidth: focus.getBoundingClientRect().width, galleryHeight: focus.getBoundingClientRect().height, galleryNaturalWidth: image.naturalWidth, galleryOpacity: Number(getComputedStyle(image).opacity), reviewLoadingVisible: getComputedStyle(document.querySelector('[data-review-loading]')).display !== 'none', hidden: [...document.querySelectorAll('main > section')].filter((section) => !section.getBoundingClientRect().height || getComputedStyle(section).display === 'none' || getComputedStyle(section).visibility === 'hidden').length }; })())`));
+    const noJs = JSON.parse(await evaluate(`JSON.stringify((() => { const focus = document.querySelector('[data-gallery-focus]'); const image = document.querySelector('[data-gallery-focus-image]'); return { trending: document.querySelectorAll('#signature .signature-card').length, overview: document.querySelectorAll('#treatments .overview-card').length, why: document.querySelectorAll('#why-coral-spa .why-statement').length, galleryItems: document.querySelectorAll('[data-gallery-focus], [data-gallery-thumb]').length, galleryWidth: focus.getBoundingClientRect().width, galleryHeight: focus.getBoundingClientRect().height, galleryNaturalWidth: image.naturalWidth, galleryOpacity: Number(getComputedStyle(image).opacity), reviewLoadingVisible: getComputedStyle(document.querySelector('[data-review-loading]')).display !== 'none', hidden: [...document.querySelectorAll('main > section')].filter((section) => !section.getBoundingClientRect().height || getComputedStyle(section).display === 'none' || getComputedStyle(section).visibility === 'hidden').length }; })())`));
     if (noJs.trending !== 3 || noJs.overview !== 3 || noJs.why !== 4 || noJs.galleryItems !== 5 || !(noJs.galleryWidth > 0) || !(noJs.galleryHeight > 0) || !(noJs.galleryNaturalWidth > 0) || !(noJs.galleryOpacity > 0.95) || !noJs.reviewLoadingVisible || noJs.hidden) failures.push('No-JavaScript homepage assertion failed');
 
     const css = fs.readFileSync(path.join(root, 'assets/css/styles.css'), 'utf8');

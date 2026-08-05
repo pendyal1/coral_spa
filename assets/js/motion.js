@@ -37,6 +37,7 @@
     items.forEach((item, index) => {
       window.setTimeout(() => {
         item.dataset.staggerState = "visible";
+        item.dataset.motionState = "visible";
         item.dataset.revealState = "visible";
         timestamp(item);
         if (index === items.length - 1) {
@@ -55,6 +56,7 @@
       group.dataset.staggerState = "complete";
       groupItems(group).forEach((item) => {
         item.dataset.staggerState = "visible";
+        item.dataset.motionState = "visible";
         item.dataset.revealState = "visible";
       });
     });
@@ -82,6 +84,7 @@
           item.classList.toggle("stagger-direct", !item.querySelector(":scope > .stagger-motion-layer"));
           item.style.setProperty("--stagger-index", String(index));
           item.dataset.staggerState = "pending";
+          item.dataset.motionState = "pending";
           item.dataset.revealState = "pending";
         });
       } catch (error) {
