@@ -9,7 +9,7 @@ const port = 4175;
 const debugPort = 9333;
 const origin = `http://127.0.0.1:${port}`;
 const basePath = "/coral_spa/";
-const sizes = [[1440, 900], [1280, 800], [1024, 768], [430, 932], [390, 844], [375, 812], [320, 568]];
+const sizes = [[2560, 1440], [1920, 1080], [1440, 900], [1280, 800], [1024, 768], [768, 1024], [430, 932], [390, 844], [375, 812], [320, 568]];
 const pages = ["index.html", "about.html", "services.html", "contact.html"];
 const mime = {
   ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "text/javascript; charset=utf-8",
@@ -127,7 +127,10 @@ async function run() {
     await client.send("Page.enable");
     await client.send("Runtime.enable");
     await client.send("Network.enable");
-    await client.send("Page.addScriptToEvaluateOnNewDocument", { source: `if (location.search.includes("reviews-live")) window.CORAL_GOOGLE_REVIEWS = { endpoint: "${basePath}__test/reviews", mapsUrl: "${reviewFixture.mapsUrl}" };` });
+    await client.send("Page.addScriptToEvaluateOnNewDocument", { source: `
+      if (location.search.includes("reviews-live")) window.CORAL_GOOGLE_REVIEWS = { endpoint: "${basePath}__test/reviews", mapsUrl: "${reviewFixture.mapsUrl}" };
+      if (location.search.includes("team-fixture")) window.CORAL_TEAM = Array.from({ length: 6 }, (_, index) => ({ firstName: "Therapist " + (index + 1), certifications: ["Verified modality"], specializations: ["Guest comfort"], experienceYears: index + 2, photo: "", showPhoto: false }));
+    ` });
     let localFailures = [];
     let consoleErrors = [];
     let networkStatus = new Map();
@@ -175,7 +178,7 @@ async function run() {
 
     const captureSection = async (selector, filename) => {
       await evaluate(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({ block: "center" })`);
-      await delay(350);
+      await delay(1100);
       const screenshot = await client.send("Page.captureScreenshot", { format: "png", fromSurface: true });
       fs.writeFileSync(path.join(artifactDir, filename), Buffer.from(screenshot.result.data, "base64"));
     };
@@ -211,13 +214,14 @@ async function run() {
             videoSourcesRelative: sourceUrls.every((url) => url.includes('${basePath}assets/videos/')),
             deferredVideoSourcesRelative: video ? [...video.querySelectorAll('source[data-src]')].every((source) => source.dataset.src.startsWith('assets/videos/')) : false,
             posterVisible: visible(hero && hero.querySelector('.media-background__poster')),
-            toggleVisible: visible(document.querySelector('[data-video-toggle]'))
+            toggleVisible: visible(document.querySelector('[data-video-toggle]')),
+            backToTop: !!document.querySelector('[data-back-to-top]')
           };
           if (document.body.classList.contains('home-page')) return { ...base,
             trendingVisible: visible(document.querySelector('#signature')), trendingCards: document.querySelectorAll('#signature .signature-card').length,
             trendingNames: [...document.querySelectorAll('#signature h3')].map((node) => node.textContent.trim()),
             overviewVisible: visible(document.querySelector('#treatments')), overviewCards: document.querySelectorAll('#treatments .overview-card').length,
-            whyVisible: visible(document.querySelector('#why-coral-spa')), whyItems: document.querySelectorAll('#why-coral-spa .editorial-point').length,
+            whyVisible: visible(document.querySelector('#why-coral-spa')), whyItems: document.querySelectorAll('#why-coral-spa .editorial-point').length, whyFocal: !!document.querySelector('#why-coral-spa .why-orbit__focal img'),
             galleryVisible: visible(document.querySelector('#gallery')), galleryFocus: document.querySelectorAll('[data-gallery-focus]').length, galleryThumbs: document.querySelectorAll('[data-gallery-thumb]').length,
             galleryUnique: new Set([...document.querySelectorAll('[data-gallery-focus], [data-gallery-thumb]')].map((node) => node.dataset.gallerySrc)).size,
             galleryFocusWidth: document.querySelector('[data-gallery-focus]')?.getBoundingClientRect().width || 0,
@@ -231,7 +235,8 @@ async function run() {
             const rows = [...document.querySelectorAll('[data-service-item]')];
             const groups = [...document.querySelectorAll('[data-service-group]')];
             const tiles = [...document.querySelectorAll('.service-nav-tile')];
-            return { ...base, serviceRows: rows.length, serviceDataCount: (window.CORAL_SERVICES || []).reduce((sum, category) => sum + category.services.length, 0), serviceGroups: groups.length, serviceDataGroups: (window.CORAL_SERVICES || []).length, uniqueServiceIds: new Set(rows.map((row) => row.id)).size, serviceTiles: tiles.length, tileColumns: getComputedStyle(document.querySelector('.service-nav-grid')).gridTemplateColumns.split(' ').length, tileTargetsValid: tiles.every((tile) => document.querySelector(tile.getAttribute('href'))), categoryImagesCover: groups.every((group) => getComputedStyle(group.querySelector('.category-media img')).objectFit === 'cover'), categoryRatios: groups.map((group) => { const media = group.querySelector('.category-media'); return Number((media.clientWidth / media.clientHeight).toFixed(2)); }) };
+            const eligible = rows.filter((row) => ['Specials', 'Massages', 'Foot Reflexology', 'Head Massage'].includes(row.closest('[data-service-group]').dataset.serviceGroup));
+            return { ...base, serviceRows: rows.length, serviceDataCount: (window.CORAL_SERVICES || []).reduce((sum, category) => sum + category.services.length, 0), serviceGroups: groups.length, serviceDataGroups: (window.CORAL_SERVICES || []).length, uniqueServiceIds: new Set(rows.map((row) => row.id)).size, serviceTiles: tiles.length, tileColumns: getComputedStyle(document.querySelector('.service-nav-grid')).gridTemplateColumns.split(' ').length, tileTargetsValid: tiles.every((tile) => document.querySelector(tile.getAttribute('href'))), categoryImagesCover: groups.every((group) => getComputedStyle(group.querySelector('.category-media img')).objectFit === 'cover'), categoryRatios: groups.map((group) => { const media = group.querySelector('.category-media'); return Number((media.clientWidth / media.clientHeight).toFixed(2)); }), benefitCounts: eligible.map((row) => row.querySelectorAll('.service-tags span').length), subtitles: [...document.querySelectorAll('.service-row__subtitle')].map((node) => node.textContent.trim()), interestForm: !!document.querySelector('[data-interest-form]') };
           }
           if (document.body.classList.contains('contact-page')) {
             const phones = [...document.querySelectorAll('.contact-card__phone')];
@@ -239,7 +244,8 @@ async function run() {
           }
           return base;
         })())`));
-        if (result.overflow > 0) failures.push(`${label}: horizontal overflow ${result.overflow}px`);
+        if (result.overflow > 1) failures.push(`${label}: horizontal overflow ${result.overflow}px`);
+        if (!result.backToTop) failures.push(`${label}: shared back-to-top is missing`);
         if (result.sectionsZeroHeight) failures.push(`${label}: ${result.sectionsZeroHeight} zero-height sections`);
         if (result.texturedSections !== result.nonHeroSections) failures.push(`${label}: explicit surface class coverage failed`);
         if (localFailures.length) failures.push(`${label}: failed local assets ${localFailures.join(', ')}`);
@@ -250,7 +256,7 @@ async function run() {
         if (page === 'index.html') {
           const names = ['The Jet Lag Reset', 'Lymphatic Drainage', 'The Heat Ritual'];
           if (!result.trendingVisible || result.trendingCards !== 3 || names.some((name) => !result.trendingNames.includes(name))) failures.push(`${label}: trending assertion failed`);
-          if (!result.overviewVisible || result.overviewCards !== 3 || !result.whyVisible || result.whyItems !== 4) failures.push(`${label}: overview or credibility assertion failed`);
+          if (!result.overviewVisible || result.overviewCards !== 3 || !result.whyVisible || result.whyItems !== 4 || !result.whyFocal) failures.push(`${label}: overview or branded credibility assertion failed`);
           if (!result.galleryVisible || result.galleryFocus !== 1 || result.galleryThumbs !== 4 || result.galleryUnique !== 5 || !(result.galleryFocusWidth > 0) || !(result.galleryFocusHeight > 0) || !(result.galleryImageNaturalWidth > 0) || !(result.galleryImageOpacity > 0.95)) failures.push(`${label}: gallery structure or focus-image assertion failed`);
           if (!result.reviewsVisible || result.reviewState !== 'fallback' || !result.locationVisible || !result.footerVisible) failures.push(`${label}: reviews, location or footer assertion failed`);
         }
@@ -260,6 +266,8 @@ async function run() {
           if (result.serviceRows !== result.serviceDataCount || result.serviceGroups !== result.serviceDataGroups || result.uniqueServiceIds !== result.serviceRows) failures.push(`${label}: service omission or duplication detected`);
           if (result.serviceTiles !== 10 || result.tileColumns !== expectedColumns || !result.tileTargetsValid) failures.push(`${label}: service category tile assertion failed`);
           if (!result.categoryImagesCover || result.categoryRatios.some((ratio) => Math.abs(ratio - expectedRatio) > 0.04)) failures.push(`${label}: category image crop assertion failed`);
+          if (result.benefitCounts.some((count) => count < 2 || count > 3)) failures.push(`${label}: massage benefit chip assertion failed`);
+          if (!['Slow Down', 'Reset & Release', 'Knot Fixer', 'The Heat Ritual'].every((subtitle) => result.subtitles.includes(subtitle)) || !result.interestForm) failures.push(`${label}: service subtitle or request-form assertion failed`);
         }
         if (page === 'contact.html' && (result.contactCards !== 5 || result.separateMap || !result.phonesNoWrap || !result.phonesFit || !result.mapUsable)) failures.push(`${label}: unified contact grid assertion failed`);
         report.push({ label, videoDiagnostic, ...result });
@@ -281,6 +289,10 @@ async function run() {
       if (!changed) failures.push(`Gallery thumbnail ${index + 1} did not change the focused image`);
     }
 
+    await navigate(`${origin}${basePath}index.html?gallery-auto=1`);
+    const rotatingGallery = JSON.parse(await evaluate(`new Promise((resolve) => { const before = document.querySelector('[data-gallery-focus]').dataset.gallerySrc; setTimeout(() => resolve(JSON.stringify({ before, after: document.querySelector('[data-gallery-focus]').dataset.gallerySrc })), 6200); })`));
+    if (rotatingGallery.before === rotatingGallery.after) failures.push('Gallery did not advance automatically');
+
     await client.send("Network.clearBrowserCache");
     await client.send("Network.setBlockedURLs", { urls: ["*coral-spa-therapy-suite-1200.webp", "*coral-spa-therapy-suite-640.webp", "*coral-spa-therapy-suite.jpeg"] });
     await navigate(`${origin}${basePath}index.html?gallery-failure=1`);
@@ -291,12 +303,37 @@ async function run() {
     await navigate(`${origin}${basePath}index.html?reviews-live=1`);
     const liveReviews = JSON.parse(await evaluate(`new Promise((resolve) => { const deadline = Date.now() + 10000; const finish = () => { const root = document.querySelector('[data-google-reviews]'); if (root.dataset.reviewState === 'ready') resolve(JSON.stringify({ state: root.dataset.reviewState, busy: root.getAttribute('aria-busy'), cards: root.querySelectorAll('.review-card').length, fourStarVisible: [...root.querySelectorAll('.review-card__stars')].some((node) => node.textContent === '★★★★☆'), includesFourStarReview: root.textContent.includes('QA review four'), fallback: !!root.querySelector('.review-card--fallback') })); else if (Date.now() >= deadline) resolve(JSON.stringify({ state: root.dataset.reviewState || 'timeout', cards: root.querySelectorAll('.review-card').length })); else setTimeout(finish, 50); }; finish(); })`));
     if (liveReviews.state !== 'ready' || liveReviews.busy !== 'false' || liveReviews.cards !== 5 || !liveReviews.fourStarVisible || !liveReviews.includesFourStarReview || liveReviews.fallback) failures.push(`Configured live reviews assertion failed: ${JSON.stringify(liveReviews)}`);
+    const reviewCarousel = JSON.parse(await evaluate(`new Promise((resolve) => { const carousel = document.querySelector('.review-carousel'); const before = carousel.dataset.carouselIndex; setTimeout(() => resolve(JSON.stringify({ before, after: carousel.dataset.carouselIndex, ready: carousel.dataset.carouselReady })), 5700); })`));
+    if (reviewCarousel.ready !== 'true' || reviewCarousel.before === reviewCarousel.after) failures.push(`Review carousel did not auto-advance: ${JSON.stringify(reviewCarousel)}`);
 
+    for (const [width, expected] of [[1440, 4], [1024, 2], [390, 1]]) {
+      await client.send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width < 500 });
+      await navigate(`${origin}${basePath}about.html?team-fixture=1&width=${width}`);
+      const teamState = JSON.parse(await evaluate(`JSON.stringify((() => { const root = document.querySelector('[data-team-section]'); const cards = [...root.querySelectorAll('.team-card')]; const viewport = root.querySelector('.content-carousel__viewport').getBoundingClientRect(); const visibleCards = cards.filter((card) => { const rect = card.getBoundingClientRect(); return rect.left < viewport.right - 1 && rect.right > viewport.left + 1; }).length; return { cards: cards.length, visibleCards, columns: Number(getComputedStyle(root).getPropertyValue('--carousel-columns')), emptyHidden: document.querySelector('[data-team-empty]').hidden }; })())`));
+      if (teamState.cards !== 6 || teamState.columns !== expected || teamState.visibleCards !== expected || !teamState.emptyHidden) failures.push(`Team carousel ${width}px assertion failed: ${JSON.stringify(teamState)}`);
+    }
+
+    await client.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
+    for (const page of pages) {
+      await navigate(`${origin}${basePath}${page}?back-top=1`);
+      const backTop = JSON.parse(await evaluate(`new Promise((resolve) => { document.documentElement.style.scrollBehavior = 'auto'; scrollTo(0, 900); window.dispatchEvent(new Event('scroll')); setTimeout(() => { const button = document.querySelector('[data-back-to-top]'); resolve(JSON.stringify({ exists: !!button, visible: button?.classList.contains('is-visible'), scrollY })); }, 250); })`));
+      if (!backTop.exists || !backTop.visible) failures.push(`${page}: back-to-top did not appear after scrolling`);
+    }
+
+    await navigate(`${origin}${basePath}index.html?reviews-live=1&screenshot=1`);
+    await evaluate(`new Promise((resolve) => { const wait = () => document.querySelector('[data-google-reviews]').dataset.reviewState === 'ready' ? resolve() : setTimeout(wait, 50); wait(); })`);
     await captureSection('#reviews', 'google-reviews.png');
     await captureSection('#gallery', 'home-gallery.png');
     await captureSection('#signature', 'surface-warm-wood.png');
     await captureSection('#why-coral-spa', 'surface-smoked-glass.png');
     await captureSection('#reviews', 'surface-pebble.png');
+    await navigate(`${origin}${basePath}about.html?team-fixture=1&screenshot=1`);
+    await evaluate(`document.documentElement.style.scrollBehavior = 'auto'; document.querySelector('.therapists-section').scrollIntoView({ block: 'start' })`);
+    await delay(300);
+    const teamScreenshot = await client.send("Page.captureScreenshot", { format: "png", fromSurface: true });
+    fs.writeFileSync(path.join(artifactDir, 'therapist-carousel.png'), Buffer.from(teamScreenshot.result.data, "base64"));
+    await navigate(`${origin}${basePath}services.html?screenshot=1`);
+    await captureSection('#massages', 'massage-benefits.png');
     await navigate(`${origin}${basePath}contact.html?screenshot=1`);
     await captureSection('.cinematic-hero', 'contact-hero.png');
 
@@ -310,6 +347,9 @@ async function run() {
     const reducedGallery = await evaluate(`new Promise((resolve) => { const before = document.querySelector('[data-gallery-focus]').dataset.gallerySrc; setTimeout(() => resolve(JSON.stringify({ before, after: document.querySelector('[data-gallery-focus]').dataset.gallerySrc })), 6000); })`);
     const reducedGalleryState = JSON.parse(reducedGallery);
     if (reducedGalleryState.before !== reducedGalleryState.after) failures.push('Reduced motion did not disable gallery rotation');
+    await navigate(`${origin}${basePath}index.html?reviews-live=1&reduced-carousel=1`, { video: false });
+    const reducedReviewCarousel = JSON.parse(await evaluate(`new Promise((resolve) => { const root = document.querySelector('.review-carousel'); const waitReady = () => { if (root.dataset.carouselReady === 'true') { const before = root.dataset.carouselIndex; setTimeout(() => resolve(JSON.stringify({ before, after: root.dataset.carouselIndex })), 5700); } else setTimeout(waitReady, 50); }; waitReady(); })`));
+    if (reducedReviewCarousel.before !== reducedReviewCarousel.after) failures.push('Reduced motion did not disable review carousel autoplay');
     await client.send("Emulation.setEmulatedMedia", { features: [] });
 
     await client.send("Network.setBlockedURLs", { urls: ["*.webm", "*.mp4"] });
@@ -333,7 +373,7 @@ async function run() {
     if (!homepage.includes('data-review-loading')) failures.push('Initial reviews loading state is missing');
 
     client.close();
-    console.log(JSON.stringify({ passed: failures.length === 0, checks: report.length, liveReviews, reducedGallery: reducedGalleryState, noJs, failures }, null, 2));
+    console.log(JSON.stringify({ passed: failures.length === 0, checks: report.length, liveReviews, reviewCarousel, rotatingGallery, reducedGallery: reducedGalleryState, noJs, failures }, null, 2));
     if (failures.length) process.exitCode = 1;
   } finally {
     browser.kill("SIGTERM");

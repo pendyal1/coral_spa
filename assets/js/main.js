@@ -47,6 +47,9 @@
   initGalleryShowcase();
   initGoogleReviews();
   renderServicesMenu();
+  initTeamSection();
+  initRequestForms();
+  initBackToTop();
   initServiceSearch();
   initAnchorNavigation();
   initCertificateDialog();
@@ -216,36 +219,35 @@
       if (token !== renderToken) return false;
 
       root.classList.add("is-changing");
-      window.requestAnimationFrame(() => {
-        focusedIndex = requestedIndex;
-        focus.dataset.gallerySrc = focused.src;
-        focus.dataset.gallerySmall = focused.small;
-        focus.dataset.galleryLarge = focused.large;
-        focus.dataset.galleryCaption = focused.caption;
-        focus.dataset.galleryAlt = focused.alt;
-        focusSource.srcset = loadedSource.isWebp ? loadedSource.url : "";
-        focusImage.src = focused.src;
-        focusImage.alt = focused.alt;
-        caption.textContent = focused.caption;
+      focusedIndex = requestedIndex;
+      root.dataset.galleryIndex = String(focusedIndex);
+      focus.dataset.gallerySrc = focused.src;
+      focus.dataset.gallerySmall = focused.small;
+      focus.dataset.galleryLarge = focused.large;
+      focus.dataset.galleryCaption = focused.caption;
+      focus.dataset.galleryAlt = focused.alt;
+      focusSource.srcset = loadedSource.isWebp ? loadedSource.url : "";
+      focusImage.src = focused.src;
+      focusImage.alt = focused.alt;
+      caption.textContent = focused.caption;
 
-        const remaining = items.map((item, index) => ({ item, index })).filter(({ index }) => index !== focusedIndex);
-        thumbs.forEach((button, slot) => {
-          const { item, index } = remaining[slot];
-          const image = button.querySelector("img");
-          const label = button.querySelector("span");
-          button.dataset.galleryIndex = String(index);
-          button.dataset.gallerySrc = item.src;
-          button.dataset.gallerySmall = item.small;
-          button.dataset.galleryLarge = item.large;
-          button.dataset.galleryCaption = item.caption;
-          button.dataset.galleryAlt = item.alt;
-          button.setAttribute("aria-label", `Show ${item.caption}`);
-          button.setAttribute("aria-pressed", "false");
-          image.src = item.small;
-          label.textContent = item.caption;
-        });
-        window.requestAnimationFrame(() => root.classList.remove("is-changing"));
+      const remaining = items.map((item, index) => ({ item, index })).filter(({ index }) => index !== focusedIndex);
+      thumbs.forEach((button, slot) => {
+        const { item, index } = remaining[slot];
+        const image = button.querySelector("img");
+        const label = button.querySelector("span");
+        button.dataset.galleryIndex = String(index);
+        button.dataset.gallerySrc = item.src;
+        button.dataset.gallerySmall = item.small;
+        button.dataset.galleryLarge = item.large;
+        button.dataset.galleryCaption = item.caption;
+        button.dataset.galleryAlt = item.alt;
+        button.setAttribute("aria-label", `Show ${item.caption}`);
+        button.setAttribute("aria-pressed", "false");
+        image.src = item.small;
+        label.textContent = item.caption;
       });
+      window.requestAnimationFrame(() => root.classList.remove("is-changing"));
       return true;
     };
 
@@ -258,7 +260,8 @@
       if (paused || reduceMotion.matches || document.hidden) return;
       const delay = Math.max(minimumDelay, manualResumeAt - Date.now());
       timer = window.setTimeout(async () => {
-        await render(focusedIndex + 1);
+        const changed = await render(focusedIndex + 1);
+        if (!changed) paused = true;
         schedule(5500);
       }, delay);
     };
@@ -288,6 +291,7 @@
     else reduceMotion.addListener(handleMotionChange);
 
     schedule();
+    root.dataset.galleryIndex = "0";
   }
 
   async function initGoogleReviews() {
@@ -396,6 +400,7 @@
       root.innerHTML = cards;
       root.dataset.reviewState = "ready";
       root.setAttribute("aria-busy", "false");
+      initCarousel(root.closest("[data-carousel]"));
     });
     updateGoogleReviewLinks(mapsUrl);
   }
@@ -407,6 +412,9 @@
       root.innerHTML = card;
       root.dataset.reviewState = "fallback";
       root.setAttribute("aria-busy", "false");
+      const carousel = root.closest("[data-carousel]");
+      const controls = carousel && carousel.querySelector(".carousel-controls");
+      if (controls) controls.hidden = true;
     });
   }
 
@@ -436,18 +444,148 @@
   function serviceRow(service, category) {
     const prices = splitValue(service.price);
     const durations = splitDuration(service.duration);
-    const tags = serviceKeywords(service).slice(0, 3);
+    const tags = benefitTags(service, category);
     const description = service.longDescription || longDescriptions[service.name] || service.description;
     const searchText = [service.name, service.technique, service.description, service.goodFor, category, ...tags].join(" ").toLowerCase();
     return `
       <details class="service-row" id="${slug(service.name)}" data-service-item data-search-text="${escapeHtml(searchText)}" data-reveal="fade-up">
         <summary>
-          <span class="service-row__identity"><span class="service-row__name">${escapeHtml(service.name)}${service.tag ? `<small>${escapeHtml(service.tag)}</small>` : ""}</span><span class="service-row__technique">${escapeHtml(service.technique)}</span></span>
+          <span class="service-row__identity">${service.editorialSubtitle ? `<span class="service-row__subtitle">${escapeHtml(service.editorialSubtitle)}</span>` : ""}<span class="service-row__name">${escapeHtml(service.name)}${service.tag ? `<small>${escapeHtml(service.tag)}</small>` : ""}</span><span class="service-row__technique">${escapeHtml(service.technique)}</span></span>
           <span class="service-row__prices">${priceColumn(prices[0], durations[0])}${prices[1] || durations[1] ? priceColumn(prices[1] || "-", durations[1] || "-") : ""}</span>
           <span class="service-row__toggle" aria-hidden="true"></span>
         </summary>
-        <div class="service-row__detail"><p>${escapeHtml(service.description)}</p><div class="service-tags">${tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>${description !== service.description ? `<details class="service-more"><summary>Know more</summary><p>${escapeHtml(description)}</p></details>` : ""}<a class="text-link text-link--arrow" href="tel:+919792710010">Call to book <span aria-hidden="true">→</span></a></div>
+        <div class="service-row__detail"><p>${escapeHtml(service.description)}</p>${tags.length ? `<div class="service-tags" aria-label="Good for">${tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>` : ""}${description !== service.description ? `<details class="service-more"><summary>Know more</summary><p>${escapeHtml(description)}</p></details>` : ""}<a class="text-link text-link--arrow" href="tel:+919792710010">Call to book <span aria-hidden="true">→</span></a></div>
       </details>`;
+  }
+
+  function benefitTags(service, category) {
+    if (!["Specials", "Massages", "Foot Reflexology", "Head Massage"].includes(category)) return [];
+    const parts = String(service.goodFor || "")
+      .replace(/[.]$/, "")
+      .split(/,|\s+and\s+/i)
+      .map((item) => item.trim())
+      .filter(Boolean)
+      .slice(0, 3);
+    return parts.map((item) => item.replace(/\b\w/g, (letter) => letter.toUpperCase()));
+  }
+
+  function initCarousel(root) {
+    if (!root || root.dataset.carouselReady === "true") return;
+    const track = root.querySelector("[data-carousel-track]");
+    const previous = root.querySelector("[data-carousel-prev]");
+    const next = root.querySelector("[data-carousel-next]");
+    if (!track || !previous || !next) return;
+    root.dataset.carouselReady = "true";
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const interval = Number(root.dataset.carouselInterval || 5500);
+    let index = 0;
+    let timer = null;
+    let paused = false;
+    let pointerStart = null;
+
+    const columns = () => Number(getComputedStyle(root).getPropertyValue("--carousel-columns")) || 1;
+    const maximum = () => Math.max(0, track.children.length - columns());
+    const update = (nextIndex) => {
+      index = Math.max(0, Math.min(maximum(), nextIndex));
+      if (nextIndex > maximum()) index = 0;
+      if (nextIndex < 0) index = maximum();
+      const item = track.firstElementChild;
+      const gap = Number.parseFloat(getComputedStyle(track).gap) || 0;
+      const distance = item ? (item.getBoundingClientRect().width + gap) * index : 0;
+      track.style.transform = `translate3d(${-distance}px, 0, 0)`;
+      root.dataset.carouselIndex = String(index);
+      previous.disabled = maximum() === 0;
+      next.disabled = maximum() === 0;
+    };
+    const stop = () => { if (timer) clearTimeout(timer); timer = null; };
+    const schedule = () => {
+      stop();
+      if (paused || reduceMotion.matches || document.hidden || maximum() === 0) return;
+      timer = setTimeout(() => { update(index + 1); schedule(); }, interval);
+    };
+    const move = (direction) => { update(index + direction); schedule(); };
+    previous.addEventListener("click", () => move(-1));
+    next.addEventListener("click", () => move(1));
+    root.addEventListener("mouseenter", () => { paused = true; stop(); });
+    root.addEventListener("mouseleave", () => { paused = false; schedule(); });
+    root.addEventListener("focusin", () => { paused = true; stop(); });
+    root.addEventListener("focusout", (event) => { if (!root.contains(event.relatedTarget)) { paused = false; schedule(); } });
+    root.addEventListener("pointerdown", (event) => { pointerStart = event.clientX; });
+    root.addEventListener("pointerup", (event) => {
+      if (pointerStart === null) return;
+      const distance = event.clientX - pointerStart;
+      pointerStart = null;
+      if (Math.abs(distance) > 45) move(distance < 0 ? 1 : -1);
+    });
+    document.addEventListener("visibilitychange", () => document.hidden ? stop() : schedule());
+    window.addEventListener("resize", () => update(Math.min(index, maximum())));
+    const motionChange = () => reduceMotion.matches ? stop() : schedule();
+    if (reduceMotion.addEventListener) reduceMotion.addEventListener("change", motionChange); else reduceMotion.addListener(motionChange);
+    update(0);
+    schedule();
+  }
+
+  function initTeamSection() {
+    const root = document.querySelector("[data-team-section]");
+    if (!root) return;
+    const track = root.querySelector("[data-carousel-track]");
+    const empty = root.querySelector("[data-team-empty]");
+    const team = Array.isArray(window.CORAL_TEAM) ? window.CORAL_TEAM : [];
+    if (!team.length) {
+      if (empty) empty.hidden = false;
+      const viewport = root.querySelector(".content-carousel__viewport");
+      const controls = root.querySelector(".carousel-controls");
+      if (viewport) viewport.hidden = true;
+      if (controls) controls.hidden = true;
+      return;
+    }
+    if (empty) empty.hidden = true;
+    const controls = root.querySelector(".carousel-controls");
+    if (controls) controls.hidden = false;
+    track.innerHTML = team.map((member) => {
+      const name = member.nickname || member.firstName || "Therapist";
+      const initials = name.slice(0, 2).toUpperCase();
+      const photo = member.showPhoto && member.photo
+        ? `<img src="${escapeHtml(member.photo)}" alt="${escapeHtml(name)}, Coral Spa therapist" loading="lazy" decoding="async">`
+        : `<span class="team-card__monogram" aria-hidden="true">${escapeHtml(initials)}</span>`;
+      const credentials = Array.isArray(member.certifications) ? member.certifications.slice(0, 4) : [];
+      const specializations = Array.isArray(member.specializations) ? member.specializations.slice(0, 3) : [];
+      return `<article class="team-card glass-panel" data-stagger-item data-reveal="fade-up"><div class="team-card__media">${photo}</div><div class="team-card__copy"><h3>${escapeHtml(name)}</h3>${member.experienceYears ? `<p>${escapeHtml(member.experienceYears)} years of experience</p>` : ""}${credentials.length ? `<ul>${credentials.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}${specializations.length ? `<span>Known for: ${escapeHtml(specializations.join(", "))}</span>` : ""}</div></article>`;
+    }).join("");
+    document.dispatchEvent(new CustomEvent("coral:content-rendered"));
+    initCarousel(root);
+  }
+
+  function initRequestForms() {
+    document.querySelectorAll("[data-interest-form]").forEach((form) => {
+      const select = form.querySelector('[name="service"]');
+      if (select && services.length && select.options.length === 1) {
+        services.forEach((category) => {
+          const group = document.createElement("optgroup");
+          group.label = category.category;
+          category.services.forEach((service) => group.append(new Option(service.name, service.name)));
+          select.append(group);
+        });
+      }
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (!form.reportValidity()) return;
+        const status = form.querySelector("[data-form-status]");
+        if (status) status.hidden = false;
+      });
+    });
+  }
+
+  function initBackToTop() {
+    document.querySelectorAll("[data-back-to-top]").forEach((button) => {
+      const update = () => button.classList.toggle("is-visible", window.scrollY > 520);
+      update();
+      window.addEventListener("scroll", update, { passive: true });
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        document.getElementById("main-content")?.scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth" });
+      });
+    });
   }
 
   function initServiceSearch() {

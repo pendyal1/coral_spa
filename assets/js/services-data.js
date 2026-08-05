@@ -52,6 +52,7 @@ window.CORAL_SERVICES = [
     services: [
       {
         name: "Swedish Massage",
+        editorialSubtitle: "Slow Down",
         technique: "Classic Relaxation Massage",
         duration: "60 Min",
         price: "2500",
@@ -61,6 +62,7 @@ window.CORAL_SERVICES = [
       },
       {
         name: "Thai Oil Therapy",
+        editorialSubtitle: "Reset & Release",
         technique: "Thai Pressure with Oil",
         duration: "60 / 90 Min",
         price: "2700 / 3500",
@@ -88,6 +90,7 @@ window.CORAL_SERVICES = [
       },
       {
         name: "Deep Tissue Massage",
+        editorialSubtitle: "Knot Fixer",
         technique: "Focused Deep Pressure",
         duration: "60 / 90 Min",
         price: "2900 / 3700",
@@ -98,6 +101,7 @@ window.CORAL_SERVICES = [
       },
       {
         name: "Hot Stone Massage",
+        editorialSubtitle: "The Heat Ritual",
         technique: "Heated Basalt Stone Therapy",
         duration: "90 Min",
         price: "4600",

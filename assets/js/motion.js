@@ -33,9 +33,13 @@
   }
 
   function observeRevealContent(root) {
-    root.querySelectorAll("[data-stagger]").forEach((parent) => {
-      Array.from(parent.children).forEach((child, index) => {
+    root.querySelectorAll("[data-stagger], [data-stagger-group]").forEach((parent) => {
+      const children = parent.hasAttribute("data-stagger-group")
+        ? Array.from(parent.querySelectorAll("[data-stagger-item]"))
+        : Array.from(parent.children);
+      children.forEach((child, index) => {
         child.style.setProperty("--stagger-index", String(index));
+        if (child.hasAttribute("data-stagger-item") && !child.hasAttribute("data-reveal")) child.dataset.reveal = "fade-up";
       });
     });
 

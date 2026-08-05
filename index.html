@@ -111,15 +111,14 @@
       </section>
 
       <section class="section section--why surface-smoked-glass" id="why-coral-spa">
-        <div class="wrap why-layout">
-          <header class="section-heading" data-reveal="horizontal">
-            <h2>Trained hands, <em>not guesswork.</em></h2>
-          </header>
-          <div class="why-points glass-panel" data-stagger>
-            <article class="editorial-point" data-reveal="fade-up"><span>01</span><h3>Certified Therapists</h3><p>Therapists work across Thai, Balinese, Swedish, deep pressure, hot stone and lymphatic techniques.</p></article>
-            <article class="editorial-point" data-reveal="fade-up"><span>02</span><h3>Call-First Care</h3><p>Every booking is confirmed by phone so that the team can guide you to the right ritual.</p></article>
-            <article class="editorial-point" data-reveal="fade-up"><span>03</span><h3>Personalized to Your Needs</h3><p>Pressure, oil and timing are adjusted for the guest instead of following a fixed script.</p></article>
-            <article class="editorial-point" data-reveal="fade-up"><span>04</span><h3>Professional Products</h3><p>The team uses premium oils, skin-care formulas, body care and Moroccan Oil hair products matched to the ritual.</p></article>
+        <div class="wrap">
+          <header class="section-heading section-heading--center" data-reveal="fade-up"><h2>Why <em>Coral Spa.</em></h2></header>
+          <div class="why-orbit" data-stagger-group>
+            <div class="why-orbit__focal" data-reveal="scale-in"><picture><source srcset="assets/images/branding/why-coral-spa-stones.webp" type="image/webp"><img src="assets/images/branding/why-coral-spa-stones.png" width="1024" height="1536" loading="lazy" decoding="async" alt="Stacked spa stones with warm oil"></picture></div>
+            <article class="why-orbit__tile editorial-point glass-panel" data-stagger-item><span>01</span><h3>Certified Therapists</h3><p>Therapists work across Thai, Balinese, Swedish, deep pressure, hot stone and lymphatic techniques.</p></article>
+            <article class="why-orbit__tile editorial-point glass-panel" data-stagger-item><span>02</span><h3>Call-First Care</h3><p>Every booking is confirmed by phone so that the team can guide you to the right ritual.</p></article>
+            <article class="why-orbit__tile editorial-point glass-panel" data-stagger-item><span>03</span><h3>Personalized to Your Needs</h3><p>Pressure, oil and timing are adjusted for the guest instead of following a fixed script.</p></article>
+            <article class="why-orbit__tile editorial-point glass-panel" data-stagger-item><span>04</span><h3>Professional Products</h3><p>The team uses premium oils, skin-care formulas, body care and Moroccan Oil hair products matched to the ritual.</p></article>
           </div>
         </div>
       </section>
@@ -151,12 +150,13 @@
             <h2>What Kanpur is <em>saying.</em></h2>
             <a class="text-link text-link--arrow" href="https://www.google.com/maps/search/?api=1&amp;query=Coral%20Spa%20B.K-2%20Tower%203%2F13A%20Vishnu%20Puri%20Kanpur" target="_blank" rel="noopener noreferrer">Read reviews on Google <span aria-hidden="true">→</span></a>
           </header>
-          <div class="google-reviews" data-google-reviews aria-live="polite" aria-busy="true" data-reveal="fade-in">
-            <article class="review-card review-card--loading glass-panel" data-review-loading>
-              <div class="review-card__stars" aria-hidden="true">★★★★★</div>
-              <p>Connecting to recent five-star Google reviews.</p>
-              <span>Loading guest feedback</span>
-            </article>
+          <div class="content-carousel review-carousel" data-carousel data-carousel-interval="5200" data-reveal="fade-in">
+            <div class="content-carousel__viewport">
+              <div class="google-reviews content-carousel__track" data-google-reviews data-carousel-track aria-live="polite" aria-busy="true">
+                <article class="review-card review-card--loading glass-panel" data-review-loading><div class="review-card__stars" aria-hidden="true">★★★★★</div><p>Connecting to recent Google reviews.</p><span>Loading guest feedback</span></article>
+              </div>
+            </div>
+            <div class="carousel-controls" aria-label="Review carousel controls"><button type="button" data-carousel-prev aria-label="Previous reviews">←</button><button type="button" data-carousel-next aria-label="Next reviews">→</button></div>
           </div>
         </div>
       </section>
@@ -188,7 +188,7 @@
       <div class="wrap footer-bottom"><span>Copyright <span data-year></span> Coral Spa. All rights reserved.</span><span>Basement, B.K-2 Tower 3/13A, Vishnu Puri, Kanpur-208002</span></div>
     </footer>
 
-    <div class="floating-actions" aria-label="Quick actions"><a href="services.html">View Full Menu</a><a href="contact.html">Contact Us</a></div>
+    <a class="back-to-top" data-back-to-top href="#main-content" aria-label="Back to the top of the home page">Top</a><div class="floating-actions" aria-label="Quick actions"><a href="services.html">View Full Menu</a><a href="contact.html">Contact Us</a></div>
     <script src="assets/js/services-data.js" defer></script>
     <script src="assets/js/google-reviews-config.js" defer></script>
     <script src="assets/js/media.js" defer></script>
