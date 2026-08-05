@@ -1,6 +1,6 @@
 # Coral Spa Website
 
-Static, cinematic website for Coral Spa with Home, About Us, Services and Contact Us pages. It uses plain HTML, CSS and JavaScript and requires no production build step.
+Static, cinematic website for Coral Spa with Home, About Us, Services and Contact Us pages. It uses plain HTML, CSS and JavaScript and requires no production build step
 
 Run locally:
 
