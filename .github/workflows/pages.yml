@@ -1,0 +1,59 @@
+name: Deploy Coral Spa to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require the restricted reviews key
+        env:
+          GOOGLE_MAPS_BROWSER_KEY: ${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}
+        run: |
+          if [ -z "$GOOGLE_MAPS_BROWSER_KEY" ]; then
+            echo "GOOGLE_MAPS_BROWSER_KEY is not configured." >&2
+            exit 1
+          fi
+      - name: Generate production review configuration
+        env:
+          GOOGLE_MAPS_BROWSER_KEY: ${{ secrets.GOOGLE_MAPS_BROWSER_KEY }}
+        run: |
+          node <<'NODE'
+          const fs = require("fs");
+          const config = {
+            endpoint: "",
+            apiKey: process.env.GOOGLE_MAPS_BROWSER_KEY,
+            placeId: "",
+            placeQuery: "Coral Spa B.K-2 Tower 3/13A Vishnu Puri Kanpur",
+            mapsUrl: "https://www.google.com/maps/search/?api=1&query=Coral%20Spa%20B.K-2%20Tower%203%2F13A%20Vishnu%20Puri%20Kanpur"
+          };
+          fs.writeFileSync("assets/js/google-reviews-config.js", `window.CORAL_GOOGLE_REVIEWS = ${JSON.stringify(config, null, 2)};\n`);
+          NODE
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

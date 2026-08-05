@@ -100,10 +100,14 @@ p { color: var(--text-secondary); }
 
 /* Shared sections and motion */
 .section { position: relative; padding-block: var(--section-spacing); overflow: clip; }
-.surface-wood { background-color: var(--surface-850); background-image: linear-gradient(rgba(16, 9, 6, 0.82), rgba(16, 9, 6, 0.88)), url("../images/textures/film-grain-desktop.webp"), url("../images/textures/dark-wood-desktop.webp"); background-position: center; background-size: auto, 512px, cover; }
-.surface-stone { background-color: var(--surface-900); background-image: linear-gradient(rgba(16, 9, 6, 0.84), rgba(16, 9, 6, 0.9)), url("../images/textures/film-grain-desktop.webp"), url("../images/textures/dark-stone-desktop.webp"); background-position: center; background-size: auto, 512px, 1024px; }
-.surface-botanical { background-color: var(--surface-850); background-image: linear-gradient(rgba(16, 9, 6, 0.88), rgba(16, 9, 6, 0.92)), url("../images/textures/coral-botanical-texture.webp"); background-position: center; background-size: auto, 760px; }
-.surface-deep { background-color: var(--surface-950); background-image: linear-gradient(rgba(10, 5, 3, 0.93), rgba(10, 5, 3, 0.96)), url("../images/textures/film-grain-desktop.webp"); background-position: center; background-size: auto, 512px; }
+.surface-warm-wood { background-color: #24130d; background-image: linear-gradient(125deg, rgba(22, 11, 7, 0.64), rgba(45, 24, 15, 0.73)), url("../images/textures/film-grain-desktop.webp"), url("../images/textures/dark-wood-desktop.webp"); background-position: center; background-size: auto, 512px, cover; background-blend-mode: normal, soft-light, normal; }
+.surface-smoked-glass { background-color: #1b100c; background-image: radial-gradient(circle at 82% 18%, rgba(198, 161, 91, 0.13), transparent 31%), radial-gradient(circle at 10% 82%, rgba(236, 116, 72, 0.08), transparent 28%), linear-gradient(145deg, #21130e, #120b08 72%); }
+.surface-pebble { background-color: #211610; background-image: radial-gradient(circle at 100% 25%, rgba(198, 161, 91, 0.11), transparent 30%), linear-gradient(115deg, rgba(20, 12, 9, 0.67), rgba(31, 20, 14, 0.76)), url("../images/textures/dark-stone-desktop.webp"); background-position: center; background-size: auto, auto, 1024px; }
+.surface-botanical-glass { background-color: #1d110c; background-image: radial-gradient(circle at 16% 18%, rgba(236, 116, 72, 0.1), transparent 28%), linear-gradient(rgba(20, 11, 8, 0.75), rgba(16, 9, 6, 0.82)), url("../images/textures/coral-botanical-texture.webp"); background-position: center; background-size: auto, auto, 760px; }
+.surface-deep-wood { background-color: #150b08; background-image: linear-gradient(90deg, rgba(198, 161, 91, 0.08), transparent 16%, transparent 84%, rgba(236, 116, 72, 0.06)), linear-gradient(rgba(12, 6, 4, 0.72), rgba(16, 8, 5, 0.78)), url("../images/textures/film-grain-desktop.webp"), url("../images/textures/dark-wood-desktop.webp"); background-position: center; background-size: auto, auto, 512px, cover; background-blend-mode: normal, normal, soft-light, normal; }
+.glass-panel { background: linear-gradient(135deg, rgba(255, 248, 240, 0.1), rgba(255, 248, 240, 0.035)); border: 1px solid rgba(245, 226, 206, 0.18); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 24px 70px rgba(0, 0, 0, 0.28); -webkit-backdrop-filter: blur(16px) saturate(115%); backdrop-filter: blur(16px) saturate(115%); }
+.why-points.glass-panel, .certification-copy.glass-panel, .location-copy.glass-panel { padding: clamp(22px, 3vw, 38px); }
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) { .glass-panel { background: #30211a; } }
 .section-heading { max-width: 760px; margin-bottom: clamp(42px, 6vw, 72px); }
 .section-heading--split { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr); align-items: end; gap: 48px; max-width: none; }
 .section-heading h2, .story-copy h2, .certification-copy h2, .therapists-copy h2, .contact-intro h2, .location-copy h2 { font-size: clamp(2.25rem, 4.5vw, 4.6rem); }
@@ -157,18 +161,20 @@ p { color: var(--text-secondary); }
 .editorial-point h3 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 350; }
 .editorial-point p { font-size: 14px; }
 .gallery-showcase { display: grid; grid-template-columns: minmax(0, 1fr) minmax(190px, 250px); gap: 14px; height: clamp(560px, 55vw, 700px); }
-.gallery-showcase__focus, .gallery-thumb { position: relative; min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--card-radius); background: var(--surface-800); }
-.gallery-showcase__focus picture, .gallery-showcase__focus img, .gallery-thumb img { display: block; width: 100%; height: 100%; }
+.gallery-showcase__focus, .gallery-thumb { position: relative; min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--card-radius); background: #24150f; }
+.gallery-showcase__focus { min-height: 420px; }
+.gallery-showcase__focus picture { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.gallery-showcase__focus picture img, .gallery-thumb img { display: block; width: 100%; height: 100%; }
 .gallery-showcase__focus img, .gallery-thumb img { object-fit: cover; object-position: center; filter: saturate(0.82) sepia(0.08) brightness(0.78); }
 .gallery-showcase__focus img { transition: opacity 260ms var(--motion-ease-standard); }
-.gallery-showcase.is-changing .gallery-showcase__focus img { opacity: 0.2; }
+.gallery-showcase.is-changing .gallery-showcase__focus img { opacity: 0.78; }
 .gallery-showcase__focus figcaption, .gallery-thumb span { position: absolute; inset: auto 0 0; z-index: 2; padding: 38px 18px 16px; background: linear-gradient(0deg, rgba(10, 5, 3, 0.9), transparent); color: var(--text-primary); font-size: 10px; letter-spacing: 0.14em; text-align: left; text-transform: uppercase; }
 .gallery-showcase__thumbs { display: grid; grid-template-rows: repeat(4, minmax(0, 1fr)); gap: 14px; min-height: 0; }
 .gallery-thumb { width: 100%; min-height: 0; padding: 0; color: var(--text-primary); cursor: pointer; transition: transform var(--motion-hover-duration), border-color var(--motion-hover-duration); }
 .gallery-thumb:hover, .gallery-thumb:focus-visible { border-color: var(--gold-accent); transform: translateY(-2px); }
 .gallery-thumb[aria-pressed="true"] { border-color: var(--coral-accent); }
 .google-reviews { display: grid; grid-template-columns: repeat(5, minmax(230px, 1fr)); gap: 14px; min-height: 270px; overflow-x: auto; padding-bottom: 10px; scroll-snap-type: x proximity; }
-.review-card { min-height: 250px; padding: 26px; border: 1px solid var(--line); background: rgba(16, 9, 6, 0.68); scroll-snap-align: start; }
+.review-card { min-height: 250px; padding: 26px; scroll-snap-align: start; }
 .review-card__stars { color: var(--gold-accent); letter-spacing: 0.1em; }
 .review-card p { margin: 24px 0; color: var(--text-primary); }
 .review-card > span { color: var(--text-secondary); font-size: 12px; }
@@ -283,7 +289,7 @@ p { color: var(--text-secondary); }
 .route-line { width: min(100%, 420px); margin-top: 42px; overflow: visible; fill: none; stroke: var(--gold-accent); stroke-width: 1.2; stroke-dasharray: 5 7; opacity: 0.68; }
 .route-line circle, .route-line .route-pin { fill: var(--coral-accent); stroke: none; }
 .contact-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 14px; }
-.contact-card { min-width: 0; min-height: 300px; display: flex; flex-direction: column; align-items: flex-start; padding: 24px; border: 1px solid var(--line); background: rgba(16, 9, 6, 0.64); transition: transform var(--motion-hover-duration), border-color var(--motion-hover-duration), box-shadow var(--motion-hover-duration); }
+.contact-card { min-width: 0; min-height: 300px; display: flex; flex-direction: column; align-items: flex-start; padding: 24px; transition: transform var(--motion-hover-duration), border-color var(--motion-hover-duration), box-shadow var(--motion-hover-duration); }
 .contact-card:hover { transform: translateY(-3px); border-color: rgba(198, 161, 91, 0.56); box-shadow: var(--shadow-softness); }
 .contact-card > span { display: block; margin-bottom: 20px; color: var(--gold-accent); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
 .contact-card a, .contact-card address { color: var(--text-primary); }
@@ -295,7 +301,7 @@ p { color: var(--text-secondary); }
 .contact-card--map > span, .contact-card--map > a { margin-right: 20px; margin-left: 20px; }
 .contact-card--map > span { margin-top: 20px; margin-bottom: 12px; }
 .contact-card--map > a { margin-top: auto; margin-bottom: 16px; }
-.contact-card__map { width: 100%; aspect-ratio: 16 / 9; margin-bottom: 10px; overflow: hidden; border-block: 1px solid var(--line); }
+.contact-card__map { width: 100%; aspect-ratio: 16 / 9; margin-bottom: 10px; overflow: hidden; border-block: 1px solid rgba(245, 226, 206, 0.2); box-shadow: inset 0 0 28px rgba(198, 161, 91, 0.12); }
 .contact-card__map iframe { display: block; width: 100%; height: 100%; border: 0; filter: grayscale(0.25) sepia(0.12) brightness(0.82); }
 .mobile-contact-bar { display: none; }
 
@@ -391,10 +397,10 @@ p { color: var(--text-secondary); }
   .category-card__label { right: 12px; bottom: 12px; left: 12px; font-size: 10px; }
   .editorial-point { grid-template-columns: 32px 1fr; gap: 12px; }
   .editorial-point p { grid-column: 2; }
-  .surface-wood { background-image: linear-gradient(rgba(16, 9, 6, 0.84), rgba(16, 9, 6, 0.9)), url("../images/textures/film-grain-mobile.webp"), url("../images/textures/dark-wood-mobile.webp"); background-size: auto, 256px, cover; }
-  .surface-stone { background-image: linear-gradient(rgba(16, 9, 6, 0.86), rgba(16, 9, 6, 0.92)), url("../images/textures/film-grain-mobile.webp"), url("../images/textures/dark-stone-mobile.webp"); background-size: auto, 256px, 512px; }
-  .surface-deep { background-image: linear-gradient(rgba(10, 5, 3, 0.94), rgba(10, 5, 3, 0.97)), url("../images/textures/film-grain-mobile.webp"); background-size: auto, 256px; }
-  .gallery-showcase__focus { aspect-ratio: 4 / 3; }
+  .surface-warm-wood { background-image: linear-gradient(125deg, rgba(22, 11, 7, 0.66), rgba(45, 24, 15, 0.75)), url("../images/textures/film-grain-mobile.webp"), url("../images/textures/dark-wood-mobile.webp"); background-size: auto, 256px, cover; }
+  .surface-pebble { background-image: radial-gradient(circle at 100% 25%, rgba(198, 161, 91, 0.11), transparent 30%), linear-gradient(115deg, rgba(20, 12, 9, 0.69), rgba(31, 20, 14, 0.78)), url("../images/textures/dark-stone-mobile.webp"); background-size: auto, auto, 512px; }
+  .surface-deep-wood { background-image: linear-gradient(90deg, rgba(198, 161, 91, 0.08), transparent 18%, transparent 82%, rgba(236, 116, 72, 0.06)), linear-gradient(rgba(12, 6, 4, 0.74), rgba(16, 8, 5, 0.8)), url("../images/textures/film-grain-mobile.webp"), url("../images/textures/dark-wood-mobile.webp"); background-size: auto, auto, 256px, cover; }
+  .gallery-showcase__focus { min-height: 300px; aspect-ratio: 4 / 3; }
   .gallery-showcase__thumbs { gap: 8px; }
   .gallery-thumb span { padding: 32px 10px 10px; font-size: 8px; }
   .google-reviews { grid-template-columns: repeat(5, minmax(245px, 78vw)); }

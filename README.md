@@ -29,20 +29,22 @@ npm test
 npm run audit:videos
 ```
 
-Do not add private API keys to frontend files. The reviews component reads `assets/js/google-reviews-config.js` and accepts either a secure external `endpoint` or a Google Maps JavaScript API browser `apiKey`. The committed configuration is empty, so the public site safely falls back to a direct Google Reviews link without an error.
+Do not add private or unrestricted API keys to frontend files. The reviews component reads `assets/js/google-reviews-config.js` and accepts either a secure external `endpoint` or a Google Maps JavaScript API browser `apiKey`. The committed local configuration is empty, so local and unconfigured deployments safely fall back to a direct Google Reviews link without an error.
 
-For production reviews, copy the shape documented in `assets/js/google-reviews-config.example.js`. Prefer a serverless endpoint. If a browser key is used, restrict it to `https://pendyal1.github.io/coral_spa/*`, restrict it to only the required Maps JavaScript and Places APIs, and monitor quota and billing. Never commit an unrestricted key.
+For production reviews, add `GOOGLE_MAPS_BROWSER_KEY` as a GitHub Actions repository secret. The key must be a browser key restricted to the `https://pendyal1.github.io/*` website referrer and only the **Maps JavaScript API** and **Places API (New)**. Monitor its quota and billing. The Pages workflow injects the key into the deployment artifact; never commit the generated value or reuse an unrestricted key exposed in Git history.
+
+The key present in commit `04a9cdf` was verified to accept an unrelated referrer. Revoke or rotate it in Google Cloud before enabling production reviews.
 
 ## Deploy to GitHub Pages
 
-This is a plain static site, so GitHub Pages can publish directly from the repository root.
+This is a plain static site. GitHub Actions publishes the repository root after generating the production reviews configuration.
 
 1. Push changes to the `main` branch.
 2. In GitHub, open the repository settings.
 3. Go to `Pages`.
-4. Under `Build and deployment`, set `Source` to `Deploy from a branch`.
-5. Set `Branch` to `main` and folder to `/(root)`.
-6. Click `Save`.
+4. Add the restricted browser key as the repository secret `GOOGLE_MAPS_BROWSER_KEY` under `Secrets and variables` → `Actions`.
+5. Under `Build and deployment`, set `Source` to `GitHub Actions`.
+6. Push `main` or run the `Deploy Coral Spa to GitHub Pages` workflow manually.
 7. The site will deploy at `https://pendyal1.github.io/coral_spa/`.
 
 All links and asset references are relative so they work beneath the `/coral_spa/` GitHub Pages project path. Keep `.nojekyll` in the repository root and verify filename casing before publishing.

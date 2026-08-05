@@ -46,15 +46,20 @@
     },
     {
       "id": "contact-hero",
-      "status": "approved-genuine-video",
-      "integrated": true,
+      "status": "awaiting-genuine-footage",
+      "integrated": false,
       "desktopSource": "assets/videos/contact-hero-desktop.webm",
       "desktopFallback": "assets/videos/contact-hero-desktop.mp4",
       "mobileSource": "assets/videos/contact-hero-mobile.webm",
       "mobileFallback": "assets/videos/contact-hero-mobile.mp4",
       "poster": "assets/images/posters/contact-hero-poster-desktop.webp",
-      "contactSheet": "assets/media/contact-sheets/contact-hero-desktop.webp",
-      "provenance": ["https://www.pexels.com/video/elegant-hotel-corridor-interior-view-31751335/"]
+      "posterSource": "assets/images/gallery/coral-spa-reception.jpeg",
+      "referenceImages": [
+        "assets/images/gallery/coral-spa-reception.jpeg",
+        "assets/images/gallery/coral-spa-treatment-room.jpeg",
+        "assets/images/gallery/coral-spa-waiting-lounge.jpeg",
+        "assets/images/gallery/coral-spa-therapy-suite.jpeg"
+      ]
     },
     {
       "id": "category-massage",

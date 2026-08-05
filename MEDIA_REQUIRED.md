@@ -1,6 +1,21 @@
 # Media Still Required
 
-The four page heroes have approved genuine footage. The following optional category-preview delivery files still contain rejected still-image motion and must not be enabled until they are replaced with genuine footage:
+## Contact hero
+
+The previous white hotel-corridor footage was removed because it did not resemble Coral Spa. Contact currently uses `assets/images/gallery/coral-spa-reception.jpeg` as its poster source and deliberately does not expose a play control.
+
+Supply genuine 8–10 second footage recorded inside Coral Spa, or reference-driven generated footage with meaningful environmental and camera motion, in these four files:
+
+- `assets/videos/contact-hero-desktop.webm`
+- `assets/videos/contact-hero-desktop.mp4`
+- `assets/videos/contact-hero-mobile.webm`
+- `assets/videos/contact-hero-mobile.mp4`
+
+Before setting `data-video-valid="true"`, validate six evenly spaced frames against the reception, treatment-room, waiting-lounge and therapy-suite reference photographs; confirm 16:9 desktop, 9:16 mobile, browser-compatible codecs and no audio.
+
+## Category previews
+
+The following optional category-preview delivery files still contain rejected still-image motion and must not be enabled until they are replaced with genuine footage:
 
 - `assets/videos/category-massage-desktop.webm`
 - `assets/videos/category-massage-desktop.mp4`

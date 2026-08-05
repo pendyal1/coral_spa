@@ -112,6 +112,8 @@ async function run() {
   if (!chrome) throw new Error("Chrome was not found. Set CHROME_PATH to run regression checks.");
   await new Promise((resolve) => server.listen(port, "127.0.0.1", resolve));
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), "coral-regression-"));
+  const artifactDir = path.join(root, "artifacts", "regression");
+  fs.mkdirSync(artifactDir, { recursive: true });
   const browser = spawn(chrome, [
     "--headless=new", `--remote-debugging-port=${debugPort}`, `--user-data-dir=${profile}`,
     "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage", "about:blank"
@@ -128,9 +130,11 @@ async function run() {
     await client.send("Page.addScriptToEvaluateOnNewDocument", { source: `if (location.search.includes("reviews-live")) window.CORAL_GOOGLE_REVIEWS = { endpoint: "${basePath}__test/reviews", mapsUrl: "${reviewFixture.mapsUrl}" };` });
     let localFailures = [];
     let consoleErrors = [];
+    let networkStatus = new Map();
     client.on((message) => {
       if (message.method === "Network.responseReceived") {
         const response = message.params.response;
+        networkStatus.set(response.url, response.status);
         if (response.url.startsWith(origin) && response.status >= 400) localFailures.push(`${response.status} ${response.url}`);
       }
       if (message.method === "Network.loadingFailed" && !message.params.canceled) localFailures.push(message.params.errorText);
@@ -147,22 +151,44 @@ async function run() {
       return result.result.result.value;
     };
 
-    const navigate = async (url, { video = true } = {}) => {
+    const navigate = async (url) => {
+      networkStatus = new Map();
       await client.send("Page.navigate", { url });
       for (let attempt = 0; attempt < 100; attempt += 1) {
         await delay(100);
-        const state = JSON.parse(await evaluate(`JSON.stringify({ href: location.href, ready: document.readyState, media: (() => { const node = document.querySelector('[data-video-background] video'); return !${video} || !!(node && node.duration > 1 && node.videoWidth > 0 && node.videoHeight > 0); })() })`));
-        if (state.href === url && state.ready === "complete" && state.media) return;
+        const state = JSON.parse(await evaluate(`JSON.stringify({ href: location.href, ready: document.readyState })`));
+        if (state.href === url && (state.ready === "interactive" || state.ready === "complete")) return;
       }
-      throw new Error(`Timed out loading ${url}`);
+      throw new Error(`DOM readiness timed out after 10 seconds for ${url}`);
+    };
+
+    const inspectVideo = async (page) => {
+      let diagnostic = {};
+      for (let attempt = 0; attempt < 120; attempt += 1) {
+        diagnostic = JSON.parse(await evaluate(`JSON.stringify((() => { const root = document.querySelector('[data-video-background]'); const video = root && root.querySelector('video'); return video ? { approved: root.dataset.videoValid === 'true', currentSrc: video.currentSrc, readyState: video.readyState, networkState: video.networkState, errorCode: video.error && video.error.code, duration: Number.isFinite(video.duration) ? video.duration : 0, videoWidth: video.videoWidth, videoHeight: video.videoHeight } : { missing: true }; })())`));
+        if (diagnostic.approved === false) return { page, passed: true, posterOnly: true, ...diagnostic, networkStatus: null };
+        if (diagnostic.duration > 1 && diagnostic.videoWidth > 0 && diagnostic.videoHeight > 0) return { page, passed: true, ...diagnostic, networkStatus: networkStatus.get(diagnostic.currentSrc) || null };
+        await delay(100);
+      }
+      return { page, passed: false, ...diagnostic, networkStatus: networkStatus.get(diagnostic.currentSrc) || null };
+    };
+
+    const captureSection = async (selector, filename) => {
+      await evaluate(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({ block: "center" })`);
+      await delay(350);
+      const screenshot = await client.send("Page.captureScreenshot", { format: "png", fromSurface: true });
+      fs.writeFileSync(path.join(artifactDir, filename), Buffer.from(screenshot.result.data, "base64"));
     };
 
     for (const [width, height] of sizes) {
       for (const page of pages) {
+        const label = `${page} ${width}x${height}`;
         localFailures = [];
         consoleErrors = [];
         await client.send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: 1, mobile: width <= 430 });
         await navigate(`${origin}${basePath}${page}?qa=${width}x${height}`);
+        const videoDiagnostic = await inspectVideo(page);
+        if (!videoDiagnostic.passed) failures.push(`${label}: hero metadata failed ${JSON.stringify(videoDiagnostic)}`);
         const result = JSON.parse(await evaluate(`JSON.stringify((() => {
           const visible = (element) => { if (!element) return false; const style = getComputedStyle(element); const rect = element.getBoundingClientRect(); return rect.height > 0 && style.display !== "none" && style.visibility !== "hidden" && Number(style.opacity) > 0; };
           const hero = document.querySelector('[data-video-background]');
@@ -183,6 +209,7 @@ async function run() {
             videoWidth: video && video.videoWidth,
             videoHeight: video && video.videoHeight,
             videoSourcesRelative: sourceUrls.every((url) => url.includes('${basePath}assets/videos/')),
+            deferredVideoSourcesRelative: video ? [...video.querySelectorAll('source[data-src]')].every((source) => source.dataset.src.startsWith('assets/videos/')) : false,
             posterVisible: visible(hero && hero.querySelector('.media-background__poster')),
             toggleVisible: visible(document.querySelector('[data-video-toggle]'))
           };
@@ -193,6 +220,10 @@ async function run() {
             whyVisible: visible(document.querySelector('#why-coral-spa')), whyItems: document.querySelectorAll('#why-coral-spa .editorial-point').length,
             galleryVisible: visible(document.querySelector('#gallery')), galleryFocus: document.querySelectorAll('[data-gallery-focus]').length, galleryThumbs: document.querySelectorAll('[data-gallery-thumb]').length,
             galleryUnique: new Set([...document.querySelectorAll('[data-gallery-focus], [data-gallery-thumb]')].map((node) => node.dataset.gallerySrc)).size,
+            galleryFocusWidth: document.querySelector('[data-gallery-focus]')?.getBoundingClientRect().width || 0,
+            galleryFocusHeight: document.querySelector('[data-gallery-focus]')?.getBoundingClientRect().height || 0,
+            galleryImageNaturalWidth: document.querySelector('[data-gallery-focus-image]')?.naturalWidth || 0,
+            galleryImageOpacity: Number(getComputedStyle(document.querySelector('[data-gallery-focus-image]')).opacity),
             reviewsVisible: visible(document.querySelector('#reviews')), reviewState: document.querySelector('[data-google-reviews]')?.dataset.reviewState,
             locationVisible: visible(document.querySelector('#location')), footerVisible: visible(document.querySelector('.site-footer'))
           };
@@ -208,18 +239,19 @@ async function run() {
           }
           return base;
         })())`));
-        const label = `${page} ${width}x${height}`;
         if (result.overflow > 0) failures.push(`${label}: horizontal overflow ${result.overflow}px`);
         if (result.sectionsZeroHeight) failures.push(`${label}: ${result.sectionsZeroHeight} zero-height sections`);
         if (result.texturedSections !== result.nonHeroSections) failures.push(`${label}: explicit surface class coverage failed`);
         if (localFailures.length) failures.push(`${label}: failed local assets ${localFailures.join(', ')}`);
         if (consoleErrors.length) failures.push(`${label}: console errors ${consoleErrors.join(', ')}`);
-        if (result.heroValid !== 'true' || result.heroAutoplay !== 'true' || result.videoTag !== 'VIDEO' || !result.webm || !result.mp4 || !(result.videoDuration > 1) || !(result.videoWidth > 0) || !(result.videoHeight > 0) || !result.videoSourcesRelative || !result.posterVisible || !result.toggleVisible) failures.push(`${label}: hero media assertion failed`);
+        const validVideoHero = result.heroValid === 'true' && result.heroAutoplay === 'true' && result.videoTag === 'VIDEO' && result.webm && result.mp4 && result.videoDuration > 1 && result.videoWidth > 0 && result.videoHeight > 0 && result.videoSourcesRelative && result.posterVisible && result.toggleVisible;
+        const validPosterOnlyContact = page === 'contact.html' && result.heroValid === 'false' && result.heroAutoplay === 'false' && result.videoTag === 'VIDEO' && result.webm && result.mp4 && result.deferredVideoSourcesRelative && result.posterVisible && !result.toggleVisible;
+        if (!validVideoHero && !validPosterOnlyContact) failures.push(`${label}: hero media assertion failed`);
         if (page === 'index.html') {
           const names = ['The Jet Lag Reset', 'Lymphatic Drainage', 'The Heat Ritual'];
           if (!result.trendingVisible || result.trendingCards !== 3 || names.some((name) => !result.trendingNames.includes(name))) failures.push(`${label}: trending assertion failed`);
           if (!result.overviewVisible || result.overviewCards !== 3 || !result.whyVisible || result.whyItems !== 4) failures.push(`${label}: overview or credibility assertion failed`);
-          if (!result.galleryVisible || result.galleryFocus !== 1 || result.galleryThumbs !== 4 || result.galleryUnique !== 5) failures.push(`${label}: gallery structure assertion failed`);
+          if (!result.galleryVisible || result.galleryFocus !== 1 || result.galleryThumbs !== 4 || result.galleryUnique !== 5 || !(result.galleryFocusWidth > 0) || !(result.galleryFocusHeight > 0) || !(result.galleryImageNaturalWidth > 0) || !(result.galleryImageOpacity > 0.95)) failures.push(`${label}: gallery structure or focus-image assertion failed`);
           if (!result.reviewsVisible || result.reviewState !== 'fallback' || !result.locationVisible || !result.footerVisible) failures.push(`${label}: reviews, location or footer assertion failed`);
         }
         if (page === 'services.html') {
@@ -230,7 +262,7 @@ async function run() {
           if (!result.categoryImagesCover || result.categoryRatios.some((ratio) => Math.abs(ratio - expectedRatio) > 0.04)) failures.push(`${label}: category image crop assertion failed`);
         }
         if (page === 'contact.html' && (result.contactCards !== 5 || result.separateMap || !result.phonesNoWrap || !result.phonesFit || !result.mapUsable)) failures.push(`${label}: unified contact grid assertion failed`);
-        report.push({ label, ...result });
+        report.push({ label, videoDiagnostic, ...result });
       }
     }
 
@@ -245,13 +277,28 @@ async function run() {
 
     await navigate(`${origin}${basePath}index.html?gallery-manual=1`);
     for (let index = 0; index < 4; index += 1) {
-      const changed = await evaluate(`new Promise((resolve) => { const before = document.querySelector('[data-gallery-focus]').dataset.gallerySrc; document.querySelectorAll('[data-gallery-thumb]')[${index}].click(); setTimeout(() => resolve(before !== document.querySelector('[data-gallery-focus]').dataset.gallerySrc), 220); })`);
+      const changed = await evaluate(`new Promise((resolve) => { const before = document.querySelector('[data-gallery-focus]').dataset.gallerySrc; const deadline = Date.now() + 10000; document.querySelectorAll('[data-gallery-thumb]')[${index}].click(); const inspect = () => before !== document.querySelector('[data-gallery-focus]').dataset.gallerySrc ? resolve(true) : Date.now() >= deadline ? resolve(false) : setTimeout(inspect, 50); inspect(); })`);
       if (!changed) failures.push(`Gallery thumbnail ${index + 1} did not change the focused image`);
     }
 
-    await navigate(`${origin}${basePath}index.html?reviews-live=1`, { video: true });
-    const liveReviews = JSON.parse(await evaluate(`new Promise((resolve) => { const finish = () => { const root = document.querySelector('[data-google-reviews]'); if (root.dataset.reviewState === 'ready') resolve(JSON.stringify({ state: root.dataset.reviewState, cards: root.querySelectorAll('.review-card').length, stars: [...root.querySelectorAll('.review-card__stars')].every((node) => node.textContent === '★★★★★'), filtered: !root.textContent.includes('QA review four') })); else setTimeout(finish, 50); }; finish(); })`));
-    if (liveReviews.state !== 'ready' || liveReviews.cards !== 5 || !liveReviews.stars || !liveReviews.filtered) failures.push('Configured live reviews assertion failed');
+    await client.send("Network.clearBrowserCache");
+    await client.send("Network.setBlockedURLs", { urls: ["*coral-spa-therapy-suite-1200.webp", "*coral-spa-therapy-suite-640.webp", "*coral-spa-therapy-suite.jpeg"] });
+    await navigate(`${origin}${basePath}index.html?gallery-failure=1`);
+    const failedGallerySwap = JSON.parse(await evaluate(`new Promise((resolve) => { const focus = document.querySelector('[data-gallery-focus]'); const image = document.querySelector('[data-gallery-focus-image]'); const before = focus.dataset.gallerySrc; document.querySelector('[data-gallery-thumb]').click(); setTimeout(() => resolve(JSON.stringify({ unchanged: focus.dataset.gallerySrc === before, naturalWidth: image.naturalWidth, opacity: Number(getComputedStyle(image).opacity), width: focus.getBoundingClientRect().width, height: focus.getBoundingClientRect().height })), 800); })`));
+    if (!failedGallerySwap.unchanged || !(failedGallerySwap.naturalWidth > 0) || !(failedGallerySwap.opacity > 0.95) || !(failedGallerySwap.width > 0) || !(failedGallerySwap.height > 0)) failures.push(`Gallery replacement failure hid the focus image: ${JSON.stringify(failedGallerySwap)}`);
+    await client.send("Network.setBlockedURLs", { urls: [] });
+
+    await navigate(`${origin}${basePath}index.html?reviews-live=1`);
+    const liveReviews = JSON.parse(await evaluate(`new Promise((resolve) => { const deadline = Date.now() + 10000; const finish = () => { const root = document.querySelector('[data-google-reviews]'); if (root.dataset.reviewState === 'ready') resolve(JSON.stringify({ state: root.dataset.reviewState, busy: root.getAttribute('aria-busy'), cards: root.querySelectorAll('.review-card').length, fourStarVisible: [...root.querySelectorAll('.review-card__stars')].some((node) => node.textContent === '★★★★☆'), includesFourStarReview: root.textContent.includes('QA review four'), fallback: !!root.querySelector('.review-card--fallback') })); else if (Date.now() >= deadline) resolve(JSON.stringify({ state: root.dataset.reviewState || 'timeout', cards: root.querySelectorAll('.review-card').length })); else setTimeout(finish, 50); }; finish(); })`));
+    if (liveReviews.state !== 'ready' || liveReviews.busy !== 'false' || liveReviews.cards !== 5 || !liveReviews.fourStarVisible || !liveReviews.includesFourStarReview || liveReviews.fallback) failures.push(`Configured live reviews assertion failed: ${JSON.stringify(liveReviews)}`);
+
+    await captureSection('#reviews', 'google-reviews.png');
+    await captureSection('#gallery', 'home-gallery.png');
+    await captureSection('#signature', 'surface-warm-wood.png');
+    await captureSection('#why-coral-spa', 'surface-smoked-glass.png');
+    await captureSection('#reviews', 'surface-pebble.png');
+    await navigate(`${origin}${basePath}contact.html?screenshot=1`);
+    await captureSection('.cinematic-hero', 'contact-hero.png');
 
     await client.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] });
     for (const page of pages) {
@@ -277,8 +324,8 @@ async function run() {
     await client.send("Page.navigate", { url: `${origin}${basePath}index.html?no-js=1` });
     await delay(800);
     await client.send("Emulation.setScriptExecutionDisabled", { value: false });
-    const noJs = JSON.parse(await evaluate(`JSON.stringify({ trending: document.querySelectorAll('#signature .signature-card').length, overview: document.querySelectorAll('#treatments .overview-card').length, why: document.querySelectorAll('#why-coral-spa .editorial-point').length, galleryItems: document.querySelectorAll('[data-gallery-focus], [data-gallery-thumb]').length, reviewLoadingVisible: getComputedStyle(document.querySelector('[data-review-loading]')).display !== 'none', hidden: [...document.querySelectorAll('main > section')].filter((section) => !section.getBoundingClientRect().height || getComputedStyle(section).display === 'none' || getComputedStyle(section).visibility === 'hidden').length })`));
-    if (noJs.trending !== 3 || noJs.overview !== 3 || noJs.why !== 4 || noJs.galleryItems !== 5 || !noJs.reviewLoadingVisible || noJs.hidden) failures.push('No-JavaScript homepage assertion failed');
+    const noJs = JSON.parse(await evaluate(`JSON.stringify((() => { const focus = document.querySelector('[data-gallery-focus]'); const image = document.querySelector('[data-gallery-focus-image]'); return { trending: document.querySelectorAll('#signature .signature-card').length, overview: document.querySelectorAll('#treatments .overview-card').length, why: document.querySelectorAll('#why-coral-spa .editorial-point').length, galleryItems: document.querySelectorAll('[data-gallery-focus], [data-gallery-thumb]').length, galleryWidth: focus.getBoundingClientRect().width, galleryHeight: focus.getBoundingClientRect().height, galleryNaturalWidth: image.naturalWidth, galleryOpacity: Number(getComputedStyle(image).opacity), reviewLoadingVisible: getComputedStyle(document.querySelector('[data-review-loading]')).display !== 'none', hidden: [...document.querySelectorAll('main > section')].filter((section) => !section.getBoundingClientRect().height || getComputedStyle(section).display === 'none' || getComputedStyle(section).visibility === 'hidden').length }; })())`));
+    if (noJs.trending !== 3 || noJs.overview !== 3 || noJs.why !== 4 || noJs.galleryItems !== 5 || !(noJs.galleryWidth > 0) || !(noJs.galleryHeight > 0) || !(noJs.galleryNaturalWidth > 0) || !(noJs.galleryOpacity > 0.95) || !noJs.reviewLoadingVisible || noJs.hidden) failures.push('No-JavaScript homepage assertion failed');
 
     const css = fs.readFileSync(path.join(root, 'assets/css/styles.css'), 'utf8');
     if (/\.section:nth-of-type\s*\(/.test(css)) failures.push('Generic section:nth-of-type background rule remains');

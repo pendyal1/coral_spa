@@ -142,8 +142,9 @@
 
     root.innerHTML = services.map((category, categoryIndex) => {
       const id = categoryHash(category.category);
+      const surfaces = ["surface-smoked-glass", "surface-pebble", "surface-deep-wood"];
       return `
-        <section class="service-group ${categoryIndex % 2 === 0 ? "surface-stone" : "surface-deep"}" id="${id}" data-service-group="${escapeHtml(category.category)}">
+        <section class="service-group ${surfaces[categoryIndex % surfaces.length]}" id="${id}" data-service-group="${escapeHtml(category.category)}">
           <header class="service-group__header" data-reveal="fade-up">
             <div><h2>${escapeHtml(category.category)}</h2><p>${escapeHtml(category.intro)}</p></div>
             <figure class="category-media" ${categoryVideoAttributes(category)}><img ${responsiveImageAttributes(categoryImage(category), "(max-width: 720px) 92vw, 34vw")} width="1920" height="1080" loading="lazy" decoding="async" alt=""></figure>
@@ -182,17 +183,47 @@
     let paused = false;
     let manualResumeAt = 0;
 
-    const render = (nextIndex) => {
-      focusedIndex = (nextIndex + items.length) % items.length;
-      const focused = items[focusedIndex];
+    let renderToken = 0;
+
+    const decodeImage = (src) => new Promise((resolve, reject) => {
+      const candidate = new Image();
+      candidate.onload = () => resolve(candidate.currentSrc || candidate.src);
+      candidate.onerror = reject;
+      candidate.src = src;
+      if (candidate.decode) candidate.decode().then(() => resolve(candidate.currentSrc || candidate.src)).catch(() => {});
+    });
+
+    const loadGalleryItem = async (item) => {
+      const preferred = window.matchMedia("(max-width: 899px)").matches ? item.small : item.large;
+      try {
+        return { url: await decodeImage(preferred), isWebp: true };
+      } catch (error) {
+        return { url: await decodeImage(item.src), isWebp: false };
+      }
+    };
+
+    const render = async (nextIndex) => {
+      const requestedIndex = (nextIndex + items.length) % items.length;
+      if (requestedIndex === focusedIndex) return true;
+      const focused = items[requestedIndex];
+      const token = ++renderToken;
+      let loadedSource;
+      try {
+        loadedSource = await loadGalleryItem(focused);
+      } catch (error) {
+        return false;
+      }
+      if (token !== renderToken) return false;
+
       root.classList.add("is-changing");
-      window.setTimeout(() => {
+      window.requestAnimationFrame(() => {
+        focusedIndex = requestedIndex;
         focus.dataset.gallerySrc = focused.src;
         focus.dataset.gallerySmall = focused.small;
         focus.dataset.galleryLarge = focused.large;
         focus.dataset.galleryCaption = focused.caption;
         focus.dataset.galleryAlt = focused.alt;
-        focusSource.srcset = `${focused.small} 640w, ${focused.large} 1200w`;
+        focusSource.srcset = loadedSource.isWebp ? loadedSource.url : "";
         focusImage.src = focused.src;
         focusImage.alt = focused.alt;
         caption.textContent = focused.caption;
@@ -213,8 +244,9 @@
           image.src = item.small;
           label.textContent = item.caption;
         });
-        root.classList.remove("is-changing");
-      }, reduceMotion.matches ? 0 : 130);
+        window.requestAnimationFrame(() => root.classList.remove("is-changing"));
+      });
+      return true;
     };
 
     const stop = () => {
@@ -225,14 +257,14 @@
       stop();
       if (paused || reduceMotion.matches || document.hidden) return;
       const delay = Math.max(minimumDelay, manualResumeAt - Date.now());
-      timer = window.setTimeout(() => {
-        render(focusedIndex + 1);
+      timer = window.setTimeout(async () => {
+        await render(focusedIndex + 1);
         schedule(5500);
       }, delay);
     };
-    const select = (index, manual) => {
+    const select = async (index, manual) => {
       if (manual) manualResumeAt = Date.now() + 10000;
-      render(index);
+      await render(index);
       schedule(manual ? 10000 : 5500);
     };
 
@@ -255,7 +287,6 @@
     if (reduceMotion.addEventListener) reduceMotion.addEventListener("change", handleMotionChange);
     else reduceMotion.addListener(handleMotionChange);
 
-    render(0);
     schedule();
   }
 
@@ -281,15 +312,17 @@
         reviews = normalizeReviews(place.reviews || []);
         liveMapsUrl = place.googleMapsURI || mapsUrl;
       } else {
-        renderGoogleReviewFallback(roots, mapsUrl);
+        renderGoogleReviewFallback(roots, mapsUrl, new Error("Live review configuration is not available"));
         return;
       }
 
-      const fiveStarReviews = reviews.filter((review) => review.rating === 5).sort(newestReviewFirst).slice(0, 5);
-      if (!fiveStarReviews.length) throw new Error("No five-star reviews were returned");
-      renderGoogleReviews(roots, fiveStarReviews, liveMapsUrl);
+      const sortedReviews = reviews.sort(newestReviewFirst);
+      if (!sortedReviews.length) throw new Error("No reviews were returned");
+      const highRatedReviews = sortedReviews.filter((review) => review.rating >= 4);
+      const selectedReviews = (highRatedReviews.length >= 3 ? highRatedReviews : sortedReviews).slice(0, 5);
+      renderGoogleReviews(roots, selectedReviews, liveMapsUrl);
     } catch (error) {
-      renderGoogleReviewFallback(roots, mapsUrl);
+      renderGoogleReviewFallback(roots, mapsUrl, error);
     }
   }
 
@@ -298,12 +331,16 @@
     if (window.__coralGoogleMapsPromise) return window.__coralGoogleMapsPromise;
     window.__coralGoogleMapsPromise = new Promise((resolve, reject) => {
       const callbackName = `coralGoogleMapsReady_${Date.now()}`;
-      window[callbackName] = () => { delete window[callbackName]; resolve(); };
+      const timeout = window.setTimeout(() => {
+        delete window[callbackName];
+        reject(new Error("Google Maps loading timed out"));
+      }, 10000);
+      window[callbackName] = () => { window.clearTimeout(timeout); delete window[callbackName]; resolve(); };
       const script = document.createElement("script");
       script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&v=weekly&libraries=places&callback=${callbackName}`;
       script.async = true;
       script.defer = true;
-      script.onerror = () => { delete window[callbackName]; reject(new Error("Google Maps could not load")); };
+      script.onerror = () => { window.clearTimeout(timeout); delete window[callbackName]; reject(new Error("Google Maps could not load")); };
       document.head.appendChild(script);
     });
     return window.__coralGoogleMapsPromise;
@@ -348,10 +385,12 @@
 
   function renderGoogleReviews(roots, reviews, mapsUrl) {
     const cards = reviews.map((review) => {
+      const rating = Math.max(0, Math.min(5, Math.round(review.rating)));
+      const stars = `${"★".repeat(rating)}${"☆".repeat(5 - rating)}`;
       const author = review.authorUrl
         ? `<a href="${escapeHtml(review.authorUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(review.authorName)}</a>`
         : escapeHtml(review.authorName);
-      return `<article class="review-card"><div class="review-card__stars" aria-label="5 stars">★★★★★</div>${review.text ? `<p>${escapeHtml(trimReview(review.text))}</p>` : ""}<span>${author}${review.relativeTime ? ` · ${escapeHtml(review.relativeTime)}` : ""}</span></article>`;
+      return `<article class="review-card glass-panel"><div class="review-card__stars" aria-label="${rating} out of 5 stars">${stars}</div>${review.text ? `<p>${escapeHtml(trimReview(review.text))}</p>` : ""}<span>${author}${review.relativeTime ? ` · ${escapeHtml(review.relativeTime)}` : ""}</span></article>`;
     }).join("");
     roots.forEach((root) => {
       root.innerHTML = cards;
@@ -361,13 +400,18 @@
     updateGoogleReviewLinks(mapsUrl);
   }
 
-  function renderGoogleReviewFallback(roots, mapsUrl) {
-    const card = `<article class="review-card review-card--fallback"><div class="review-card__stars" aria-hidden="true">★★★★★</div><p>Open Coral Spa’s Google listing to read the latest reviews and ratings directly from the source.</p><span><a href="${escapeHtml(mapsUrl)}" target="_blank" rel="noopener noreferrer">Open Google Reviews</a></span></article>`;
+  function renderGoogleReviewFallback(roots, mapsUrl, error) {
+    const diagnostic = isDevelopmentHost() && error ? `<p class="review-diagnostic" role="status">Review diagnostic: ${escapeHtml(error.message || "Live review loading failed")}</p>` : "";
+    const card = `<article class="review-card review-card--fallback glass-panel"><div class="review-card__stars" aria-hidden="true">★★★★★</div><p>Open Coral Spa’s Google listing to read the latest reviews and ratings directly from the source.</p><span><a href="${escapeHtml(mapsUrl)}" target="_blank" rel="noopener noreferrer">Open Google Reviews</a></span>${diagnostic}</article>`;
     roots.forEach((root) => {
       root.innerHTML = card;
       root.dataset.reviewState = "fallback";
       root.setAttribute("aria-busy", "false");
     });
+  }
+
+  function isDevelopmentHost() {
+    return location.protocol === "file:" || location.hostname === "localhost" || location.hostname === "127.0.0.1";
   }
 
   function updateGoogleReviewLinks(url) {
