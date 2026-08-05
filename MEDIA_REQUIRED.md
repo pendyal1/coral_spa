@@ -1,5 +1,16 @@
 # Media Still Required
 
+## Why Coral Spa centerpiece
+
+The Home and About centerpiece currently uses approved poster artwork. Supply genuine oil-on-stones footage with changing source frames; do not derive it from the poster or a single still image:
+
+- `assets/videos/why-coral-spa-stones-desktop.webm`
+- `assets/videos/why-coral-spa-stones-desktop.mp4`
+- `assets/videos/why-coral-spa-stones-mobile.webm`
+- `assets/videos/why-coral-spa-stones-mobile.mp4`
+
+After visual and codec validation, set the two `[data-why-media]` elements to `data-video-valid="true"`. Until then the poster remains visible and no fake play state is shown.
+
 ## Contact hero
 
 The previous white hotel-corridor footage was removed because it did not resemble Coral Spa. Contact currently uses `assets/images/gallery/coral-spa-reception.jpeg` as its poster source and deliberately does not expose a play control.

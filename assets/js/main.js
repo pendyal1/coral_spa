@@ -43,6 +43,7 @@
   initYear();
   initHeader();
   initNavigation();
+  initWhyMedia();
   renderHomeContent();
   initGalleryShowcase();
   initGoogleReviews();
@@ -109,6 +110,38 @@
     });
   }
 
+  function initWhyMedia() {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const saveData = Boolean(navigator.connection && navigator.connection.saveData);
+    document.querySelectorAll("[data-why-media]").forEach((root) => {
+      const video = root.querySelector("video");
+      if (!video || root.dataset.videoValid !== "true") return;
+      let loaded = false;
+      const load = () => {
+        if (loaded || reduceMotion.matches || saveData) return;
+        const mobile = window.matchMedia("(max-width: 719px)").matches;
+        video.querySelectorAll("source").forEach((source) => { source.src = mobile ? source.dataset.src : source.dataset.desktopSrc; });
+        video.load();
+        loaded = true;
+      };
+      const play = () => {
+        load();
+        if (!loaded || reduceMotion.matches || document.hidden) return;
+        video.play().then(() => root.classList.add("is-video-ready")).catch(() => root.classList.remove("is-video-ready"));
+      };
+      root.addEventListener("coral:motion-active", play);
+      root.addEventListener("coral:motion-inactive", () => video.pause());
+      video.addEventListener("canplay", () => root.classList.add("is-video-ready"), { once: true });
+      video.addEventListener("error", () => root.classList.remove("is-video-ready"));
+      document.addEventListener("visibilitychange", () => document.hidden ? video.pause() : root.dataset.motionActive === "true" && play());
+    });
+  }
+
+  function refreshDynamicContent(root) {
+    document.dispatchEvent(new CustomEvent("coral:content-rendered", { detail: { root } }));
+    if (window.CoralMotion && typeof window.CoralMotion.refresh === "function") window.CoralMotion.refresh(root);
+  }
+
   function renderHomeContent() {
     const signatureRail = document.querySelector("[data-signature-rail]");
     const categoryGrid = document.querySelector("[data-home-categories]");
@@ -129,6 +162,7 @@
           <span class="category-card__scrim"></span><span class="category-card__label">${escapeHtml(category.category)}</span><i aria-hidden="true">→</i>
         </a>`).join("");
     }
+    refreshDynamicContent(document);
   }
 
   function renderServicesMenu() {
@@ -139,7 +173,7 @@
     if (nav) {
       nav.innerHTML = services.map((category) => {
         const id = categoryHash(category.category);
-        return `<a class="service-nav-tile" href="#${id}" data-category-link="${id}"><img ${responsiveImageAttributes(categoryImage(category), "(max-width: 719px) 46vw, (max-width: 1279px) 18vw, 9vw")} width="960" height="1200" loading="lazy" decoding="async" alt=""><span>${escapeHtml(category.category)}</span></a>`;
+        return `<a class="service-nav-tile" href="#${id}" data-category-link="${id}" data-stagger-item><img ${responsiveImageAttributes(categoryImage(category), "(max-width: 719px) 46vw, (max-width: 1279px) 18vw, 9vw")} width="960" height="1200" loading="lazy" decoding="async" alt=""><span>${escapeHtml(category.category)}</span></a>`;
       }).join("");
     }
 
@@ -148,17 +182,17 @@
       const surfaces = ["surface-smoked-glass", "surface-pebble", "surface-deep-wood"];
       return `
         <section class="service-group ${surfaces[categoryIndex % surfaces.length]}" id="${id}" data-service-group="${escapeHtml(category.category)}">
-          <header class="service-group__header" data-reveal="fade-up">
+          <header class="service-group__header">
             <div><h2>${escapeHtml(category.category)}</h2><p>${escapeHtml(category.intro)}</p></div>
             <figure class="category-media" ${categoryVideoAttributes(category)}><img ${responsiveImageAttributes(categoryImage(category), "(max-width: 720px) 92vw, 34vw")} width="1920" height="1080" loading="lazy" decoding="async" alt=""></figure>
           </header>
-          <div class="service-list">${category.services.map((service) => serviceRow(service, category.category)).join("")}</div>
+          <div class="service-list" data-stagger-group>${category.services.map((service) => serviceRow(service, category.category)).join("")}</div>
         </section>`;
     }).join("");
 
     initActiveCategory();
     openInitialServiceHash();
-    document.dispatchEvent(new CustomEvent("coral:content-rendered"));
+    refreshDynamicContent(root);
   }
 
   function initGalleryShowcase() {
@@ -169,24 +203,24 @@
     const focusImage = root.querySelector("[data-gallery-focus-image]");
     const caption = root.querySelector("[data-gallery-caption]");
     const thumbs = Array.from(root.querySelectorAll("[data-gallery-thumb]"));
+    const previous = root.querySelector("[data-gallery-prev]");
+    const next = root.querySelector("[data-gallery-next]");
+    const toggle = root.querySelector("[data-gallery-toggle]");
+    const toggleLabel = root.querySelector("[data-gallery-toggle-label]");
     if (!focus || !focusSource || !focusImage || !caption || thumbs.length !== 4) return;
 
-    const readItem = (element) => ({
-      src: element.dataset.gallerySrc,
-      small: element.dataset.gallerySmall,
-      large: element.dataset.galleryLarge,
-      caption: element.dataset.galleryCaption,
-      alt: element.dataset.galleryAlt
-    });
+    const readItem = (element) => ({ src: element.dataset.gallerySrc, small: element.dataset.gallerySmall, large: element.dataset.galleryLarge, caption: element.dataset.galleryCaption, alt: element.dataset.galleryAlt });
     const items = [readItem(focus), ...thumbs.map(readItem)];
-    thumbs.forEach((button, index) => { button.dataset.galleryIndex = String(index + 1); });
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const failedItems = new Set();
     let focusedIndex = 0;
     let timer = null;
-    let paused = false;
+    let explicitlyPaused = false;
+    let focusPaused = false;
+    let motionActive = root.dataset.motionActive === "true";
     let manualResumeAt = 0;
-
     let renderToken = 0;
+    thumbs.forEach((button, index) => { button.dataset.galleryIndex = String(index + 1); });
 
     const decodeImage = (src) => new Promise((resolve, reject) => {
       const candidate = new Image();
@@ -195,103 +229,90 @@
       candidate.src = src;
       if (candidate.decode) candidate.decode().then(() => resolve(candidate.currentSrc || candidate.src)).catch(() => {});
     });
-
-    const loadGalleryItem = async (item) => {
+    const loadItem = async (item) => {
       const preferred = window.matchMedia("(max-width: 899px)").matches ? item.small : item.large;
-      try {
-        return { url: await decodeImage(preferred), isWebp: true };
-      } catch (error) {
-        return { url: await decodeImage(item.src), isWebp: false };
-      }
+      try { return { url: await decodeImage(preferred), isWebp: true }; }
+      catch (error) { return { url: await decodeImage(item.src), isWebp: false }; }
     };
-
+    const updatePlaybackUi = () => {
+      root.dataset.galleryPlaying = String(!explicitlyPaused && !focusPaused && motionActive && !reduceMotion.matches && !document.hidden);
+      if (!toggle) return;
+      toggle.setAttribute("aria-pressed", String(explicitlyPaused));
+      toggle.setAttribute("aria-label", explicitlyPaused ? "Resume gallery rotation" : "Pause gallery rotation");
+      if (toggleLabel) toggleLabel.textContent = explicitlyPaused ? "Play" : "Pause";
+    };
     const render = async (nextIndex) => {
       const requestedIndex = (nextIndex + items.length) % items.length;
       if (requestedIndex === focusedIndex) return true;
-      const focused = items[requestedIndex];
+      if (failedItems.has(requestedIndex)) return false;
+      const item = items[requestedIndex];
       const token = ++renderToken;
-      let loadedSource;
-      try {
-        loadedSource = await loadGalleryItem(focused);
-      } catch (error) {
+      let loaded;
+      try { loaded = await loadItem(item); }
+      catch (error) {
+        failedItems.add(requestedIndex);
+        root.dataset.galleryErrorCount = String(failedItems.size);
+        if (isDevelopmentHost()) console.warn("Coral gallery image failed to load", item.large || item.src, error);
         return false;
       }
       if (token !== renderToken) return false;
-
       root.classList.add("is-changing");
       focusedIndex = requestedIndex;
       root.dataset.galleryIndex = String(focusedIndex);
-      focus.dataset.gallerySrc = focused.src;
-      focus.dataset.gallerySmall = focused.small;
-      focus.dataset.galleryLarge = focused.large;
-      focus.dataset.galleryCaption = focused.caption;
-      focus.dataset.galleryAlt = focused.alt;
-      focusSource.srcset = loadedSource.isWebp ? loadedSource.url : "";
-      focusImage.src = focused.src;
-      focusImage.alt = focused.alt;
-      caption.textContent = focused.caption;
-
-      const remaining = items.map((item, index) => ({ item, index })).filter(({ index }) => index !== focusedIndex);
+      root.dataset.galleryLastChange = performance.now().toFixed(1);
+      Object.assign(focus.dataset, { gallerySrc: item.src, gallerySmall: item.small, galleryLarge: item.large, galleryCaption: item.caption, galleryAlt: item.alt });
+      focusSource.srcset = loaded.isWebp ? `${item.small} 640w, ${item.large} 1200w` : "";
+      focusImage.src = loaded.isWebp ? item.src : loaded.url;
+      focusImage.alt = item.alt;
+      caption.textContent = item.caption;
+      const remaining = items.map((entry, index) => ({ item: entry, index })).filter(({ index }) => index !== focusedIndex);
       thumbs.forEach((button, slot) => {
-        const { item, index } = remaining[slot];
+        const entry = remaining[slot];
         const image = button.querySelector("img");
         const label = button.querySelector("span");
-        button.dataset.galleryIndex = String(index);
-        button.dataset.gallerySrc = item.src;
-        button.dataset.gallerySmall = item.small;
-        button.dataset.galleryLarge = item.large;
-        button.dataset.galleryCaption = item.caption;
-        button.dataset.galleryAlt = item.alt;
-        button.setAttribute("aria-label", `Show ${item.caption}`);
+        Object.assign(button.dataset, { galleryIndex: String(entry.index), gallerySrc: entry.item.src, gallerySmall: entry.item.small, galleryLarge: entry.item.large, galleryCaption: entry.item.caption, galleryAlt: entry.item.alt });
+        button.setAttribute("aria-label", `Show ${entry.item.caption}`);
         button.setAttribute("aria-pressed", "false");
-        image.src = item.small;
-        label.textContent = item.caption;
+        image.src = entry.item.small || entry.item.src;
+        label.textContent = entry.item.caption;
       });
-      window.requestAnimationFrame(() => root.classList.remove("is-changing"));
+      requestAnimationFrame(() => root.classList.remove("is-changing"));
       return true;
     };
-
-    const stop = () => {
-      if (timer) window.clearTimeout(timer);
-      timer = null;
+    const stop = () => { if (timer) clearTimeout(timer); timer = null; };
+    const nextAvailable = (direction) => {
+      for (let offset = 1; offset < items.length; offset += 1) {
+        const candidate = (focusedIndex + direction * offset + items.length) % items.length;
+        if (!failedItems.has(candidate)) return candidate;
+      }
+      return focusedIndex;
     };
     const schedule = (minimumDelay = 5500) => {
       stop();
-      if (paused || reduceMotion.matches || document.hidden) return;
-      const delay = Math.max(minimumDelay, manualResumeAt - Date.now());
-      timer = window.setTimeout(async () => {
-        const changed = await render(focusedIndex + 1);
-        if (!changed) paused = true;
-        schedule(5500);
-      }, delay);
+      updatePlaybackUi();
+      if (explicitlyPaused || focusPaused || !motionActive || reduceMotion.matches || document.hidden || failedItems.size >= items.length - 1) return;
+      timer = setTimeout(async () => { await render(nextAvailable(1)); schedule(); }, Math.max(minimumDelay, manualResumeAt - Date.now()));
     };
-    const select = async (index, manual) => {
-      if (manual) manualResumeAt = Date.now() + 10000;
-      await render(index);
-      schedule(manual ? 10000 : 5500);
-    };
+    const select = async (index, manual) => { if (manual) manualResumeAt = Date.now() + 10000; await render(index); schedule(manual ? 10000 : 5500); };
 
     thumbs.forEach((button) => button.addEventListener("click", () => select(Number(button.dataset.galleryIndex), true)));
-    root.addEventListener("keydown", (event) => {
-      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
-      event.preventDefault();
-      select(focusedIndex + (event.key === "ArrowRight" ? 1 : -1), true);
-    });
-    root.addEventListener("mouseenter", () => { paused = true; stop(); });
-    root.addEventListener("mouseleave", () => { paused = false; schedule(); });
-    root.addEventListener("focusin", () => { paused = true; stop(); });
-    root.addEventListener("focusout", (event) => {
-      if (root.contains(event.relatedTarget)) return;
-      paused = false;
-      schedule();
-    });
+    if (previous) previous.addEventListener("click", () => select(nextAvailable(-1), true));
+    if (next) next.addEventListener("click", () => select(nextAvailable(1), true));
+    if (toggle) toggle.addEventListener("click", () => { explicitlyPaused = !explicitlyPaused; explicitlyPaused ? stop() : schedule(); updatePlaybackUi(); });
+    root.addEventListener("keydown", (event) => { if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return; event.preventDefault(); select(nextAvailable(event.key === "ArrowRight" ? 1 : -1), true); });
+    root.addEventListener("focusin", () => { focusPaused = true; stop(); updatePlaybackUi(); });
+    root.addEventListener("focusout", (event) => { if (!root.contains(event.relatedTarget)) { focusPaused = false; schedule(); } });
+    root.addEventListener("coral:motion-active", () => { motionActive = true; schedule(); });
+    root.addEventListener("coral:motion-inactive", () => { motionActive = false; stop(); updatePlaybackUi(); });
     document.addEventListener("visibilitychange", () => document.hidden ? stop() : schedule());
     const handleMotionChange = () => reduceMotion.matches ? stop() : schedule();
-    if (reduceMotion.addEventListener) reduceMotion.addEventListener("change", handleMotionChange);
-    else reduceMotion.addListener(handleMotionChange);
-
-    schedule();
+    if (reduceMotion.addEventListener) reduceMotion.addEventListener("change", handleMotionChange); else reduceMotion.addListener(handleMotionChange);
     root.dataset.galleryIndex = "0";
+    root.dataset.galleryErrorCount = "0";
+    root.dataset.galleryReady = "true";
+    updatePlaybackUi();
+    const initialReady = focusImage.complete && focusImage.naturalWidth > 0 ? Promise.resolve() : decodeImage(focusImage.currentSrc || focusImage.src);
+    initialReady.then(() => schedule()).catch((error) => { root.dataset.galleryErrorCount = "1"; if (isDevelopmentHost()) console.warn("Initial Coral gallery image failed to decode", error); });
   }
 
   async function initGoogleReviews() {
@@ -299,34 +320,41 @@
     if (!roots.length) return;
     const config = window.CORAL_GOOGLE_REVIEWS || {};
     const mapsUrl = config.mapsUrl || "https://www.google.com/maps/search/?api=1&query=Coral%20Spa%20B.K-2%20Tower%203%2F13A%20Vishnu%20Puri%20Kanpur";
+    let stage = "configuration";
 
     try {
       let reviews = [];
       let liveMapsUrl = mapsUrl;
       if (config.endpoint) {
+        stage = "endpoint-request";
         const response = await fetch(config.endpoint, { headers: { Accept: "application/json" } });
         if (!response.ok) throw new Error("Reviews endpoint returned an unsuccessful response");
         const payload = await response.json();
         reviews = normalizeReviews(payload.reviews || payload);
         liveMapsUrl = payload.mapsUrl || mapsUrl;
       } else if (config.apiKey) {
+        stage = "maps-script";
         await loadGoogleMaps(config.apiKey);
+        stage = "place-resolution";
         const place = await resolveGooglePlace(config);
+        stage = "review-fields";
         await place.fetchFields({ fields: ["displayName", "googleMapsURI", "rating", "userRatingCount", "reviews"] });
         reviews = normalizeReviews(place.reviews || []);
         liveMapsUrl = place.googleMapsURI || mapsUrl;
       } else {
-        renderGoogleReviewFallback(roots, mapsUrl, new Error("Live review configuration is not available"));
+        renderGoogleReviewFallback(roots, mapsUrl, new Error("Live review configuration is not available"), stage);
         return;
       }
 
+      stage = "review-selection";
       const sortedReviews = reviews.sort(newestReviewFirst);
       if (!sortedReviews.length) throw new Error("No reviews were returned");
       const highRatedReviews = sortedReviews.filter((review) => review.rating >= 4);
       const selectedReviews = (highRatedReviews.length >= 3 ? highRatedReviews : sortedReviews).slice(0, 5);
       renderGoogleReviews(roots, selectedReviews, liveMapsUrl);
     } catch (error) {
-      renderGoogleReviewFallback(roots, mapsUrl, error);
+      if (stage !== "configuration") console.error(`Coral Google Reviews failed during ${stage}:`, error);
+      renderGoogleReviewFallback(roots, mapsUrl, error, stage);
     }
   }
 
@@ -394,28 +422,35 @@
       const author = review.authorUrl
         ? `<a href="${escapeHtml(review.authorUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(review.authorName)}</a>`
         : escapeHtml(review.authorName);
-      return `<article class="review-card glass-panel"><div class="review-card__stars" aria-label="${rating} out of 5 stars">${stars}</div>${review.text ? `<p>${escapeHtml(trimReview(review.text))}</p>` : ""}<span>${author}${review.relativeTime ? ` · ${escapeHtml(review.relativeTime)}` : ""}</span></article>`;
+      return `<article class="review-card glass-panel" data-stagger-item><div class="review-card__stars" aria-label="${rating} out of 5 stars">${stars}</div>${review.text ? `<p>${escapeHtml(trimReview(review.text))}</p>` : ""}<span>${author}${review.relativeTime ? ` · ${escapeHtml(review.relativeTime)}` : ""}</span></article>`;
     }).join("");
     roots.forEach((root) => {
       root.innerHTML = cards;
       root.dataset.reviewState = "ready";
+      root.dataset.reviewError = "";
       root.setAttribute("aria-busy", "false");
-      initCarousel(root.closest("[data-carousel]"));
+      refreshDynamicContent(root);
+      requestAnimationFrame(() => requestAnimationFrame(() => initCarousel(root.closest("[data-carousel]"))));
     });
     updateGoogleReviewLinks(mapsUrl);
   }
 
-  function renderGoogleReviewFallback(roots, mapsUrl, error) {
-    const diagnostic = isDevelopmentHost() && error ? `<p class="review-diagnostic" role="status">Review diagnostic: ${escapeHtml(error.message || "Live review loading failed")}</p>` : "";
+  function renderGoogleReviewFallback(roots, mapsUrl, error, stage = "unknown") {
+    const diagnostic = isDevelopmentHost() && error ? `<p class="review-diagnostic" role="status">Review diagnostic (${escapeHtml(stage)}): ${escapeHtml(error.message || "Live review loading failed")}</p>` : "";
     const card = `<article class="review-card review-card--fallback glass-panel"><div class="review-card__stars" aria-hidden="true">★★★★★</div><p>Open Coral Spa’s Google listing to read the latest reviews and ratings directly from the source.</p><span><a href="${escapeHtml(mapsUrl)}" target="_blank" rel="noopener noreferrer">Open Google Reviews</a></span>${diagnostic}</article>`;
     roots.forEach((root) => {
       root.innerHTML = card;
       root.dataset.reviewState = "fallback";
+      root.dataset.reviewError = reviewErrorCode(stage);
       root.setAttribute("aria-busy", "false");
       const carousel = root.closest("[data-carousel]");
       const controls = carousel && carousel.querySelector(".carousel-controls");
       if (controls) controls.hidden = true;
     });
+  }
+
+  function reviewErrorCode(stage) {
+    return ({ configuration: "missing-config", "maps-script": "maps-load", "place-resolution": "place-search", "review-fields": "place-fields", "review-selection": "no-reviews", "endpoint-request": "endpoint-failed" })[stage] || "unknown";
   }
 
   function isDevelopmentHost() {
@@ -448,7 +483,7 @@
     const description = service.longDescription || longDescriptions[service.name] || service.description;
     const searchText = [service.name, service.technique, service.description, service.goodFor, category, ...tags].join(" ").toLowerCase();
     return `
-      <details class="service-row" id="${slug(service.name)}" data-service-item data-search-text="${escapeHtml(searchText)}" data-reveal="fade-up">
+      <details class="service-row" id="${slug(service.name)}" data-service-item data-search-text="${escapeHtml(searchText)}" data-stagger-item>
         <summary>
           <span class="service-row__identity">${service.editorialSubtitle ? `<span class="service-row__subtitle">${escapeHtml(service.editorialSubtitle)}</span>` : ""}<span class="service-row__name">${escapeHtml(service.name)}${service.tag ? `<small>${escapeHtml(service.tag)}</small>` : ""}</span><span class="service-row__technique">${escapeHtml(service.technique)}</span></span>
           <span class="service-row__prices">${priceColumn(prices[0], durations[0])}${prices[1] || durations[1] ? priceColumn(prices[1] || "-", durations[1] || "-") : ""}</span>
@@ -470,58 +505,113 @@
   }
 
   function initCarousel(root) {
-    if (!root || root.dataset.carouselReady === "true") return;
+    if (!root) return;
     const track = root.querySelector("[data-carousel-track]");
     const previous = root.querySelector("[data-carousel-prev]");
     const next = root.querySelector("[data-carousel-next]");
     if (!track || !previous || !next) return;
-    root.dataset.carouselReady = "true";
+    if (root._coralCarouselAbort) root._coralCarouselAbort.abort();
+    if (root._coralCarouselTimer) clearTimeout(root._coralCarouselTimer);
+    track.querySelectorAll("[data-carousel-clone]").forEach((node) => node.remove());
+    const slides = Array.from(track.children);
+    const controller = new AbortController();
+    const listenerOptions = { signal: controller.signal };
+    root._coralCarouselAbort = controller;
+    root.dataset.carouselReady = "false";
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const interval = Number(root.dataset.carouselInterval || 5500);
-    let index = 0;
+    const toggle = root.querySelector("[data-carousel-toggle]");
+    const toggleLabel = root.querySelector("[data-carousel-toggle-label]");
+    const status = root.querySelector("[data-carousel-status]");
+    let realIndex = 0;
+    let trackIndex = 0;
+    let cloneCount = 0;
     let timer = null;
-    let paused = false;
+    let explicitlyPaused = false;
+    let focusPaused = false;
+    let motionActive = root.dataset.motionActive === "true";
     let pointerStart = null;
 
     const columns = () => Number(getComputedStyle(root).getPropertyValue("--carousel-columns")) || 1;
-    const maximum = () => Math.max(0, track.children.length - columns());
-    const update = (nextIndex) => {
-      index = Math.max(0, Math.min(maximum(), nextIndex));
-      if (nextIndex > maximum()) index = 0;
-      if (nextIndex < 0) index = maximum();
+    const translate = (animate = true) => {
+      track.style.transitionDuration = animate ? "" : "0ms";
       const item = track.firstElementChild;
       const gap = Number.parseFloat(getComputedStyle(track).gap) || 0;
-      const distance = item ? (item.getBoundingClientRect().width + gap) * index : 0;
+      const distance = item ? (item.getBoundingClientRect().width + gap) * trackIndex : 0;
       track.style.transform = `translate3d(${-distance}px, 0, 0)`;
-      root.dataset.carouselIndex = String(index);
-      previous.disabled = maximum() === 0;
-      next.disabled = maximum() === 0;
+      root.dataset.carouselIndex = String(realIndex);
+      if (status) status.textContent = slides.length ? `${realIndex + 1} / ${slides.length}` : "";
     };
-    const stop = () => { if (timer) clearTimeout(timer); timer = null; };
+    const build = () => {
+      track.querySelectorAll("[data-carousel-clone]").forEach((node) => node.remove());
+      cloneCount = slides.length > columns() ? Math.min(columns(), slides.length) : 0;
+      if (cloneCount) {
+        slides.slice(-cloneCount).reverse().forEach((slide) => { const clone = slide.cloneNode(true); clone.dataset.carouselClone = "true"; clone.setAttribute("aria-hidden", "true"); clone.inert = true; track.prepend(clone); });
+        slides.slice(0, cloneCount).forEach((slide) => { const clone = slide.cloneNode(true); clone.dataset.carouselClone = "true"; clone.setAttribute("aria-hidden", "true"); clone.inert = true; track.append(clone); });
+      }
+      trackIndex = cloneCount + realIndex;
+      const disabled = slides.length <= columns();
+      previous.disabled = disabled;
+      next.disabled = disabled;
+      if (toggle) toggle.disabled = disabled;
+      root.dataset.carouselIndex = String(realIndex);
+      if (status) status.textContent = slides.length ? `${realIndex + 1} / ${slides.length}` : "";
+      requestAnimationFrame(() => translate(false));
+    };
+    const updatePlaybackUi = () => {
+      const playing = !explicitlyPaused && !focusPaused && motionActive && !reduceMotion.matches && !document.hidden && slides.length > columns();
+      root.dataset.carouselPlaying = String(playing);
+      if (!toggle) return;
+      toggle.setAttribute("aria-pressed", String(explicitlyPaused));
+      toggle.setAttribute("aria-label", explicitlyPaused ? "Resume carousel" : "Pause carousel");
+      if (toggleLabel) toggleLabel.textContent = explicitlyPaused ? "Play" : "Pause";
+    };
+    const stop = () => { if (timer) clearTimeout(timer); timer = null; root._coralCarouselTimer = null; };
     const schedule = () => {
-      stop();
-      if (paused || reduceMotion.matches || document.hidden || maximum() === 0) return;
-      timer = setTimeout(() => { update(index + 1); schedule(); }, interval);
+      updatePlaybackUi();
+      if (explicitlyPaused || focusPaused || !motionActive || reduceMotion.matches || document.hidden || slides.length <= columns()) { stop(); return; }
+      if (timer) return;
+      timer = setTimeout(() => {
+        timer = null;
+        root._coralCarouselTimer = null;
+        if (!reduceMotion.matches && !explicitlyPaused && !focusPaused && motionActive && !document.hidden) move(1);
+      }, interval);
+      root._coralCarouselTimer = timer;
     };
-    const move = (direction) => { update(index + direction); schedule(); };
-    previous.addEventListener("click", () => move(-1));
-    next.addEventListener("click", () => move(1));
-    root.addEventListener("mouseenter", () => { paused = true; stop(); });
-    root.addEventListener("mouseleave", () => { paused = false; schedule(); });
-    root.addEventListener("focusin", () => { paused = true; stop(); });
-    root.addEventListener("focusout", (event) => { if (!root.contains(event.relatedTarget)) { paused = false; schedule(); } });
-    root.addEventListener("pointerdown", (event) => { pointerStart = event.clientX; });
+    const move = (direction) => {
+      if (slides.length <= columns()) return;
+      realIndex = (realIndex + direction + slides.length) % slides.length;
+      trackIndex += direction;
+      translate(true);
+      schedule();
+    };
+    track.addEventListener("transitionend", () => {
+      if (!cloneCount) return;
+      if (trackIndex >= cloneCount + slides.length) trackIndex = cloneCount;
+      if (trackIndex < cloneCount) trackIndex = cloneCount + slides.length - 1;
+      translate(false);
+    }, listenerOptions);
+    previous.addEventListener("click", () => move(-1), listenerOptions);
+    next.addEventListener("click", () => move(1), listenerOptions);
+    if (toggle) toggle.addEventListener("click", () => { explicitlyPaused = !explicitlyPaused; explicitlyPaused ? stop() : schedule(); updatePlaybackUi(); }, listenerOptions);
+    root.addEventListener("focusin", () => { focusPaused = true; stop(); updatePlaybackUi(); }, listenerOptions);
+    root.addEventListener("focusout", (event) => { if (!root.contains(event.relatedTarget)) { focusPaused = false; schedule(); } }, listenerOptions);
+    root.addEventListener("pointerdown", (event) => { pointerStart = event.clientX; }, listenerOptions);
     root.addEventListener("pointerup", (event) => {
       if (pointerStart === null) return;
       const distance = event.clientX - pointerStart;
       pointerStart = null;
       if (Math.abs(distance) > 45) move(distance < 0 ? 1 : -1);
-    });
-    document.addEventListener("visibilitychange", () => document.hidden ? stop() : schedule());
-    window.addEventListener("resize", () => update(Math.min(index, maximum())));
+    }, listenerOptions);
+    root.addEventListener("coral:motion-active", () => { motionActive = true; schedule(); }, listenerOptions);
+    root.addEventListener("coral:motion-inactive", () => { motionActive = false; stop(); updatePlaybackUi(); }, listenerOptions);
+    document.addEventListener("visibilitychange", () => document.hidden ? stop() : schedule(), listenerOptions);
+    let resizeTimer;
+    window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(build, 120); }, listenerOptions);
     const motionChange = () => reduceMotion.matches ? stop() : schedule();
     if (reduceMotion.addEventListener) reduceMotion.addEventListener("change", motionChange); else reduceMotion.addListener(motionChange);
-    update(0);
+    build();
+    root.dataset.carouselReady = "true";
     schedule();
   }
 
@@ -530,7 +620,7 @@
     if (!root) return;
     const track = root.querySelector("[data-carousel-track]");
     const empty = root.querySelector("[data-team-empty]");
-    const team = Array.isArray(window.CORAL_TEAM) ? window.CORAL_TEAM : [];
+    const team = Array.isArray(window.CORAL_TEAM) ? window.CORAL_TEAM.filter((member) => member.isActive !== false).sort((a, b) => Number(a.displayOrder || 0) - Number(b.displayOrder || 0)) : [];
     if (!team.length) {
       if (empty) empty.hidden = false;
       const viewport = root.querySelector(".content-carousel__viewport");
@@ -546,14 +636,15 @@
       const name = member.nickname || member.firstName || "Therapist";
       const initials = name.slice(0, 2).toUpperCase();
       const photo = member.showPhoto && member.photo
-        ? `<img src="${escapeHtml(member.photo)}" alt="${escapeHtml(name)}, Coral Spa therapist" loading="lazy" decoding="async">`
-        : `<span class="team-card__monogram" aria-hidden="true">${escapeHtml(initials)}</span>`;
+        ? `<img src="${escapeHtml(member.photo)}" alt="${escapeHtml(member.photoAlt || `Placeholder portrait for the ${name} therapist profile`)}" width="800" height="1000" loading="lazy" decoding="async">`
+        : `<span class="team-card__monogram" aria-hidden="true">${escapeHtml(initials)}</span><span class="visually-hidden">No-photo profile for ${escapeHtml(name)}</span>`;
       const credentials = Array.isArray(member.certifications) ? member.certifications.slice(0, 4) : [];
       const specializations = Array.isArray(member.specializations) ? member.specializations.slice(0, 3) : [];
-      return `<article class="team-card glass-panel" data-stagger-item data-reveal="fade-up"><div class="team-card__media">${photo}</div><div class="team-card__copy"><h3>${escapeHtml(name)}</h3>${member.experienceYears ? `<p>${escapeHtml(member.experienceYears)} years of experience</p>` : ""}${credentials.length ? `<ul>${credentials.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}${specializations.length ? `<span>Known for: ${escapeHtml(specializations.join(", "))}</span>` : ""}</div></article>`;
+      const placeholder = member.profileStatus === "placeholder" ? `<span class="team-card__status">Sample profile — details to be confirmed</span>` : "";
+      return `<article class="team-card glass-panel" data-stagger-item><div class="stagger-motion-layer"><div class="team-card__media">${photo}</div><div class="team-card__copy">${placeholder}<h3>${escapeHtml(name)}</h3>${member.experienceYears ? `<span class="team-card__experience">${escapeHtml(member.experienceYears)} years of experience</span>` : ""}${credentials.length ? `<ul>${credentials.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}${specializations.length ? `<p class="team-card__meta"><strong>Known for:</strong> ${escapeHtml(specializations.join(", "))}</p>` : ""}${Array.isArray(member.languages) ? `<p class="team-card__meta"><strong>Languages:</strong> ${escapeHtml(member.languages.join(", "))}</p>` : ""}${member.bio ? `<p class="team-card__bio">${escapeHtml(member.bio)}</p>` : ""}</div></div></article>`;
     }).join("");
-    document.dispatchEvent(new CustomEvent("coral:content-rendered"));
-    initCarousel(root);
+    refreshDynamicContent(root);
+    requestAnimationFrame(() => requestAnimationFrame(() => initCarousel(root)));
   }
 
   function initRequestForms() {

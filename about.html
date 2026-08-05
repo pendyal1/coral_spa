@@ -42,12 +42,15 @@
 
       <section class="section section--why surface-botanical-glass" id="why-coral-spa">
         <div class="wrap"><header class="section-heading section-heading--center" data-reveal="fade-up"><h2>Why <em>Coral Spa.</em></h2></header>
-          <div class="why-orbit" data-stagger-group>
-            <div class="why-orbit__focal" data-reveal="scale-in"><picture><source srcset="assets/images/branding/why-coral-spa-stones.webp" type="image/webp"><img src="assets/images/branding/why-coral-spa-stones.png" width="1024" height="1536" loading="lazy" decoding="async" alt="Stacked spa stones with warm oil"></picture></div>
-            <article class="why-orbit__tile editorial-point glass-panel" data-stagger-item><span>01</span><h3>Certified Therapists</h3><p>Therapists work across Thai, Balinese, Swedish, deep pressure, hot stone and lymphatic techniques.</p></article>
-            <article class="why-orbit__tile editorial-point glass-panel" data-stagger-item><span>02</span><h3>Call-First Care</h3><p>Every booking is confirmed by phone so that the team can guide you to the right ritual.</p></article>
-            <article class="why-orbit__tile editorial-point glass-panel" data-stagger-item><span>03</span><h3>Personalized to Your Needs</h3><p>Pressure, oil and timing are adjusted for the guest instead of following a fixed script.</p></article>
-            <article class="why-orbit__tile editorial-point glass-panel" data-stagger-item><span>04</span><h3>Professional Products</h3><p>The team uses premium oils, skin-care formulas, body care and Moroccan Oil hair products matched to the ritual.</p></article>
+          <div class="why-orbit" data-stagger-group data-motion-playback>
+            <div class="why-orbit__focal" data-reveal="scale-in" data-why-media data-video-valid="false">
+              <picture class="why-orbit__poster"><source media="(max-width: 719px)" srcset="assets/images/posters/why-coral-spa-stones-mobile.webp" type="image/webp"><source srcset="assets/images/posters/why-coral-spa-stones-desktop.webp" type="image/webp"><img src="assets/images/branding/why-coral-spa-stones.png" width="1024" height="1536" loading="lazy" decoding="async" alt="Stacked spa stones with warm oil"></picture>
+              <video muted loop playsinline preload="none" aria-hidden="true"><source data-src="assets/videos/why-coral-spa-stones-mobile.webm" data-desktop-src="assets/videos/why-coral-spa-stones-desktop.webm" type="video/webm"><source data-src="assets/videos/why-coral-spa-stones-mobile.mp4" data-desktop-src="assets/videos/why-coral-spa-stones-desktop.mp4" type="video/mp4"></video>
+            </div>
+            <div class="why-orbit__statement why-orbit__statement--upper-left" data-stagger-item><div class="stagger-motion-layer"><span>01</span><h3>Certified Therapists</h3><p>Therapists work across Thai, Balinese, Swedish, deep pressure, hot stone and lymphatic techniques.</p></div></div>
+            <div class="why-orbit__statement why-orbit__statement--lower-left" data-stagger-item><div class="stagger-motion-layer"><span>02</span><h3>Call-First Care</h3><p>Every booking is confirmed by phone so that the team can guide you to the right ritual.</p></div></div>
+            <div class="why-orbit__statement why-orbit__statement--upper-right" data-stagger-item><div class="stagger-motion-layer"><span>03</span><h3>Personalized to Your Needs</h3><p>Pressure, oil and timing are adjusted for the guest instead of following a fixed script.</p></div></div>
+            <div class="why-orbit__statement why-orbit__statement--lower-right" data-stagger-item><div class="stagger-motion-layer"><span>04</span><h3>Professional Products</h3><p>The team uses premium oils, skin-care formulas, body care and Moroccan Oil hair products matched to the ritual.</p></div></div>
           </div>
         </div>
       </section>
@@ -72,10 +75,11 @@
 
       <section class="section therapists-section surface-pebble">
         <div class="wrap"><header class="section-heading section-heading--split" data-reveal="fade-up"><h2>Our <em>therapists.</em></h2><p>The Coral Spa team delivers the massage, facial, body-care, hair-spa and grooming menu presented on this site. A short phone conversation helps match each guest with an appropriate ritual and available therapist.</p></header>
-          <div class="content-carousel team-carousel" data-team-section data-carousel data-carousel-interval="6500" data-stagger-group>
+          <p class="team-profile-note" data-reveal="fade-up">Therapist profiles shown are sample layouts. Names, credentials, availability and photographs will be updated after team confirmation.</p>
+          <div class="content-carousel team-carousel" data-team-section data-carousel data-carousel-loop="true" data-carousel-interval="6000" data-motion-playback data-stagger-group>
             <div class="content-carousel__viewport"><div class="content-carousel__track" data-carousel-track></div></div>
             <p class="team-empty glass-panel" data-team-empty>Individual therapist profiles can be shared by phone while staff preferences for profile visibility are being finalized.</p>
-            <div class="carousel-controls" aria-label="Therapist carousel controls" hidden><button type="button" data-carousel-prev aria-label="Previous therapists">←</button><button type="button" data-carousel-next aria-label="Next therapists">→</button></div>
+            <div class="carousel-controls" aria-label="Therapist carousel controls" hidden><button type="button" data-carousel-prev aria-label="Previous therapists">←</button><button type="button" data-carousel-toggle aria-pressed="false" aria-label="Pause therapist carousel"><span data-carousel-toggle-label>Pause</span></button><span class="carousel-status" data-carousel-status aria-live="polite"></span><button type="button" data-carousel-next aria-label="Next therapists">→</button></div>
           </div>
           <a class="button button--primary button--arrow team-call" href="tel:+919792710010">Speak with the team <span aria-hidden="true">→</span></a>
         </div>

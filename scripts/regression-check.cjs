@@ -221,7 +221,7 @@ async function run() {
             trendingVisible: visible(document.querySelector('#signature')), trendingCards: document.querySelectorAll('#signature .signature-card').length,
             trendingNames: [...document.querySelectorAll('#signature h3')].map((node) => node.textContent.trim()),
             overviewVisible: visible(document.querySelector('#treatments')), overviewCards: document.querySelectorAll('#treatments .overview-card').length,
-            whyVisible: visible(document.querySelector('#why-coral-spa')), whyItems: document.querySelectorAll('#why-coral-spa .editorial-point').length, whyFocal: !!document.querySelector('#why-coral-spa .why-orbit__focal img'),
+            whyVisible: visible(document.querySelector('#why-coral-spa')), whyItems: document.querySelectorAll('#why-coral-spa .why-orbit__statement').length, whyFocal: !!document.querySelector('#why-coral-spa .why-orbit__focal img'),
             galleryVisible: visible(document.querySelector('#gallery')), galleryFocus: document.querySelectorAll('[data-gallery-focus]').length, galleryThumbs: document.querySelectorAll('[data-gallery-thumb]').length,
             galleryUnique: new Set([...document.querySelectorAll('[data-gallery-focus], [data-gallery-thumb]')].map((node) => node.dataset.gallerySrc)).size,
             galleryFocusWidth: document.querySelector('[data-gallery-focus]')?.getBoundingClientRect().width || 0,
@@ -252,7 +252,7 @@ async function run() {
         if (consoleErrors.length) failures.push(`${label}: console errors ${consoleErrors.join(', ')}`);
         const validVideoHero = result.heroValid === 'true' && result.heroAutoplay === 'true' && result.videoTag === 'VIDEO' && result.webm && result.mp4 && result.videoDuration > 1 && result.videoWidth > 0 && result.videoHeight > 0 && result.videoSourcesRelative && result.posterVisible && result.toggleVisible;
         const validPosterOnlyContact = page === 'contact.html' && result.heroValid === 'false' && result.heroAutoplay === 'false' && result.videoTag === 'VIDEO' && result.webm && result.mp4 && result.deferredVideoSourcesRelative && result.posterVisible && !result.toggleVisible;
-        if (!validVideoHero && !validPosterOnlyContact) failures.push(`${label}: hero media assertion failed`);
+        if (!validVideoHero && !validPosterOnlyContact) failures.push(`${label}: hero media assertion failed ${JSON.stringify({ heroValid: result.heroValid, heroAutoplay: result.heroAutoplay, videoTag: result.videoTag, webm: result.webm, mp4: result.mp4, deferredVideoSourcesRelative: result.deferredVideoSourcesRelative, posterVisible: result.posterVisible, toggleVisible: result.toggleVisible })}`);
         if (page === 'index.html') {
           const names = ['The Jet Lag Reset', 'Lymphatic Drainage', 'The Heat Ritual'];
           if (!result.trendingVisible || result.trendingCards !== 3 || names.some((name) => !result.trendingNames.includes(name))) failures.push(`${label}: trending assertion failed`);
@@ -277,11 +277,18 @@ async function run() {
     await client.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
     for (const page of pages) {
       await navigate(`${origin}${basePath}${page}?reveal-audit=1`);
-      await evaluate(`new Promise(async (resolve) => { for (let y = 0; y < document.body.scrollHeight; y += 500) { scrollTo(0, y); await new Promise((wait) => setTimeout(wait, 70)); } scrollTo(0, document.body.scrollHeight); setTimeout(resolve, 400); })`);
-      await evaluate(`new Promise(async (resolve) => { for (const node of [...document.querySelectorAll('[data-reveal-state="pending"]')]) { node.scrollIntoView({ block: 'center' }); await new Promise((wait) => setTimeout(wait, 90)); } setTimeout(resolve, 250); })`);
+      await evaluate(`new Promise(async (resolve) => { document.documentElement.style.scrollBehavior = 'auto'; for (let y = 0; y < document.body.scrollHeight; y += 500) { scrollTo(0, y); await new Promise((wait) => setTimeout(wait, 70)); } scrollTo(0, document.body.scrollHeight); setTimeout(resolve, 400); })`);
+      await evaluate(`new Promise(async (resolve) => { for (const node of [...document.querySelectorAll('[data-reveal-state="pending"]')]) { node.scrollIntoView({ block: 'center' }); await new Promise((wait) => setTimeout(wait, 90)); } setTimeout(resolve, 1100); })`);
       const reveal = JSON.parse(await evaluate(`JSON.stringify((() => { const pending = [...document.querySelectorAll('[data-reveal-state="pending"]')]; const hidden = [...document.querySelectorAll('[data-reveal]')].filter((node) => Number(getComputedStyle(node).opacity) === 0); const identify = (node) => node.id || node.className || node.tagName; return { pending: pending.length, hidden: hidden.length, nodes: [...new Set([...pending, ...hidden].map(identify))].slice(0, 8) }; })())`));
       if (reveal.pending || reveal.hidden) failures.push(`${page}: reveal system left content hidden (${reveal.nodes.join(', ')})`);
     }
+
+    await navigate(`${origin}${basePath}index.html?stagger-order=1`);
+    const staggerBefore = JSON.parse(await evaluate(`new Promise((resolve) => { const root = document.querySelector('#why-coral-spa [data-stagger-group]'); setTimeout(() => resolve(JSON.stringify({ state: root.dataset.staggerState, revealed: [...root.querySelectorAll('[data-stagger-item]')].filter((item) => item.dataset.revealedAt).length })), 500); })`));
+    if (staggerBefore.revealed !== 0 || staggerBefore.state !== 'pending') failures.push(`Off-screen stagger group started too early: ${JSON.stringify(staggerBefore)}`);
+    await evaluate(`document.querySelector('#why-coral-spa [data-stagger-group]').scrollIntoView({ block: 'center' })`);
+    const staggerAfter = JSON.parse(await evaluate(`new Promise((resolve) => { setTimeout(() => { const root = document.querySelector('#why-coral-spa [data-stagger-group]'); const times = [...root.querySelectorAll('[data-stagger-item]')].map((item) => Number(item.dataset.revealedAt || 0)); resolve(JSON.stringify({ state: root.dataset.staggerState, times })); }, 1200); })`));
+    if (staggerAfter.state !== 'complete' || staggerAfter.times.length !== 4 || staggerAfter.times.some((time, index) => !time || (index && time <= staggerAfter.times[index - 1]))) failures.push(`Stagger order assertion failed: ${JSON.stringify(staggerAfter)}`);
 
     await navigate(`${origin}${basePath}index.html?gallery-manual=1`);
     for (let index = 0; index < 4; index += 1) {
@@ -290,6 +297,8 @@ async function run() {
     }
 
     await navigate(`${origin}${basePath}index.html?gallery-auto=1`);
+    await evaluate(`document.querySelector('[data-gallery-showcase]').scrollIntoView({ block: 'center' })`);
+    await delay(400);
     const rotatingGallery = JSON.parse(await evaluate(`new Promise((resolve) => { const before = document.querySelector('[data-gallery-focus]').dataset.gallerySrc; setTimeout(() => resolve(JSON.stringify({ before, after: document.querySelector('[data-gallery-focus]').dataset.gallerySrc })), 6200); })`));
     if (rotatingGallery.before === rotatingGallery.after) failures.push('Gallery did not advance automatically');
 
@@ -301,19 +310,28 @@ async function run() {
     await client.send("Network.setBlockedURLs", { urls: [] });
 
     await navigate(`${origin}${basePath}index.html?reviews-live=1`);
-    const liveReviews = JSON.parse(await evaluate(`new Promise((resolve) => { const deadline = Date.now() + 10000; const finish = () => { const root = document.querySelector('[data-google-reviews]'); if (root.dataset.reviewState === 'ready') resolve(JSON.stringify({ state: root.dataset.reviewState, busy: root.getAttribute('aria-busy'), cards: root.querySelectorAll('.review-card').length, fourStarVisible: [...root.querySelectorAll('.review-card__stars')].some((node) => node.textContent === '★★★★☆'), includesFourStarReview: root.textContent.includes('QA review four'), fallback: !!root.querySelector('.review-card--fallback') })); else if (Date.now() >= deadline) resolve(JSON.stringify({ state: root.dataset.reviewState || 'timeout', cards: root.querySelectorAll('.review-card').length })); else setTimeout(finish, 50); }; finish(); })`));
+    const liveReviews = JSON.parse(await evaluate(`new Promise((resolve) => { const deadline = Date.now() + 10000; const finish = () => { const root = document.querySelector('[data-google-reviews]'); if (root.dataset.reviewState === 'ready') resolve(JSON.stringify({ state: root.dataset.reviewState, busy: root.getAttribute('aria-busy'), cards: root.querySelectorAll('.review-card:not([data-carousel-clone])').length, fourStarVisible: [...root.querySelectorAll('.review-card:not([data-carousel-clone]) .review-card__stars')].some((node) => node.textContent === '★★★★☆'), includesFourStarReview: root.textContent.includes('QA review four'), fallback: !!root.querySelector('.review-card--fallback') })); else if (Date.now() >= deadline) resolve(JSON.stringify({ state: root.dataset.reviewState || 'timeout', cards: root.querySelectorAll('.review-card:not([data-carousel-clone])').length })); else setTimeout(finish, 50); }; finish(); })`));
     if (liveReviews.state !== 'ready' || liveReviews.busy !== 'false' || liveReviews.cards !== 5 || !liveReviews.fourStarVisible || !liveReviews.includesFourStarReview || liveReviews.fallback) failures.push(`Configured live reviews assertion failed: ${JSON.stringify(liveReviews)}`);
+    await evaluate(`document.querySelector('.review-carousel').scrollIntoView({ block: 'center' })`);
+    await delay(400);
     const reviewCarousel = JSON.parse(await evaluate(`new Promise((resolve) => { const carousel = document.querySelector('.review-carousel'); const before = carousel.dataset.carouselIndex; setTimeout(() => resolve(JSON.stringify({ before, after: carousel.dataset.carouselIndex, ready: carousel.dataset.carouselReady })), 5700); })`));
     if (reviewCarousel.ready !== 'true' || reviewCarousel.before === reviewCarousel.after) failures.push(`Review carousel did not auto-advance: ${JSON.stringify(reviewCarousel)}`);
 
-    for (const [width, expected] of [[1440, 4], [1024, 2], [390, 1]]) {
+    for (const [width, expected] of [[1440, 4], [1024, 3], [768, 2], [390, 1]]) {
       await client.send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width < 500 });
       await navigate(`${origin}${basePath}about.html?team-fixture=1&width=${width}`);
-      const teamState = JSON.parse(await evaluate(`JSON.stringify((() => { const root = document.querySelector('[data-team-section]'); const cards = [...root.querySelectorAll('.team-card')]; const viewport = root.querySelector('.content-carousel__viewport').getBoundingClientRect(); const visibleCards = cards.filter((card) => { const rect = card.getBoundingClientRect(); return rect.left < viewport.right - 1 && rect.right > viewport.left + 1; }).length; return { cards: cards.length, visibleCards, columns: Number(getComputedStyle(root).getPropertyValue('--carousel-columns')), emptyHidden: document.querySelector('[data-team-empty]').hidden }; })())`));
-      if (teamState.cards !== 6 || teamState.columns !== expected || teamState.visibleCards !== expected || !teamState.emptyHidden) failures.push(`Team carousel ${width}px assertion failed: ${JSON.stringify(teamState)}`);
+      await evaluate(`document.querySelector('[data-team-section]').scrollIntoView({ block: 'center' })`);
+      await delay(300);
+      const teamState = JSON.parse(await evaluate(`JSON.stringify((() => { const root = document.querySelector('[data-team-section]'); const cards = [...root.querySelectorAll('.team-card:not([data-carousel-clone])')]; const renderedCards = [...root.querySelectorAll('.team-card')]; const viewport = root.querySelector('.content-carousel__viewport').getBoundingClientRect(); const visibleCards = renderedCards.filter((card) => { const rect = card.getBoundingClientRect(); return rect.left < viewport.right - 1 && rect.right > viewport.left + 1; }).length; return { cards: cards.length, visibleCards, columns: Number(getComputedStyle(root).getPropertyValue('--carousel-columns')), emptyHidden: document.querySelector('[data-team-empty]').hidden, placeholders: cards.filter((card) => card.textContent.includes('Sample profile')).length }; })())`));
+      if (teamState.cards !== 8 || teamState.columns !== expected || teamState.visibleCards !== expected || !teamState.emptyHidden || teamState.placeholders !== 8) failures.push(`Team carousel ${width}px assertion failed: ${JSON.stringify(teamState)}`);
     }
-
     await client.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
+    await navigate(`${origin}${basePath}about.html?team-autoplay=1`);
+    await evaluate(`document.querySelector('[data-team-section]').scrollIntoView({ block: 'center' })`);
+    await delay(400);
+    const teamAutoplay = JSON.parse(await evaluate(`new Promise((resolve) => { const root = document.querySelector('[data-team-section]'); const before = root.dataset.carouselIndex; setTimeout(() => resolve(JSON.stringify({ before, after: root.dataset.carouselIndex, playing: root.dataset.carouselPlaying })), 6500); })`));
+    if (teamAutoplay.before === teamAutoplay.after || teamAutoplay.playing !== 'true') failures.push(`Team carousel did not auto-advance: ${JSON.stringify(teamAutoplay)}`);
+
     for (const page of pages) {
       await navigate(`${origin}${basePath}${page}?back-top=1`);
       const backTop = JSON.parse(await evaluate(`new Promise((resolve) => { document.documentElement.style.scrollBehavior = 'auto'; scrollTo(0, 900); window.dispatchEvent(new Event('scroll')); setTimeout(() => { const button = document.querySelector('[data-back-to-top]'); resolve(JSON.stringify({ exists: !!button, visible: button?.classList.contains('is-visible'), scrollY })); }, 250); })`));
@@ -364,7 +382,7 @@ async function run() {
     await client.send("Page.navigate", { url: `${origin}${basePath}index.html?no-js=1` });
     await delay(800);
     await client.send("Emulation.setScriptExecutionDisabled", { value: false });
-    const noJs = JSON.parse(await evaluate(`JSON.stringify((() => { const focus = document.querySelector('[data-gallery-focus]'); const image = document.querySelector('[data-gallery-focus-image]'); return { trending: document.querySelectorAll('#signature .signature-card').length, overview: document.querySelectorAll('#treatments .overview-card').length, why: document.querySelectorAll('#why-coral-spa .editorial-point').length, galleryItems: document.querySelectorAll('[data-gallery-focus], [data-gallery-thumb]').length, galleryWidth: focus.getBoundingClientRect().width, galleryHeight: focus.getBoundingClientRect().height, galleryNaturalWidth: image.naturalWidth, galleryOpacity: Number(getComputedStyle(image).opacity), reviewLoadingVisible: getComputedStyle(document.querySelector('[data-review-loading]')).display !== 'none', hidden: [...document.querySelectorAll('main > section')].filter((section) => !section.getBoundingClientRect().height || getComputedStyle(section).display === 'none' || getComputedStyle(section).visibility === 'hidden').length }; })())`));
+    const noJs = JSON.parse(await evaluate(`JSON.stringify((() => { const focus = document.querySelector('[data-gallery-focus]'); const image = document.querySelector('[data-gallery-focus-image]'); return { trending: document.querySelectorAll('#signature .signature-card').length, overview: document.querySelectorAll('#treatments .overview-card').length, why: document.querySelectorAll('#why-coral-spa .why-orbit__statement').length, galleryItems: document.querySelectorAll('[data-gallery-focus], [data-gallery-thumb]').length, galleryWidth: focus.getBoundingClientRect().width, galleryHeight: focus.getBoundingClientRect().height, galleryNaturalWidth: image.naturalWidth, galleryOpacity: Number(getComputedStyle(image).opacity), reviewLoadingVisible: getComputedStyle(document.querySelector('[data-review-loading]')).display !== 'none', hidden: [...document.querySelectorAll('main > section')].filter((section) => !section.getBoundingClientRect().height || getComputedStyle(section).display === 'none' || getComputedStyle(section).visibility === 'hidden').length }; })())`));
     if (noJs.trending !== 3 || noJs.overview !== 3 || noJs.why !== 4 || noJs.galleryItems !== 5 || !(noJs.galleryWidth > 0) || !(noJs.galleryHeight > 0) || !(noJs.galleryNaturalWidth > 0) || !(noJs.galleryOpacity > 0.95) || !noJs.reviewLoadingVisible || noJs.hidden) failures.push('No-JavaScript homepage assertion failed');
 
     const css = fs.readFileSync(path.join(root, 'assets/css/styles.css'), 'utf8');
