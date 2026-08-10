@@ -213,15 +213,15 @@
     const root = document.querySelector("[data-gallery-showcase]");
     if (!root) return;
     const focus = root.querySelector("[data-gallery-focus]");
-    const focusSource = root.querySelector("[data-gallery-focus-source]");
-    const focusImage = root.querySelector("[data-gallery-focus-image]");
-    const caption = root.querySelector("[data-gallery-caption]");
+    let focusMedia = root.querySelector("[data-gallery-focus-media]");
+    let focusImage = root.querySelector("[data-gallery-focus-image]");
+    const caption = root.querySelector("[data-gallery-caption-output]");
     const thumbs = Array.from(root.querySelectorAll("[data-gallery-thumb]"));
     const previous = root.querySelector("[data-gallery-prev]");
     const next = root.querySelector("[data-gallery-next]");
     const toggle = root.querySelector("[data-gallery-toggle]");
     const toggleLabel = root.querySelector("[data-gallery-toggle-label]");
-    if (!focus || !focusSource || !focusImage || !caption || thumbs.length !== 4) return;
+    if (!focus || !focusMedia || !focusImage || !caption || thumbs.length !== 4) return;
 
     const readItem = (element) => ({ src: element.dataset.gallerySrc, small: element.dataset.gallerySmall, large: element.dataset.galleryLarge, caption: element.dataset.galleryCaption, alt: element.dataset.galleryAlt });
     const items = [readItem(focus), ...thumbs.map(readItem)];
@@ -238,15 +238,24 @@
 
     const decodeImage = (src) => new Promise((resolve, reject) => {
       const candidate = new Image();
-      candidate.onload = () => resolve(candidate.currentSrc || candidate.src);
-      candidate.onerror = reject;
+      let settled = false;
+      const fail = () => { if (!settled) { settled = true; reject(new Error(`Unable to load gallery image: ${src}`)); } };
+      const finish = async () => {
+        if (settled) return;
+        if (!candidate.naturalWidth || !candidate.naturalHeight) { fail(); return; }
+        try { if (candidate.decode) await candidate.decode(); } catch (error) { /* onload already confirmed a usable image. */ }
+        if (!settled) { settled = true; resolve(candidate); }
+      };
+      candidate.onload = finish;
+      candidate.onerror = fail;
+      candidate.decoding = "async";
       candidate.src = src;
-      if (candidate.decode) candidate.decode().then(() => resolve(candidate.currentSrc || candidate.src)).catch(() => {});
+      if (candidate.complete && candidate.naturalWidth > 0) finish();
     });
     const loadItem = async (item) => {
       const preferred = window.matchMedia("(max-width: 899px)").matches ? item.small : item.large;
-      try { return { url: await decodeImage(preferred), isWebp: true }; }
-      catch (error) { return { url: await decodeImage(item.src), isWebp: false }; }
+      try { return await decodeImage(preferred); }
+      catch (error) { return decodeImage(item.src); }
     };
     const updatePlaybackUi = () => {
       root.dataset.galleryPlaying = String(!explicitlyPaused && !focusPaused && motionActive && !reduceMotion.matches && !document.hidden);
@@ -261,8 +270,8 @@
       if (failedItems.has(requestedIndex)) return false;
       const item = items[requestedIndex];
       const token = ++renderToken;
-      let loaded;
-      try { loaded = await loadItem(item); }
+      let incomingImage;
+      try { incomingImage = await loadItem(item); }
       catch (error) {
         failedItems.add(requestedIndex);
         root.dataset.galleryErrorCount = String(failedItems.size);
@@ -270,18 +279,20 @@
         return false;
       }
       if (token !== renderToken) return false;
-      // The decoded URL is already cached. Remove the responsive source before
-      // swapping so the picture element cannot start a second, blanking request.
-      focusSource.removeAttribute("srcset");
-      focusSource.removeAttribute("sizes");
-      focusImage.removeAttribute("srcset");
-      root.classList.add("is-changing");
+      incomingImage.className = "gallery-showcase__focus-image gallery-showcase__focus-image--incoming";
+      incomingImage.alt = item.alt;
+      incomingImage.width = incomingImage.naturalWidth;
+      incomingImage.height = incomingImage.naturalHeight;
+      incomingImage.setAttribute("data-gallery-focus-image", "");
+      focusImage.removeAttribute("data-gallery-focus-image");
+      focus.insertBefore(incomingImage, caption);
+      const outgoingMedia = focusMedia;
+      focusMedia = incomingImage;
+      focusImage = incomingImage;
       focusedIndex = requestedIndex;
       root.dataset.galleryIndex = String(focusedIndex);
       root.dataset.galleryLastChange = performance.now().toFixed(1);
       Object.assign(focus.dataset, { gallerySrc: item.src, gallerySmall: item.small, galleryLarge: item.large, galleryCaption: item.caption, galleryAlt: item.alt });
-      focusImage.src = loaded.url || item.src;
-      focusImage.alt = item.alt;
       caption.textContent = item.caption;
       const remaining = items.map((entry, index) => ({ item: entry, index })).filter(({ index }) => index !== focusedIndex);
       thumbs.forEach((button, slot) => {
@@ -294,8 +305,14 @@
         image.src = entry.item.small || entry.item.src;
         label.textContent = entry.item.caption;
       });
-      try { if (focusImage.decode) await focusImage.decode(); } catch (error) { /* The preloaded image remains usable. */ }
-      requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("is-changing")));
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        incomingImage.classList.add("is-active");
+        outgoingMedia.classList.add("is-outgoing");
+        window.setTimeout(() => {
+          outgoingMedia.remove();
+          incomingImage.classList.remove("gallery-showcase__focus-image--incoming", "is-active");
+        }, 300);
+      }));
       return true;
     };
     const stop = () => { if (timer) clearTimeout(timer); timer = null; };

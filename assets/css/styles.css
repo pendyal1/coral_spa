@@ -193,11 +193,13 @@ p { color: var(--text-secondary); }
 .gallery-showcase { display: grid; grid-template-columns: minmax(0, 1fr) minmax(190px, 250px); grid-template-rows: minmax(0, 1fr) auto; gap: 14px; height: clamp(610px, 58vw, 750px); }
 .gallery-showcase__focus, .gallery-thumb { position: relative; min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--card-radius); background: #24150f; }
 .gallery-showcase__focus { min-height: 420px; }
-.gallery-showcase__focus picture { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
-.gallery-showcase__focus picture img, .gallery-thumb img { display: block; width: 100%; height: 100%; }
+.gallery-showcase__focus picture, .gallery-showcase__focus > .gallery-showcase__focus-image { position: absolute; inset: 0; display: block; width: 100%; height: 100%; opacity: 1; transition: opacity 260ms var(--motion-ease-standard); }
+.gallery-showcase__focus picture img, .gallery-showcase__focus > .gallery-showcase__focus-image, .gallery-thumb img { display: block; width: 100%; height: 100%; }
 .gallery-showcase__focus img, .gallery-thumb img { object-fit: cover; object-position: center; filter: saturate(0.82) sepia(0.08) brightness(0.78); }
-.gallery-showcase__focus img { transition: opacity 260ms var(--motion-ease-standard); }
-.gallery-showcase.is-changing .gallery-showcase__focus img { opacity: 0.78; }
+.gallery-showcase__focus img { opacity: 1; transition: opacity 260ms var(--motion-ease-standard); }
+.gallery-showcase__focus > .gallery-showcase__focus-image--incoming { z-index: 1; opacity: 0; }
+.gallery-showcase__focus > .gallery-showcase__focus-image--incoming.is-active { opacity: 1; }
+.gallery-showcase__focus > picture.is-outgoing, .gallery-showcase__focus > .gallery-showcase__focus-image.is-outgoing { opacity: 0; }
 .gallery-showcase__focus figcaption, .gallery-thumb span { position: absolute; inset: auto 0 0; z-index: 2; padding: 38px 18px 16px; background: linear-gradient(0deg, rgba(10, 5, 3, 0.9), transparent); color: var(--text-primary); font-size: 10px; letter-spacing: 0.14em; text-align: left; text-transform: uppercase; }
 .gallery-showcase__thumbs { display: grid; grid-template-rows: repeat(4, minmax(0, 1fr)); gap: 14px; min-height: 0; }
 .gallery-thumb { width: 100%; min-height: 0; padding: 0; color: var(--text-primary); cursor: pointer; transition: transform var(--motion-hover-duration), border-color var(--motion-hover-duration); }
