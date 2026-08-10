@@ -33,13 +33,6 @@
     "Hair Spa": videoSlot("category-hair-spa")
   };
 
-  const longDescriptions = {
-    "The Jet Lag Reset": "A recovery-focused Coral Spa ritual for guests arriving tired, heavy or out of rhythm. Swedish-style oil work eases the body first, followed by focused head massage to settle screen fatigue, travel stress and post-flight stiffness.",
-    "Lymphatic Drainage": "A light-to-medium rhythmic massage designed to support fluid movement, ease heaviness and help the body feel less stagnant. Pressure is selected by the therapist after a short consult.",
-    "The Heat Ritual": "Hot Stone Massage combines traditional massage with therapeutic warmth from basalt stones. The stones are placed and moved across energy points to melt muscle tension and create a grounded reset.",
-    "The Nervous System Reset": "A calming Thai aromatherapy ritual blending Thai-style pressure, assisted stretching and flowing oil strokes, paced to feel slower and restorative."
-  };
-
   initYear();
   initHeader();
   initNavigation();
@@ -277,14 +270,16 @@
         return false;
       }
       if (token !== renderToken) return false;
+      // The decoded URL is already cached. Remove the responsive source before
+      // swapping so the picture element cannot start a second, blanking request.
+      focusSource.removeAttribute("srcset");
+      focusSource.removeAttribute("sizes");
+      focusImage.removeAttribute("srcset");
       root.classList.add("is-changing");
       focusedIndex = requestedIndex;
       root.dataset.galleryIndex = String(focusedIndex);
       root.dataset.galleryLastChange = performance.now().toFixed(1);
       Object.assign(focus.dataset, { gallerySrc: item.src, gallerySmall: item.small, galleryLarge: item.large, galleryCaption: item.caption, galleryAlt: item.alt });
-      if (item.small && item.large) focusSource.srcset = `${item.small} 640w, ${item.large} 1200w`;
-      else focusSource.removeAttribute("srcset");
-      focusImage.removeAttribute("srcset");
       focusImage.src = loaded.url || item.src;
       focusImage.alt = item.alt;
       caption.textContent = item.caption;
@@ -299,7 +294,8 @@
         image.src = entry.item.small || entry.item.src;
         label.textContent = entry.item.caption;
       });
-      requestAnimationFrame(() => root.classList.remove("is-changing"));
+      try { if (focusImage.decode) await focusImage.decode(); } catch (error) { /* The preloaded image remains usable. */ }
+      requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("is-changing")));
       return true;
     };
     const stop = () => { if (timer) clearTimeout(timer); timer = null; };
@@ -503,13 +499,13 @@
     const prices = splitValue(service.price);
     const durations = splitDuration(service.duration);
     const tags = benefitTags(service, category);
-    const description = service.longDescription || longDescriptions[service.name] || service.description;
+    const description = service.longDescription || service.description;
     const searchText = [service.name, service.technique, service.description, service.goodFor, category, ...tags].join(" ").toLowerCase();
     return `
       <details class="service-row" id="${slug(service.name)}" data-service-item data-search-text="${escapeHtml(searchText)}" data-stagger-item>
         <summary>
           <span class="service-row__identity">${service.editorialSubtitle ? `<span class="service-row__subtitle">${escapeHtml(service.editorialSubtitle)}</span>` : ""}<span class="service-row__name">${escapeHtml(service.name)}${service.tag ? `<small>${escapeHtml(service.tag)}</small>` : ""}</span><span class="service-row__technique">${escapeHtml(service.technique)}</span><span class="service-row__summary">${escapeHtml(service.description)}</span></span>
-          <span class="service-row__book"><span class="service-row__prices">${priceColumn(prices[0], durations[0])}${prices[1] || durations[1] ? priceColumn(prices[1] || "-", durations[1] || "-") : ""}</span><span class="service-row__more"><span>More</span><span class="service-row__toggle" aria-hidden="true"></span></span></span>
+          <span class="service-row__book"><span class="service-row__prices">${priceColumn(prices[0], durations[0])}${prices[1] || durations[1] ? priceColumn(prices[1] || "-", durations[1] || "-") : ""}</span><span class="service-row__more"><span class="service-row__more-closed">Know more</span><span class="service-row__more-open">Show less</span><span class="service-row__toggle" aria-hidden="true"></span></span></span>
         </summary>
         <div class="service-row__detail">${description !== service.description ? `<p>${escapeHtml(description)}</p>` : ""}${tags.length ? `<div class="service-tags" aria-label="Good for">${tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>` : ""}<a class="button button--primary button--arrow service-row__cta" href="tel:+919792710010">Call to book <span aria-hidden="true">→</span></a></div>
       </details>`;
