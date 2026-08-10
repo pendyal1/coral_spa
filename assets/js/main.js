@@ -206,7 +206,65 @@
 
     initActiveCategory();
     openInitialServiceHash();
+    initServiceDisclosures(root);
     refreshDynamicContent(root);
+  }
+
+  function initServiceDisclosures(root) {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    root.querySelectorAll(".service-row:not([data-disclosure-ready])").forEach((details) => {
+      const summary = details.querySelector(":scope > summary");
+      const panel = details.querySelector(":scope > .service-row__detail");
+      if (!summary || !panel) return;
+      details.dataset.disclosureReady = "true";
+      let state = details.open ? "open" : "closed";
+      let animation = null;
+
+      const settle = (opening, activeAnimation) => {
+        if (animation !== activeAnimation) return;
+        if (!opening) details.open = false;
+        state = opening ? "open" : "closed";
+        details.dataset.disclosureState = state;
+        summary.setAttribute("aria-expanded", String(opening));
+        animation = null;
+        activeAnimation.cancel();
+      };
+
+      const toggle = (opening) => {
+        if (animation) animation.cancel();
+        const startHeight = details.open ? panel.getBoundingClientRect().height : 0;
+        if (opening && !details.open) details.open = true;
+        const endHeight = opening ? panel.scrollHeight : 0;
+        summary.setAttribute("aria-expanded", String(opening));
+
+        if (reduceMotion.matches || typeof panel.animate !== "function") {
+          details.open = opening;
+          state = opening ? "open" : "closed";
+          details.dataset.disclosureState = state;
+          return;
+        }
+
+        state = opening ? "opening" : "closing";
+        details.dataset.disclosureState = state;
+        const activeAnimation = panel.animate([
+          { height: `${startHeight}px`, opacity: opening && startHeight === 0 ? 0 : 1, transform: opening ? "translateY(-7px)" : "none" },
+          { height: `${endHeight}px`, opacity: opening ? 1 : 0, transform: opening ? "none" : "translateY(-7px)" }
+        ], {
+          duration: 520,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+          fill: "both"
+        });
+        animation = activeAnimation;
+        activeAnimation.onfinish = () => settle(opening, activeAnimation);
+      };
+
+      summary.setAttribute("aria-expanded", String(details.open));
+      details.dataset.disclosureState = state;
+      summary.addEventListener("click", (event) => {
+        event.preventDefault();
+        toggle(state === "closed" || state === "closing");
+      });
+    });
   }
 
   function initGalleryShowcase() {
