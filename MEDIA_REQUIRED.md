@@ -13,16 +13,14 @@ After visual and codec validation, set the two `[data-why-media]` elements to `d
 
 ## Contact hero
 
-The previous white hotel-corridor footage was removed because it did not resemble Coral Spa. Contact currently uses `assets/images/gallery/coral-spa-reception.jpeg` as its poster source and deliberately does not expose a play control.
-
-Supply genuine 8–10 second footage recorded inside Coral Spa, or reference-driven generated footage with meaningful environmental and camera motion, in these four files:
+The contact page currently uses a no-face telephone pickup template video from Pexels in these four files:
 
 - `assets/videos/contact-hero-desktop.webm`
 - `assets/videos/contact-hero-desktop.mp4`
 - `assets/videos/contact-hero-mobile.webm`
 - `assets/videos/contact-hero-mobile.mp4`
 
-Before setting `data-video-valid="true"`, validate six evenly spaced frames against the reception, treatment-room, waiting-lounge and therapy-suite reference photographs; confirm 16:9 desktop, 9:16 mobile, browser-compatible codecs and no audio.
+Replace it with Coral Spa-recorded footage when available.
 
 ## Category previews
 

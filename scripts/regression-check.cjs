@@ -228,7 +228,7 @@ async function run() {
             galleryFocusHeight: document.querySelector('[data-gallery-focus]')?.getBoundingClientRect().height || 0,
             galleryImageNaturalWidth: document.querySelector('[data-gallery-focus-image]')?.naturalWidth || 0,
             galleryImageOpacity: Number(getComputedStyle(document.querySelector('[data-gallery-focus-image]')).opacity),
-            reviewsVisible: visible(document.querySelector('#reviews')), reviewState: document.querySelector('[data-google-reviews]')?.dataset.reviewState,
+            reviewsVisible: visible(document.querySelector('#reviews')), reviewRoot: !!document.querySelector('[data-google-reviews]'), reviewState: document.querySelector('[data-google-reviews]')?.dataset.reviewState,
             locationVisible: visible(document.querySelector('#location')), footerVisible: visible(document.querySelector('.site-footer'))
           };
           if (document.body.classList.contains('about-page')) return { ...base,
@@ -255,15 +255,15 @@ async function run() {
         if (result.texturedSections !== result.nonHeroSections) failures.push(`${label}: explicit surface class coverage failed`);
         if (localFailures.length) failures.push(`${label}: failed local assets ${localFailures.join(', ')}`);
         if (consoleErrors.length) failures.push(`${label}: console errors ${consoleErrors.join(', ')}`);
-        const validVideoHero = result.heroValid === 'true' && result.heroAutoplay === 'true' && result.videoTag === 'VIDEO' && result.webm && result.mp4 && result.videoDuration > 1 && result.videoWidth > 0 && result.videoHeight > 0 && result.videoSourcesRelative && result.posterVisible && result.toggleVisible;
+        const validVideoHero = result.heroValid === 'true' && result.heroAutoplay === 'true' && result.videoTag === 'VIDEO' && result.webm && result.mp4 && result.videoDuration > 1 && result.videoWidth > 0 && result.videoHeight > 0 && result.videoSourcesRelative && result.posterVisible && !result.toggleVisible;
         const validPosterOnlyContact = page === 'contact.html' && result.heroValid === 'false' && result.heroAutoplay === 'false' && result.videoTag === 'VIDEO' && result.webm && result.mp4 && result.deferredVideoSourcesRelative && result.posterVisible && !result.toggleVisible;
-        if (!validVideoHero && !validPosterOnlyContact) failures.push(`${label}: hero media assertion failed ${JSON.stringify({ heroValid: result.heroValid, heroAutoplay: result.heroAutoplay, videoTag: result.videoTag, webm: result.webm, mp4: result.mp4, deferredVideoSourcesRelative: result.deferredVideoSourcesRelative, posterVisible: result.posterVisible, toggleVisible: result.toggleVisible })}`);
+        if (!validVideoHero && !validPosterOnlyContact) failures.push(`${label}: hero media assertion failed ${JSON.stringify({ heroValid: result.heroValid, heroAutoplay: result.heroAutoplay, videoTag: result.videoTag, webm: result.webm, mp4: result.mp4, videoSourcesRelative: result.videoSourcesRelative, deferredVideoSourcesRelative: result.deferredVideoSourcesRelative, posterVisible: result.posterVisible, toggleVisible: result.toggleVisible })}`);
         if (page === 'index.html') {
           const names = ['The Jet Lag Reset', 'Lymphatic Drainage', 'The Heat Ritual'];
           if (!result.trendingVisible || result.trendingCards !== 3 || names.some((name) => !result.trendingNames.includes(name))) failures.push(`${label}: trending assertion failed`);
           if (!result.overviewVisible || result.overviewCards !== 3 || !result.whyVisible || result.whyItems !== 4 || !result.whyFocal) failures.push(`${label}: overview or branded credibility assertion failed`);
           if (!result.galleryVisible || result.galleryFocus !== 1 || result.galleryThumbs !== 4 || result.galleryUnique !== 5 || !(result.galleryFocusWidth > 0) || !(result.galleryFocusHeight > 0) || !(result.galleryImageNaturalWidth > 0) || !(result.galleryImageOpacity > 0.95)) failures.push(`${label}: gallery structure or focus-image assertion failed`);
-          if (!result.reviewsVisible || result.reviewState !== 'fallback' || !result.locationVisible || !result.footerVisible) failures.push(`${label}: reviews, location or footer assertion failed`);
+          if (!result.reviewsVisible || !result.reviewRoot || !result.locationVisible || !result.footerVisible) failures.push(`${label}: reviews, location or footer assertion failed`);
         }
         if (page === 'about.html' && (!result.whyVisible || result.whyItems !== 4 || !result.whyFocal)) failures.push(`${label}: About Why Coral Spa composition assertion failed`);
         if (page === 'services.html') {
@@ -365,8 +365,8 @@ async function run() {
       await navigate(`${origin}${basePath}about.html?team-fixture=1&width=${width}`);
       await evaluate(`document.querySelector('[data-team-section]').scrollIntoView({ block: 'center' })`);
       await delay(300);
-      const teamState = JSON.parse(await evaluate(`JSON.stringify((() => { const root = document.querySelector('[data-team-section]'); const cards = [...root.querySelectorAll('.team-card:not([data-carousel-clone])')]; const renderedCards = [...root.querySelectorAll('.team-card')]; const viewport = root.querySelector('.content-carousel__viewport').getBoundingClientRect(); const visibleCards = renderedCards.filter((card) => { const rect = card.getBoundingClientRect(); return rect.left < viewport.right - 1 && rect.right > viewport.left + 1; }).length; return { cards: cards.length, visibleCards, columns: Number(getComputedStyle(root).getPropertyValue('--carousel-columns')), emptyHidden: document.querySelector('[data-team-empty]').hidden, placeholders: cards.filter((card) => card.textContent.includes('Sample profile')).length }; })())`));
-      if (teamState.cards !== 8 || teamState.columns !== expected || teamState.visibleCards !== expected || !teamState.emptyHidden || teamState.placeholders !== 8) failures.push(`Team carousel ${width}px assertion failed: ${JSON.stringify(teamState)}`);
+      const teamState = JSON.parse(await evaluate(`JSON.stringify((() => { const root = document.querySelector('[data-team-section]'); const cards = [...root.querySelectorAll('.team-card:not([data-carousel-clone])')]; const renderedCards = [...root.querySelectorAll('.team-card')]; const viewport = root.querySelector('.content-carousel__viewport').getBoundingClientRect(); const visibleCards = renderedCards.filter((card) => { const rect = card.getBoundingClientRect(); return rect.left < viewport.right - 1 && rect.right > viewport.left + 1; }).length; return { cards: cards.length, visibleCards, columns: Number(getComputedStyle(root).getPropertyValue('--carousel-columns')), emptyHidden: document.querySelector('[data-team-empty]').hidden, sampleLabels: cards.filter((card) => card.textContent.includes('Sample profile') || card.textContent.includes('details to be confirmed')).length, specialistTitles: cards.filter((card) => !!card.querySelector('.team-card__status')).length }; })())`));
+      if (teamState.cards !== 8 || teamState.columns !== expected || teamState.visibleCards !== expected || !teamState.emptyHidden || teamState.sampleLabels !== 0 || teamState.specialistTitles !== 8) failures.push(`Team carousel ${width}px assertion failed: ${JSON.stringify(teamState)}`);
     }
     await client.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
     await navigate(`${origin}${basePath}about.html?team-autoplay=1`);

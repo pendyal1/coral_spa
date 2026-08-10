@@ -282,8 +282,10 @@
       root.dataset.galleryIndex = String(focusedIndex);
       root.dataset.galleryLastChange = performance.now().toFixed(1);
       Object.assign(focus.dataset, { gallerySrc: item.src, gallerySmall: item.small, galleryLarge: item.large, galleryCaption: item.caption, galleryAlt: item.alt });
-      focusSource.srcset = loaded.isWebp ? `${item.small} 640w, ${item.large} 1200w` : "";
-      focusImage.src = loaded.isWebp ? item.src : loaded.url;
+      if (item.small && item.large) focusSource.srcset = `${item.small} 640w, ${item.large} 1200w`;
+      else focusSource.removeAttribute("srcset");
+      focusImage.removeAttribute("srcset");
+      focusImage.src = loaded.url || item.src;
       focusImage.alt = item.alt;
       caption.textContent = item.caption;
       const remaining = items.map((entry, index) => ({ item: entry, index })).filter(({ index }) => index !== focusedIndex);
@@ -506,11 +508,10 @@
     return `
       <details class="service-row" id="${slug(service.name)}" data-service-item data-search-text="${escapeHtml(searchText)}" data-stagger-item>
         <summary>
-          <span class="service-row__identity">${service.editorialSubtitle ? `<span class="service-row__subtitle">${escapeHtml(service.editorialSubtitle)}</span>` : ""}<span class="service-row__name">${escapeHtml(service.name)}${service.tag ? `<small>${escapeHtml(service.tag)}</small>` : ""}</span><span class="service-row__technique">${escapeHtml(service.technique)}</span></span>
-          <span class="service-row__prices">${priceColumn(prices[0], durations[0])}${prices[1] || durations[1] ? priceColumn(prices[1] || "-", durations[1] || "-") : ""}</span>
-          <span class="service-row__toggle" aria-hidden="true"></span>
+          <span class="service-row__identity">${service.editorialSubtitle ? `<span class="service-row__subtitle">${escapeHtml(service.editorialSubtitle)}</span>` : ""}<span class="service-row__name">${escapeHtml(service.name)}${service.tag ? `<small>${escapeHtml(service.tag)}</small>` : ""}</span><span class="service-row__technique">${escapeHtml(service.technique)}</span><span class="service-row__summary">${escapeHtml(service.description)}</span></span>
+          <span class="service-row__book"><span class="service-row__prices">${priceColumn(prices[0], durations[0])}${prices[1] || durations[1] ? priceColumn(prices[1] || "-", durations[1] || "-") : ""}</span><span class="service-row__more"><span>More</span><span class="service-row__toggle" aria-hidden="true"></span></span></span>
         </summary>
-        <div class="service-row__detail"><p>${escapeHtml(service.description)}</p>${tags.length ? `<div class="service-tags" aria-label="Good for">${tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>` : ""}${description !== service.description ? `<details class="service-more"><summary>Know more</summary><p>${escapeHtml(description)}</p></details>` : ""}<a class="text-link text-link--arrow" href="tel:+919792710010">Call to book <span aria-hidden="true">→</span></a></div>
+        <div class="service-row__detail">${description !== service.description ? `<p>${escapeHtml(description)}</p>` : ""}${tags.length ? `<div class="service-tags" aria-label="Good for">${tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>` : ""}<a class="button button--primary button--arrow service-row__cta" href="tel:+919792710010">Call to book <span aria-hidden="true">→</span></a></div>
       </details>`;
   }
 
@@ -661,8 +662,8 @@
         : `<span class="team-card__monogram" aria-hidden="true">${escapeHtml(initials)}</span><span class="visually-hidden">No-photo profile for ${escapeHtml(name)}</span>`;
       const credentials = Array.isArray(member.certifications) ? member.certifications.slice(0, 4) : [];
       const specializations = Array.isArray(member.specializations) ? member.specializations.slice(0, 3) : [];
-      const placeholder = member.profileStatus === "placeholder" ? `<span class="team-card__status">Sample profile — details to be confirmed</span>` : "";
-      return `<article class="team-card glass-panel" data-stagger-item><div class="stagger-motion-layer"><div class="team-card__media">${photo}</div><div class="team-card__copy">${placeholder}<h3>${escapeHtml(name)}</h3>${member.experienceYears ? `<span class="team-card__experience">${escapeHtml(member.experienceYears)} years of experience</span>` : ""}${credentials.length ? `<ul>${credentials.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}${specializations.length ? `<p class="team-card__meta"><strong>Known for:</strong> ${escapeHtml(specializations.join(", "))}</p>` : ""}${Array.isArray(member.languages) ? `<p class="team-card__meta"><strong>Languages:</strong> ${escapeHtml(member.languages.join(", "))}</p>` : ""}${member.bio ? `<p class="team-card__bio">${escapeHtml(member.bio)}</p>` : ""}</div></div></article>`;
+      const specialistTitle = member.specialistTitle || (specializations[0] ? `${specializations[0]} Specialist` : "Wellness Specialist");
+      return `<article class="team-card glass-panel" data-stagger-item><div class="stagger-motion-layer"><div class="team-card__media">${photo}</div><div class="team-card__copy"><span class="team-card__status">${escapeHtml(specialistTitle)}</span><h3>${escapeHtml(name)}</h3>${member.experienceYears ? `<span class="team-card__experience">${escapeHtml(member.experienceYears)} years of experience</span>` : ""}${credentials.length ? `<ul>${credentials.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}${specializations.length ? `<p class="team-card__meta"><strong>Known for:</strong> ${escapeHtml(specializations.join(", "))}</p>` : ""}${Array.isArray(member.languages) ? `<p class="team-card__meta"><strong>Languages:</strong> ${escapeHtml(member.languages.join(", "))}</p>` : ""}${member.bio ? `<p class="team-card__bio">${escapeHtml(member.bio)}</p>` : ""}</div></div></article>`;
     }).join("");
     refreshDynamicContent(root);
     requestAnimationFrame(() => requestAnimationFrame(() => initCarousel(root)));
@@ -711,8 +712,9 @@
       let visible = 0;
       document.querySelectorAll("[data-service-group]").forEach((group) => {
         let groupVisible = 0;
+        const categoryMatch = query && group.dataset.serviceGroup.toLowerCase().includes(query);
         group.querySelectorAll("[data-service-item]").forEach((item) => {
-          const match = !query || item.dataset.searchText.includes(query);
+          const match = !query || categoryMatch || item.dataset.searchText.includes(query);
           item.hidden = !match;
           if (match) { visible += 1; groupVisible += 1; }
         });
