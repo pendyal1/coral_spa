@@ -1,5 +1,5 @@
 {
-  "auditedAt": "2026-08-05",
+  "auditedAt": "2026-08-10",
   "criteria": "Genuine subject or camera motion; valid browser codec; no audio; matching poster fallback.",
   "assets": [
     {
@@ -46,20 +46,16 @@
     },
     {
       "id": "contact-hero",
-      "status": "awaiting-genuine-footage",
-      "integrated": false,
+      "status": "approved-genuine-stock-video",
+      "integrated": true,
       "desktopSource": "assets/videos/contact-hero-desktop.webm",
       "desktopFallback": "assets/videos/contact-hero-desktop.mp4",
       "mobileSource": "assets/videos/contact-hero-mobile.webm",
       "mobileFallback": "assets/videos/contact-hero-mobile.mp4",
       "poster": "assets/images/posters/contact-hero-poster-desktop.webp",
-      "posterSource": "assets/images/gallery/coral-spa-reception.jpeg",
-      "referenceImages": [
-        "assets/images/gallery/coral-spa-reception.jpeg",
-        "assets/images/gallery/coral-spa-treatment-room.jpeg",
-        "assets/images/gallery/coral-spa-waiting-lounge.jpeg",
-        "assets/images/gallery/coral-spa-therapy-suite.jpeg"
-      ]
+      "contactSheet": "assets/media/contact-sheets/contact-hero-desktop.webp",
+      "provenance": ["https://www.pexels.com/video/female-hand-picking-up-phone-7346571/"],
+      "validation": "Six sampled frames show genuine hand, receiver and camera motion; no face, text overlay or audio track. Locally graded to the Coral Spa espresso and muted-coral palette."
     },
     {
       "id": "category-massage",

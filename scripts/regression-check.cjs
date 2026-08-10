@@ -215,12 +215,14 @@ async function run() {
             deferredVideoSourcesRelative: video ? [...video.querySelectorAll('source[data-src]')].every((source) => source.dataset.src.startsWith('assets/videos/')) : false,
             posterVisible: visible(hero && hero.querySelector('.media-background__poster')),
             toggleVisible: visible(document.querySelector('[data-video-toggle]')),
-            backToTop: !!document.querySelector('[data-back-to-top]')
+            backToTop: !!document.querySelector('[data-back-to-top]'),
+            headingPeriods: [...document.querySelectorAll('h1, h2, h3, h4, h5, h6')].filter((heading) => heading.textContent.trim().endsWith('.')).length
           };
           if (document.body.classList.contains('home-page')) return { ...base,
             trendingVisible: visible(document.querySelector('#signature')), trendingCards: document.querySelectorAll('#signature .signature-card').length,
             trendingNames: [...document.querySelectorAll('#signature h3')].map((node) => node.textContent.trim()),
             overviewVisible: visible(document.querySelector('#treatments')), overviewCards: document.querySelectorAll('#treatments .overview-card').length,
+            overviewTitleTops: [...document.querySelectorAll('#treatments .overview-card h3')].map((node) => Number(node.getBoundingClientRect().top.toFixed(1))),
             whyVisible: visible(document.querySelector('#why-coral-spa')), whyItems: document.querySelectorAll('#why-coral-spa .why-statement').length, whyFocal: !!document.querySelector('#why-coral-spa .why-media img'),
             galleryVisible: visible(document.querySelector('#gallery')), galleryFocus: document.querySelectorAll('[data-gallery-focus]').length, galleryThumbs: document.querySelectorAll('[data-gallery-thumb]').length,
             galleryUnique: new Set([...document.querySelectorAll('[data-gallery-focus], [data-gallery-thumb]')].map((node) => node.dataset.gallerySrc)).size,
@@ -250,6 +252,7 @@ async function run() {
           return base;
         })())`));
         if (result.overflow > 1) failures.push(`${label}: horizontal overflow ${result.overflow}px`);
+        if (result.headingPeriods) failures.push(`${label}: ${result.headingPeriods} headings end with a full stop`);
         if (!result.backToTop) failures.push(`${label}: shared back-to-top is missing`);
         if (result.sectionsZeroHeight) failures.push(`${label}: ${result.sectionsZeroHeight} zero-height sections`);
         if (result.texturedSections !== result.nonHeroSections) failures.push(`${label}: explicit surface class coverage failed`);
@@ -261,7 +264,8 @@ async function run() {
         if (page === 'index.html') {
           const names = ['The Jet Lag Reset', 'Lymphatic Drainage', 'The Heat Ritual'];
           if (!result.trendingVisible || result.trendingCards !== 3 || names.some((name) => !result.trendingNames.includes(name))) failures.push(`${label}: trending assertion failed`);
-          if (!result.overviewVisible || result.overviewCards !== 3 || !result.whyVisible || result.whyItems !== 4 || !result.whyFocal) failures.push(`${label}: overview or branded credibility assertion failed`);
+          const overviewSpread = Math.max(...result.overviewTitleTops) - Math.min(...result.overviewTitleTops);
+          if (!result.overviewVisible || result.overviewCards !== 3 || (width > 920 && overviewSpread > 2) || !result.whyVisible || result.whyItems !== 4 || !result.whyFocal) failures.push(`${label}: overview alignment or branded credibility assertion failed`);
           if (!result.galleryVisible || result.galleryFocus !== 1 || result.galleryThumbs !== 4 || result.galleryUnique !== 5 || !(result.galleryFocusWidth > 0) || !(result.galleryFocusHeight > 0) || !(result.galleryImageNaturalWidth > 0) || !(result.galleryImageOpacity > 0.95)) failures.push(`${label}: gallery structure or focus-image assertion failed`);
           if (!result.reviewsVisible || !result.reviewRoot || !result.locationVisible || !result.footerVisible) failures.push(`${label}: reviews, location or footer assertion failed`);
         }
@@ -279,6 +283,29 @@ async function run() {
         report.push({ label, videoDiagnostic, ...result });
       }
     }
+
+    await client.send("Emulation.setDeviceMetricsOverride", { width: 1280, height: 800, deviceScaleFactor: 1, mobile: false });
+    await navigate(`${origin}${basePath}services.html?search-regression=1`);
+    await evaluate(`document.querySelector('[data-service-search]').scrollIntoView({ block: 'start' })`);
+    const serviceSearch = JSON.parse(await evaluate(`new Promise((resolve) => {
+      const input = document.querySelector('[data-service-search]');
+      input.value = 'Potli Massage';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        const rows = [...document.querySelectorAll('[data-service-item]:not([hidden])')];
+        const first = rows[0];
+        const firstGroup = first && first.closest('[data-service-group]');
+        resolve(JSON.stringify({
+          visibleRows: rows.length,
+          status: document.querySelector('[data-filter-status]').textContent.trim(),
+          filtering: document.querySelector('.services-menu').classList.contains('is-filtering'),
+          firstHeight: first ? first.getBoundingClientRect().height : 0,
+          firstOpacity: first ? Number(getComputedStyle(first).opacity) : 0,
+          categoryMediaHidden: firstGroup ? getComputedStyle(firstGroup.querySelector('.category-media')).display === 'none' : false
+        }));
+      }));
+    })`));
+    if (serviceSearch.visibleRows !== 1 || serviceSearch.status !== '1 treatment found' || !serviceSearch.filtering || serviceSearch.firstHeight <= 0 || serviceSearch.firstOpacity < 0.95 || !serviceSearch.categoryMediaHidden) failures.push(`Service search results are not visibly rendered: ${JSON.stringify(serviceSearch)}`);
 
     const whyCaptureSizes = new Set(["2560x1440", "1920x1080", "1536x1024", "1440x900", "1024x768", "768x1024", "430x932", "390x844", "320x568"]);
     for (const [width, height] of sizes.filter(([w, h]) => whyCaptureSizes.has(`${w}x${h}`))) {
@@ -330,7 +357,7 @@ async function run() {
     const staggerBefore = JSON.parse(await evaluate(`new Promise((resolve) => { const root = document.querySelector('#why-coral-spa [data-stagger-group]'); setTimeout(() => resolve(JSON.stringify({ state: root.dataset.staggerState, revealed: [...root.querySelectorAll('[data-stagger-item]')].filter((item) => item.dataset.revealedAt).length })), 500); })`));
     if (staggerBefore.revealed !== 0 || staggerBefore.state !== 'pending') failures.push(`Off-screen stagger group started too early: ${JSON.stringify(staggerBefore)}`);
     await evaluate(`document.querySelector('#why-coral-spa [data-stagger-group]').scrollIntoView({ block: 'center' })`);
-    const staggerAfter = JSON.parse(await evaluate(`new Promise((resolve) => { setTimeout(() => { const root = document.querySelector('#why-coral-spa [data-stagger-group]'); const times = [...root.querySelectorAll('[data-stagger-item]')].map((item) => Number(item.dataset.revealedAt || 0)); resolve(JSON.stringify({ state: root.dataset.staggerState, times })); }, 1200); })`));
+    const staggerAfter = JSON.parse(await evaluate(`new Promise((resolve) => { setTimeout(() => { const root = document.querySelector('#why-coral-spa [data-stagger-group]'); const times = [...root.querySelectorAll('[data-stagger-item]')].map((item) => Number(item.dataset.revealedAt || 0)); resolve(JSON.stringify({ state: root.dataset.staggerState, times })); }, 1600); })`));
     if (staggerAfter.state !== 'complete' || staggerAfter.times.length !== 5 || staggerAfter.times.some((time, index) => !time || (index && time <= staggerAfter.times[index - 1]))) failures.push(`Stagger order assertion failed: ${JSON.stringify(staggerAfter)}`);
 
     await navigate(`${origin}${basePath}index.html?gallery-manual=1`);

@@ -705,18 +705,27 @@
     const input = document.querySelector("[data-service-search]");
     const clear = document.querySelector("[data-search-clear]");
     const status = document.querySelector("[data-filter-status]");
+    const menu = document.querySelector(".services-menu");
     if (!input) return;
 
     const filter = () => {
       const query = input.value.trim().toLowerCase();
       let visible = 0;
+      if (menu) menu.classList.toggle("is-filtering", Boolean(query));
       document.querySelectorAll("[data-service-group]").forEach((group) => {
         let groupVisible = 0;
         const categoryMatch = query && group.dataset.serviceGroup.toLowerCase().includes(query);
         group.querySelectorAll("[data-service-item]").forEach((item) => {
           const match = !query || categoryMatch || item.dataset.searchText.includes(query);
           item.hidden = !match;
-          if (match) { visible += 1; groupVisible += 1; }
+          if (match) {
+            visible += 1;
+            groupVisible += 1;
+            if (query) {
+              item.dataset.staggerState = "visible";
+              item.dataset.revealState = "visible";
+            }
+          }
         });
         group.hidden = groupVisible === 0;
       });

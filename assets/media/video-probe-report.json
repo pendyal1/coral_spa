@@ -1,5 +1,5 @@
 {
-  "auditedAt": "2026-08-10T08:04:47.011Z",
+  "auditedAt": "2026-08-10T09:31:33.399Z",
   "note": "Codec validity does not establish genuine motion. contentStatus records the separate visual contact-sheet audit.",
   "assets": [
     {
@@ -321,11 +321,11 @@
       "decodable": true,
       "durationSeconds": 9,
       "dimensions": "1600x900",
-      "sizeBytes": 1685641,
+      "sizeBytes": 1219485,
       "codec": "h264",
       "browserCompatible": true,
       "audioTrack": false,
-      "contentStatus": "awaiting-genuine-footage"
+      "contentStatus": "approved-genuine-stock-video"
     },
     {
       "asset": "assets/videos/contact-hero-desktop.webm",
@@ -334,11 +334,11 @@
       "decodable": true,
       "durationSeconds": 9,
       "dimensions": "1600x900",
-      "sizeBytes": 842998,
+      "sizeBytes": 2080097,
       "codec": "vp9",
       "browserCompatible": true,
       "audioTrack": false,
-      "contentStatus": "awaiting-genuine-footage"
+      "contentStatus": "approved-genuine-stock-video"
     },
     {
       "asset": "assets/videos/contact-hero-mobile.mp4",
@@ -347,11 +347,11 @@
       "decodable": true,
       "durationSeconds": 9,
       "dimensions": "720x1280",
-      "sizeBytes": 888865,
+      "sizeBytes": 645390,
       "codec": "h264",
       "browserCompatible": true,
       "audioTrack": false,
-      "contentStatus": "awaiting-genuine-footage"
+      "contentStatus": "approved-genuine-stock-video"
     },
     {
       "asset": "assets/videos/contact-hero-mobile.webm",
@@ -360,11 +360,11 @@
       "decodable": true,
       "durationSeconds": 9,
       "dimensions": "720x1280",
-      "sizeBytes": 430486,
+      "sizeBytes": 1152693,
       "codec": "vp9",
       "browserCompatible": true,
       "audioTrack": false,
-      "contentStatus": "awaiting-genuine-footage"
+      "contentStatus": "approved-genuine-stock-video"
     },
     {
       "asset": "assets/videos/home-hero-desktop.mp4",
