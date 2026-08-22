@@ -1,14 +1,14 @@
 window.CORAL_SERVICES = [
   {
     category: "Specials",
-    intro: "Current Coral Spa signatures and newer recovery rituals. Indicative pricing is aligned with comparable treatments on the published Coral Spa menu.",
+    intro: "Current Coral Spa signatures and newer recovery rituals.",
     image: "assets/images/categories/generated/specials.jpg",
     services: [
       {
         name: "The Jet Lag Reset",
         technique: "Jet Lag Recovery Massage",
         duration: "90 Min",
-        price: "3350",
+        price: "3400",
         tag: "Newly In",
         image: "assets/images/services/deep-tissue-massage.jpg",
         description: "A Swedish and oil-based recovery ritual with 60 minutes of bodywork followed by 30 minutes of head massage.",
@@ -18,8 +18,8 @@ window.CORAL_SERVICES = [
       {
         name: "Lymphatic Drainage",
         technique: "Lymphatic Drainage Massage",
-        duration: "60 / 90 Min",
-        price: "2900 / 3700",
+        duration: "90 Min",
+        price: "3900",
         tag: "Trending",
         image: "assets/images/services/whole-body.jpg",
         description: "Targeted massage using firm or light rhythmic work depending on the guest's needs and therapist recommendation.",
@@ -30,7 +30,7 @@ window.CORAL_SERVICES = [
         name: "The Heat Ritual",
         technique: "Hot Stone Massage",
         duration: "90 Min",
-        price: "4600",
+        price: "4700",
         tag: "Signature",
         image: "assets/images/services/hot-stone-massage.jpg",
         description: "Warm basalt stones and essential oils are used to release tension and create a grounded nervous-system reset.",
@@ -38,10 +38,20 @@ window.CORAL_SERVICES = [
         goodFor: "Deep warmth, tight muscles and stress release."
       },
       {
+        name: "Potli Massage",
+        technique: "Heated Herbal Pouch Massage",
+        duration: "90 Min",
+        price: "5100",
+        image: "assets/images/services/potli-massage.jpg",
+        description: "Heated herbal pouches are pressed and rolled across the body to support pain relief, muscle relaxation, circulation and stress reduction.",
+        longDescription: "Warm cloth pouches filled with aromatic herbs are pressed, rolled and worked across the body. The combination of herbal warmth and rhythmic pressure is intended to ease stiffness, encourage circulation and bring comfort to tired muscles.",
+        goodFor: "Body ache, stiffness and herbal warmth."
+      },
+      {
         name: "The Nervous System Reset",
         technique: "Thai Aromatherapy Massage",
         duration: "60 / 90 Min",
-        price: "2700 / 3500",
+        price: "2900 / 3700",
         image: "assets/images/services/thai-oil-therapy.jpg",
         description: "Thai-style pressure work, yoga-inspired stretches and flowing oil strokes, paced to settle the body rather than rush it.",
         longDescription: "Thai-style pressure, assisted stretches and long aromatherapy oil strokes are combined at a deliberately unhurried pace. It suits guests looking for a calming full-body treatment with both movement and flowing massage.",
@@ -107,27 +117,6 @@ window.CORAL_SERVICES = [
         description: "Deep pressure focuses on the deepest layers of muscle tissue, tendons and fascia to release chronic muscle tension.",
         longDescription: "Slower strokes and focused pressure are directed toward deeper layers of muscle, tendon and fascia. The therapist concentrates on persistent knots and areas of chronic tension, adjusting intensity through consultation rather than applying the same pressure everywhere.",
         goodFor: "Knots, desk posture and gym soreness."
-      },
-      {
-        name: "Hot Stone Massage",
-        editorialSubtitle: "The Heat Ritual",
-        technique: "Heated Basalt Stone Therapy",
-        duration: "90 Min",
-        price: "4600",
-        image: "assets/images/services/hot-stone-massage.jpg",
-        description: "Traditional massage techniques with warmed basalt stones placed and moved across energy points to melt tension and energize the body.",
-        longDescription: "Warmed basalt stones are placed at selected points and also used as massage tools, allowing steady heat to soften tight muscles before and during manual work. The result is an enveloping treatment built around warmth, pressure and gradual release.",
-        goodFor: "Deep warmth, tight muscles and slow release."
-      },
-      {
-        name: "Potli Massage",
-        technique: "Heated Herbal Pouch Massage",
-        duration: "60 Min",
-        price: "5100",
-        image: "assets/images/services/potli-massage.jpg",
-        description: "Heated herbal pouches are pressed and rolled across the body to support pain relief, muscle relaxation, circulation and stress reduction.",
-        longDescription: "Warm cloth pouches filled with aromatic herbs are pressed, rolled and worked across the body. The combination of herbal warmth and rhythmic pressure is intended to ease stiffness, encourage circulation and bring comfort to tired muscles.",
-        goodFor: "Body ache, stiffness and herbal warmth."
       }
     ]
   },
@@ -308,7 +297,7 @@ window.CORAL_SERVICES = [
         name: "Head Massage",
         technique: "Champi",
         duration: "30 Min",
-        price: "850",
+        price: "1000",
         image: "assets/images/services/head-massage.jpg",
         description: "A strong traditional head massage using fast strokes and pressure on trigger points to induce relaxation.",
         longDescription: "Traditional Champi techniques use brisk strokes and focused pressure around the scalp and selected trigger points. The compact session is intended to release accumulated tension and provide a quick reset after demanding work or screen time.",
@@ -335,7 +324,7 @@ window.CORAL_SERVICES = [
         name: "Face",
         technique: "Face De-tan",
         duration: "As advised",
-        price: "600",
+        price: "700",
         image: "assets/images/services/face.jpg",
         description: "A focused face de-tan treatment to help skin affected by sun exposure and pollution.",
         longDescription: "A localized de-tanning treatment for the face, selected for skin showing the visible effects of sun exposure and city pollution. Treatment time is advised after the therapist reviews the area and current skin condition.",
@@ -345,7 +334,7 @@ window.CORAL_SERVICES = [
         name: "Face, Neck and Arms",
         technique: "Upper Body De-tan",
         duration: "As advised",
-        price: "1200",
+        price: "1500",
         image: "assets/images/services/face-neck-and-arms.jpg",
         description: "A de-tan package for the face, neck and arms, the areas most exposed to sun and pollution.",
         longDescription: "This wider de-tan treatment covers the face, neck and arms so the most frequently exposed areas can be treated together. The therapist advises the required time after considering the skin and the extent of visible tanning.",
@@ -355,7 +344,7 @@ window.CORAL_SERVICES = [
         name: "Whole Body",
         technique: "Full Body De-tan",
         duration: "As advised",
-        price: "2100",
+        price: "2300",
         image: "assets/images/services/whole-body.jpg",
         description: "A full-body therapy to help skin fight visible effects of sun and pollution.",
         longDescription: "A whole-body de-tanning service for guests looking to address broader unevenness caused by sun exposure and pollution. Timing is confirmed after consultation because the treatment is adapted to the areas requiring attention.",

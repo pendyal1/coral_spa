@@ -277,7 +277,7 @@ async function run() {
           if (result.serviceTiles !== 10 || result.tileColumns !== expectedColumns || !result.tileTargetsValid) failures.push(`${label}: service category tile assertion failed`);
           if (!result.categoryImagesCover || result.categoryRatios.some((ratio) => Math.abs(ratio - expectedRatio) > 0.04)) failures.push(`${label}: category image crop assertion failed`);
           if (result.benefitCounts.some((count) => count < 2 || count > 3)) failures.push(`${label}: massage benefit chip assertion failed`);
-          if (!['Slow Down', 'Reset & Release', 'Knot Fixer', 'The Heat Ritual'].every((subtitle) => result.subtitles.includes(subtitle)) || !result.interestForm) failures.push(`${label}: service subtitle or request-form assertion failed`);
+          if (!['Slow Down', 'Reset & Release', 'Knot Fixer'].every((subtitle) => result.subtitles.includes(subtitle)) || !result.interestForm) failures.push(`${label}: service subtitle or request-form assertion failed`);
         }
         if (page === 'contact.html' && (result.contactCards !== 5 || result.separateMap || !result.phonesNoWrap || !result.phonesFit || !result.mapUsable)) failures.push(`${label}: unified contact grid assertion failed`);
         report.push({ label, videoDiagnostic, ...result });
@@ -398,7 +398,7 @@ async function run() {
       await evaluate(`document.querySelector('[data-team-section]').scrollIntoView({ block: 'center' })`);
       await delay(300);
       const teamState = JSON.parse(await evaluate(`JSON.stringify((() => { const root = document.querySelector('[data-team-section]'); const cards = [...root.querySelectorAll('.team-card:not([data-carousel-clone])')]; const renderedCards = [...root.querySelectorAll('.team-card')]; const viewport = root.querySelector('.content-carousel__viewport').getBoundingClientRect(); const visibleCards = renderedCards.filter((card) => { const rect = card.getBoundingClientRect(); return rect.left < viewport.right - 1 && rect.right > viewport.left + 1; }).length; return { cards: cards.length, visibleCards, columns: Number(getComputedStyle(root).getPropertyValue('--carousel-columns')), emptyHidden: document.querySelector('[data-team-empty]').hidden, sampleLabels: cards.filter((card) => card.textContent.includes('Sample profile') || card.textContent.includes('details to be confirmed')).length, specialistTitles: cards.filter((card) => !!card.querySelector('.team-card__status')).length }; })())`));
-      if (teamState.cards !== 8 || teamState.columns !== expected || teamState.visibleCards !== expected || !teamState.emptyHidden || teamState.sampleLabels !== 0 || teamState.specialistTitles !== 8) failures.push(`Team carousel ${width}px assertion failed: ${JSON.stringify(teamState)}`);
+      if (teamState.cards !== 9 || teamState.columns !== expected || teamState.visibleCards !== expected || !teamState.emptyHidden || teamState.sampleLabels !== 0 || teamState.specialistTitles !== 9) failures.push(`Team carousel ${width}px assertion failed: ${JSON.stringify(teamState)}`);
     }
     await client.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
     await navigate(`${origin}${basePath}about.html?team-autoplay=1`);

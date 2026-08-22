@@ -727,7 +727,7 @@
     if (controls) controls.hidden = false;
     track.innerHTML = team.map((member) => {
       const name = member.nickname || member.firstName || "Therapist";
-      const initials = name.slice(0, 2).toUpperCase();
+      const initials = name.trim().split(/\s+/).map((part) => part[0]).join("").slice(0, 2).toUpperCase();
       const photo = member.showPhoto && member.photo
         ? `<img src="${escapeHtml(member.photo)}" alt="${escapeHtml(member.photoAlt || `Placeholder portrait for the ${name} therapist profile`)}" width="800" height="1000" loading="lazy" decoding="async">`
         : `<span class="team-card__monogram" aria-hidden="true">${escapeHtml(initials)}</span><span class="visually-hidden">No-photo profile for ${escapeHtml(name)}</span>`;
